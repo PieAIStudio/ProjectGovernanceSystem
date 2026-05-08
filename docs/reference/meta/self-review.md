@@ -1,3 +1,23 @@
+---
+id: REF-SELF-REVIEW
+title: Project Governance System Self Review
+type: reference
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: meta
+tags:
+  - self-review
+  - risks
+  - minimality
+pinned: false
+related:
+  - POLICY-DESIGN-PRINCIPLES
+  - POLICY-UPSTREAMING
+---
+
 # Self Review
 
 ## Is This Too Complex?

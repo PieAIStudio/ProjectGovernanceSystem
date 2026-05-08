@@ -1,4 +1,3 @@
-#!/usr/bin/env -S tsx
 import { runApprove } from './commands/approve';
 import { runArchive } from './commands/archive';
 import { runAudit } from './commands/audit';
@@ -8,6 +7,7 @@ import { runInit } from './commands/init';
 import { runLinks } from './commands/links';
 import { runList } from './commands/list';
 import { runNew } from './commands/new';
+import { runRouterCheck } from './commands/router-check';
 import { runScan } from './commands/scan';
 import { runSupersede } from './commands/supersede';
 import { runVerifyCommitMsg } from './commands/verify-commit-msg';
@@ -17,6 +17,7 @@ const COMMANDS = [
   'scan',
   'audit',
   'links',
+  'router-check',
   'find',
   'list',
   'new',
@@ -34,6 +35,7 @@ if (command === 'check') exitCode = runCheck();
 else if (command === 'scan') exitCode = runScan(args);
 else if (command === 'audit') exitCode = runAudit();
 else if (command === 'links') exitCode = runLinks();
+else if (command === 'router-check') exitCode = runRouterCheck();
 else if (command === 'find') exitCode = runFind(args);
 else if (command === 'list') exitCode = runList(args);
 else if (command === 'new') exitCode = runNew(args);
@@ -63,6 +65,7 @@ function printHelp(): void {
   console.log('  scan [--check]              Regenerate (or verify) governance/MANIFEST.yml');
   console.log('  audit                       Advisory health report');
   console.log('  links                       Validate current-layer local Markdown links');
+  console.log('  router-check                Validate router/profile/Superpowers wiring');
   console.log('  find <topic>                Search canonical docs by id/title/tag/path');
   console.log('  list [--type X] [--status Y] [--pinned]  List docs');
   console.log(

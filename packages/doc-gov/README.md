@@ -35,12 +35,18 @@ pnpm doc-gov scan
 pnpm doc-gov scan --check
 pnpm doc-gov audit
 pnpm doc-gov links
+pnpm doc-gov router-check
 ```
+
+`router-check` is intentionally thin: it verifies that this upstream repo still connects
+`AGENTS.md`, `routing/`, `profiles/`, and `integrations/superpowers.md` in the expected order.
+It does not choose a workflow for a specific task.
 
 ## Build
 
 ```bash
 pnpm --filter @pieai/doc-gov build
+pnpm --filter @pieai/doc-gov test
 pnpm --filter @pieai/doc-gov typecheck
 ```
 

@@ -4,6 +4,50 @@ Central upstream for PieAI project documentation governance, task routing, and w
 
 This repository is not a finished public package yet. It is the **single source of upstream design** for the system currently proven in Supa and being adapted into PieFlow and PieIP.
 
+## Positioning
+
+Project Governance System is an **AI-native governance layer for project documentation and agent work artifacts**.
+
+It does not replace Git, AGENTS.md, or Superpowers:
+
+- Git records file history: what changed, when, and by whom.
+- AGENTS.md gives project-specific instructions to coding agents.
+- Superpowers provides engineering workflows such as brainstorming, TDD, debugging, planning, and verification.
+- Project Governance System decides where durable AI-created artifacts belong, what counts as current truth, which workflow depth a task needs, and how finished or stale documents retire.
+
+Beginner version:
+
+> Git is the storage and history system. Superpowers is the engineering playbook. Project Governance System is the project librarian and traffic desk: it tells agents where to put things, which shelf is current, when a plan is completed, and when old material belongs in the archive.
+
+This matters because AI agents can create useful specs, plans, decisions, and research quickly, but without a lifecycle those files become clutter. The goal is not more ceremony. The goal is one clear place for current truth, one small router for task depth, and one validation layer that keeps AI-generated documentation from piling up into noise.
+
+```mermaid
+flowchart TD
+  A["Task or project question arrives"] --> B["Read AGENTS.md and current-work.md"]
+  B --> C["Select profile and local lane"]
+  C --> D{"What kind of work is this?"}
+  D --> E["Doc-only governance lane"]
+  D --> F["Engineering/runtime lane"]
+  F --> G["Use matching Superpowers workflow when applicable"]
+  E --> H["Use SSOT and provenance rules"]
+  G --> I["Run AI-in-the-Loop evidence cycle"]
+  H --> I
+  I --> J["Record durable output in doc-gov layers"]
+  J --> K["Git tracks the actual file history"]
+```
+
+## What This System Answers
+
+| Question | Answered by |
+| --- | --- |
+| Where should an AI-generated spec, plan, decision, or reference go? | `doc-gov`, `starter/`, and project-local `docs/` layers |
+| Which document is current truth? | frontmatter, `canonical`, lifecycle status, and `current-work.md` |
+| Should this task be lightweight, doc-only, TDD, or Directed Development? | `routing/` plus the project-local lane profile |
+| Should Superpowers run here? | the selected profile and `integrations/superpowers.md` |
+| Is the router/profile/Superpowers wiring still connected? | `doc-gov router-check` |
+| What happens after a plan is done? | `completed` status and completed folders, not active-plan pileup |
+| What stays local to a product project? | project-local canon, runtime truth, verification ladders, and lane wording |
+
 ## What Belongs Here
 
 | Layer | Purpose | Example |
@@ -37,7 +81,17 @@ Stage 0 is intentionally conservative:
 
 Do not silently replace project-local governance with this repo. Use the adoption guides and run each project's doc checks.
 
-For migration steps, read `docs/adoption-playbook.md`.
+For migration steps, read `docs/reference/adoption/adoption-playbook.md`.
+
+## Starter Template Vision
+
+This repo can become a new-project starter for AI-assisted work, but only in stages:
+
+1. Today: use it as the upstream design and compare projects against the matching profile.
+2. Next: add scripted migrate/check support so projects can update without hand-copying.
+3. Later: publish package and init commands for new projects.
+
+Do not treat the starter as a magic install. A useful project still needs local truth: its product canon, runtime proof commands, asset provenance rules, and current work index. The central system supplies the shelves and guardrails; each project supplies the actual content.
 
 ## Project Profiles
 

@@ -1,3 +1,23 @@
+---
+id: POLICY-DESIGN-PRINCIPLES
+title: Project Governance System Design Principles
+type: policy
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: governance
+tags:
+  - design-principles
+  - minimality
+  - platform
+pinned: true
+related:
+  - POLICY-UPSTREAMING
+  - POLICY-SYNC-STRATEGY
+---
+
 # Design Principles
 
 This system exists to reduce project and AI-session cognitive load, not to create a larger governance hobby.
@@ -10,6 +30,12 @@ This system exists to reduce project and AI-session cognitive load, not to creat
 - Twelve-Factor style dev/prod parity: keep the install/sync model close enough across projects that "works in one project" is meaningful in another.
 
 ## Local Rules
+
+### 0. Govern AI Artifacts; Do Not Replace Git
+
+Git remains the file history and collaboration layer. Superpowers remains an external engineering workflow layer. This system governs the lifecycle and placement of durable AI-created project artifacts: specs, plans, decisions, references, canon, and archives.
+
+If a future change tries to make this repo a general project-management platform, Git replacement, or Superpowers fork, cut it back.
 
 ### 1. Two Profiles Until Proven Otherwise
 

@@ -1,3 +1,23 @@
+---
+id: POLICY-SYNC-STRATEGY
+title: Project Governance System Sync Strategy
+type: policy
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: adoption
+tags:
+  - sync
+  - adoption
+  - stage-0
+pinned: true
+related:
+  - REF-ADOPTION-PLAYBOOK
+  - REF-PROJECT-RELATIONSHIP
+---
+
 # Sync Strategy
 
 ## Stage 0: AI-Assisted Sync

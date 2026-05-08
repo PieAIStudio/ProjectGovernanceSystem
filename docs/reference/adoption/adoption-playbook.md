@@ -1,3 +1,23 @@
+---
+id: REF-ADOPTION-PLAYBOOK
+title: Project Governance System Adoption Playbook
+type: reference
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: adoption
+tags:
+  - adoption
+  - migration
+  - profiles
+pinned: false
+related:
+  - POLICY-SYNC-STRATEGY
+  - REF-PROJECT-RELATIONSHIP
+---
+
 # Adoption Playbook
 
 Use this when a project wants to migrate into the Project Governance System.

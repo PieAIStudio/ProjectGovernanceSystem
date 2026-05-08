@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --filter @pieai/doc-gov build",
+    "test": "pnpm --filter @pieai/doc-gov test",
     "typecheck": "pnpm --filter @pieai/doc-gov typecheck"
   }
 }

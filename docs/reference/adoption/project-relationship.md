@@ -1,3 +1,23 @@
+---
+id: REF-PROJECT-RELATIONSHIP
+title: Project Governance System Project Relationship Model
+type: reference
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: adoption
+tags:
+  - ownership
+  - upstream
+  - project-local
+pinned: false
+related:
+  - POLICY-UPSTREAMING
+  - POLICY-SYNC-STRATEGY
+---
+
 # Project Relationship Model
 
 This file answers the most important beginner question:

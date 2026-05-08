@@ -1,0 +1,48 @@
+# governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
+# Regenerate: pnpm doc-gov scan
+generated_at: 2026-05-07T06:35:35.308Z
+generator_version: doc-gov@0.1.0
+docs_count: 6
+docs:
+  - id: POLICY-DESIGN-PRINCIPLES
+    path: docs/policy/design-principles.md
+    type: policy
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: true
+  - id: POLICY-SYNC-STRATEGY
+    path: docs/policy/sync-strategy.md
+    type: policy
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: true
+  - id: POLICY-UPSTREAMING
+    path: docs/policy/upstreaming-policy.md
+    type: policy
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: true
+  - id: REF-ADOPTION-PLAYBOOK
+    path: docs/reference/adoption/adoption-playbook.md
+    type: reference
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: false
+  - id: REF-PROJECT-RELATIONSHIP
+    path: docs/reference/adoption/project-relationship.md
+    type: reference
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: false
+  - id: REF-SELF-REVIEW
+    path: docs/reference/meta/self-review.md
+    type: reference
+    status: stable
+    canonical: true
+    last_reviewed: 2026-05-07
+    pinned: false

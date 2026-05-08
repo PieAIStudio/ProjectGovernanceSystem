@@ -7,10 +7,17 @@ This repository is the upstream source for PieAI documentation governance, task 
 ## Read First
 
 1. `README.md`
-2. `docs/design-principles.md`
-3. `docs/project-relationship.md`
-4. `docs/sync-strategy.md`
-5. `docs/adoption-playbook.md`
+2. `docs/policy/design-principles.md`
+3. `docs/reference/adoption/project-relationship.md`
+4. `docs/policy/sync-strategy.md`
+5. `docs/reference/adoption/adoption-playbook.md`
+6. For routing/profile work, also read:
+   - `routing/engineering-task-routing.md`
+   - `routing/doc-only-routing.md`
+   - `integrations/superpowers.md`
+   - `integrations/directed-development.md`
+   - `profiles/engineering-runtime/`
+   - `profiles/doc-only/`
 
 ## Non-Negotiables
 
@@ -35,6 +42,7 @@ For CLI changes:
 pnpm install
 pnpm typecheck
 pnpm build
+node packages/doc-gov/dist/cli.js router-check
 ```
 
 For docs/profile changes, inspect links and keep the README/design-principles consistent.

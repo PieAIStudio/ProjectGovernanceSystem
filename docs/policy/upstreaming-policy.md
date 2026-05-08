@@ -1,3 +1,23 @@
+---
+id: POLICY-UPSTREAMING
+title: Project Governance System Upstreaming Policy
+type: policy
+status: stable
+canonical: true
+owner: human
+created: 2026-05-06
+last_reviewed: 2026-05-07
+domain: governance
+tags:
+  - upstreaming
+  - boundaries
+  - project-local
+pinned: true
+related:
+  - POLICY-DESIGN-PRINCIPLES
+  - REF-PROJECT-RELATIONSHIP
+---
+
 # Upstreaming Policy
 
 Use this decision tree before moving a rule from a project into this repository.
