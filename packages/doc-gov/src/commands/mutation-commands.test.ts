@@ -32,8 +32,10 @@ test('approve promotes draft docs to active canonical docs', () => {
   }));
 
   const fm = readFrontmatter(root, 'docs/specs/active/SPEC-0001-draft-spec.md');
+  const today = new Date().toISOString().slice(0, 10);
   assert.equal(fm.status, 'active');
   assert.equal(fm.canonical, true);
+  assert.equal(fm.last_reviewed, today);
   assert.equal(existsSync(join(root, 'docs/governance/MANIFEST.yml')), true);
   assert.equal(checkDocs(root).ok, true);
 });
@@ -53,8 +55,10 @@ test('approve promotes proposed decisions to accepted canonical decisions', () =
   }));
 
   const fm = readFrontmatter(root, 'docs/decisions/ADR-0001-adopt.md');
+  const today = new Date().toISOString().slice(0, 10);
   assert.equal(fm.status, 'accepted');
   assert.equal(fm.canonical, true);
+  assert.equal(fm.last_reviewed, today);
   assert.equal(checkDocs(root).ok, true);
 });
 

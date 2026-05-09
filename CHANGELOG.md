@@ -6,6 +6,12 @@
 - Moved reusable task routing into `docs/governance/agents-routing/*-v0.9.md`.
 - Added router integrity checks for central and downstream project routers.
 - Added default document templates for all doc-gov creatable document types.
+- Added regression tests for `approve`, `supersede`, `archive`, and
+  `verify-commit-msg`.
+- Expanded the Supa, PieFlow, and PieIP examples from stubs into adoption case
+  studies.
+- Documented intentionally deferred work, including the migrate command and
+  router YAML spec, in the self-review.
 - Clarified that `docs/governance/` is for governance core, while
   `docs/policy/` is for project AI/development policy.
 - Reworked starter paths so downstream projects can adopt the same boundary

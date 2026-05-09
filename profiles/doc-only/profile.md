@@ -25,7 +25,7 @@ Each project must define:
 - asset/provenance rules
 - approval boundaries
 - archive/delete policy
-- current work index, kept lightweight when there is no active execution lane
+- current work index (required, kept lightweight when there is no active execution lane)
 
 ## Automation Boundary
 

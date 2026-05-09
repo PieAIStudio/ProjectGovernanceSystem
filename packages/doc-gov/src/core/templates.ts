@@ -31,6 +31,9 @@ const TEMPLATE_FILES: Record<string, string> = {
   archive: 'archive.md',
 };
 
+// `archive.md` is kept for init/reference parity even though `doc-gov new`
+// blocks direct archive creation; the archive command derives archives from
+// existing docs so history is preserved.
 const DEFAULT_TEMPLATES: Record<string, string> = {
   'adr.md': [
     '---',
