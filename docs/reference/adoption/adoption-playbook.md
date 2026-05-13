@@ -97,6 +97,8 @@ Required concepts:
 - `docs/specs/active/`
 - `docs/specs/completed/`
 - `docs/archive/`
+- `AGENTS.md` as the project router
+- `CLAUDE.md` as a thin adapter that forwards to `AGENTS.md`
 
 ## Step 5: Apply The Profile
 
@@ -105,12 +107,12 @@ Required concepts:
 Add:
 
 - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
-- `integrations/superpowers.md`
-- `integrations/directed-development.md`
 - engineering lane summary in `AGENTS.md`
 - detailed lane profile in `docs/policy/best-practice-for-this-project.md`
 
 The project must define local lanes and proof commands.
+Do not copy the upstream root `integrations/` directory into target projects by default.
+If a project needs local external-workflow guidance, keep it thin in `AGENTS.md` or put project-specific notes under `docs/reference/integrations/`.
 
 ### Doc-Only
 
@@ -118,7 +120,7 @@ Add:
 
 - `docs/governance/agents-routing/doc-only-v0.9.md`
 - `docs/governance/ssot-v0.9.md`
-- AI-in-the-Loop rules
+- AI-in-the-Loop rules linked from the project's external shared-rule source
 - canon/provenance/archive rules in `docs/policy/best-practice-for-this-project.md`
 
 Do not add Superpowers TDD or Directed Development by default.

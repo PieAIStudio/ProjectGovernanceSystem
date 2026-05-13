@@ -50,8 +50,10 @@ pnpm doc-gov router-check
 - In a downstream project, it verifies the project router block,
   `docs/governance/ssot-v0.9.md`, the selected agents-routing file, and old
   shared SSOT/task-routing leftovers.
-- It also checks that local paths written in backticks inside `AGENTS.md` can
-  actually be opened, which catches stale startup instructions early.
+- It also checks that local paths written in backticks inside router-facing
+  files such as `AGENTS.md`, `CLAUDE.md`, `README.md`, and the starter
+  `AGENTS.template.md` can actually be opened, which catches stale startup
+  instructions early.
 
 It does not choose a workflow for a specific task.
 

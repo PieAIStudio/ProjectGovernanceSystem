@@ -37,10 +37,12 @@ Examples:
 - manifest and link validation
 - default `docs/` folders
 
-## Shared Rule
+## External Shared Rule
 
-Move to `shared-rules/` when the rule is project-agnostic AI working behavior,
-but not part of the governance system's core structure.
+Keep project-agnostic AI working behavior in an external shared-rule source when
+it is not part of the governance system's core structure. Target projects may
+link that source under `docs/policy/shared-rules/`, but this repository should
+not keep a second copy of the rule body.
 
 Examples:
 

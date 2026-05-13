@@ -21,7 +21,7 @@ actual game truth stays in Supa.
 - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
 - Superpowers integration
 - Directed Development integration
-- AI-in-the-Loop evidence rules
+- AI-in-the-Loop evidence rules linked from Supa's external shared-rule source
 
 ## Supa-Local Pieces
 
@@ -44,7 +44,7 @@ Supa/
 │   │   └── agents-routing/engineering-runtime-v0.9.md
 │   ├── policy/
 │   │   ├── best-practice-for-this-project.md
-│   │   └── shared-rules/ai-in-the-loop.md
+│   │   └── shared-rules/ai-in-the-loop.md  # symlink to external shared-rule source
 │   └── reference/execution/current-work.md
 └── tools/doc-gov/
 ```

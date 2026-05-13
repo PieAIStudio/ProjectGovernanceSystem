@@ -6,7 +6,7 @@ Use for code-heavy projects: apps, games, runtimes, services, browser products, 
 
 - `packages/doc-gov`
 - `docs/governance/ssot-v0.9.md`
-- `shared-rules/ai-in-the-loop.md`
+- external AI-in-the-Loop policy linked by target projects under `docs/policy/shared-rules/ai-in-the-loop.md`
 - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
 - `integrations/superpowers.md`
 - `integrations/directed-development.md`

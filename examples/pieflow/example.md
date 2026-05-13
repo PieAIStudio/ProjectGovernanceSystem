@@ -19,6 +19,7 @@ keeping product strategy and v4/v4.2/v4.3 truth inside PieFlow.
 - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
 - Directed Development for mixed product/runtime work
 - Superpowers integration for planning, TDD, debugging, and verification
+- AI-in-the-Loop evidence rules linked from PieFlow's external shared-rule source
 
 ## PieFlow-Local Pieces
 
@@ -42,7 +43,7 @@ PieFlow/
 │   ├── policy/
 │   │   ├── best-practice-for-this-project.md
 │   │   ├── refactor-rules.md
-│   │   └── shared-rules/ai-in-the-loop.md
+│   │   └── shared-rules/ai-in-the-loop.md  # symlink to external shared-rule source
 │   ├── canon/
 │   ├── specs/
 │   ├── plans/

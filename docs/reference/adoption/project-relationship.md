@@ -88,7 +88,8 @@ Use an explicit migration task:
 2. Compare local `tools/doc-gov` against `packages/doc-gov`.
 3. Compare local `docs/governance/` and `docs/policy/` starter docs against `starter/`.
 4. Compare selected local agents-routing against `docs/governance/agents-routing/`.
-5. Compare local shared AI work rules against `shared-rules/`.
+5. Compare local shared AI work rules against their external SSOT targets, such
+   as symlinked files under `docs/policy/shared-rules/`.
 6. Keep project-local docs and product artifacts local.
 7. Run project validation.
 

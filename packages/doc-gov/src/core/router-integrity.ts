@@ -39,6 +39,7 @@ const CENTRAL_REQUIRED_FILES = [
   'profiles/doc-only/profile.md',
   'profiles/doc-only/manifest.yml',
   'starter/AGENTS.template.md',
+  'starter/CLAUDE.template.md',
   'starter/docs/reference/execution/current-work.md',
   'starter/docs/policy/best-practice-for-this-project.md',
   'starter/docs/governance/boundary.md',
@@ -58,6 +59,7 @@ const CENTRAL_REQUIRED_FILES = [
 
 const PROJECT_REQUIRED_FILES = [
   'AGENTS.md',
+  'CLAUDE.md',
   'docs/governance/boundary.md',
   'docs/governance/ssot-v0.9.md',
   'docs/governance/doc-agent-rules.md',
@@ -82,6 +84,9 @@ const FORBIDDEN_PROJECT_PATHS = [
   'docs/policy/shared-rules/ssot.md',
   'docs/policy/shared-rules/task-routing.md',
 ] as const;
+
+const FORBIDDEN_PROJECT_ROOTS = ['integrations'] as const;
+const FORBIDDEN_CENTRAL_ROOTS = ['shared-rules'] as const;
 
 const ROUTER_BLOCK_BEGIN = '<!-- PGS-ROUTER:BEGIN v0.9 -->';
 const ROUTER_BLOCK_END = '<!-- PGS-ROUTER:END -->';
@@ -364,6 +369,26 @@ export function checkRouterIntegrity(rootDir = process.cwd()): RouterIntegrityRe
         });
       }
     }
+
+    for (const file of FORBIDDEN_PROJECT_ROOTS) {
+      if (existsSync(join(rootDir, file))) {
+        issues.push({
+          file,
+          code: 'project-root-integration-path',
+          message: `Project-level root integrations path must not exist: ${file}. Keep upstream integration docs in project-governance-system; use AGENTS.md or docs/reference/integrations/ only when project-specific guidance is needed.`,
+        });
+      }
+    }
+  } else {
+    for (const file of FORBIDDEN_CENTRAL_ROOTS) {
+      if (existsSync(join(rootDir, file))) {
+        issues.push({
+          file,
+          code: 'central-external-shared-rule-copy',
+          message: `Central repository must not keep external shared-rule copies at root path: ${file}. Link external shared rules from target projects under docs/policy/shared-rules/ instead.`,
+        });
+      }
+    }
   }
 
   for (const file of findGovernedReadmes(rootDir)) {
@@ -396,6 +421,7 @@ export function checkRouterIntegrity(rootDir = process.cwd()): RouterIntegrityRe
   }
 
   issues.push(...validateBacktickedLocalPaths(rootDir, 'AGENTS.md'));
+  issues.push(...validateBacktickedLocalPaths(rootDir, 'CLAUDE.md'));
   issues.push(...validateBacktickedLocalPaths(rootDir, 'README.md'));
   if (isCentral) {
     issues.push(...validateBacktickedLocalPaths(rootDir, 'starter/AGENTS.template.md', 'starter'));

@@ -29,6 +29,7 @@ export function runInit(args: string[]): number {
     'docs/plans/completed',
     'docs/canon',
     'docs/reference',
+    'docs/reference/execution',
     'docs/archive',
   ];
 
@@ -56,12 +57,14 @@ export function runInit(args: string[]): number {
   );
   console.log(`\nNext steps for a brand-new project:`);
   console.log(`  1. Copy starter/AGENTS.template.md to AGENTS.md and fill the project name.`);
+  console.log(`     Copy starter/CLAUDE.template.md to CLAUDE.md as the Claude adapter.`);
   console.log(`  2. Copy starter/docs/governance/boundary.md, ssot-v0.9.md,`);
   console.log(`     doc-agent-rules.md, doc-types.md, and one agents-routing file.`);
   console.log(`  3. Copy starter/docs/policy/best-practice-for-this-project.md and replace`);
   console.log(`     placeholder policy with this project's real AI/development rules.`);
   console.log(`  4. Copy starter/docs/reference/documentation-map.md and`);
-  console.log(`     starter/docs/reference/execution/current-work.md when useful.`);
+  console.log(`     starter/docs/reference/execution/current-work.md.`);
+  console.log(`     Current work is required, but it can stay very lightweight.`);
   console.log(`  5. Pick a profile: profiles/engineering-runtime or profiles/doc-only.`);
   console.log(`  6. Stage 0: either sync a local tools/doc-gov copy from packages/doc-gov`);
   console.log(`     or run the built CLI directly while package install is not enabled.`);

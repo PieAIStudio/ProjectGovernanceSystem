@@ -18,7 +18,7 @@ workbench or package where the project expects them.
 - doc-gov lifecycle with `completed`
 - `docs/governance/ssot-v0.9.md`
 - `docs/governance/agents-routing/doc-only-v0.9.md`
-- AI-in-the-Loop evidence rules
+- AI-in-the-Loop evidence rules linked from PieIP's external shared-rule source
 - current work index when helpful
 
 ## PieIP-Local Pieces
@@ -44,7 +44,7 @@ PieIP/
 │   │   └── agents-routing/doc-only-v0.9.md
 │   ├── policy/
 │   │   ├── best-practice-for-this-project.md
-│   │   └── shared-rules/ai-in-the-loop.md
+│   │   └── shared-rules/ai-in-the-loop.md  # symlink to external shared-rule source
 │   ├── canon/
 │   ├── reference/
 │   └── reference/execution/current-work.md

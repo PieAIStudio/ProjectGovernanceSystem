@@ -16,7 +16,7 @@
 6. The selected agents routing file:
    - `docs/governance/agents-routing/engineering-runtime-v0.9.md`, or
    - `docs/governance/agents-routing/doc-only-v0.9.md`
-7. `docs/reference/execution/current-work.md` when present
+7. `docs/reference/execution/current-work.md`
 
 ## Governance
 
@@ -32,7 +32,7 @@
 
 - Name this project's adopted profile: `engineering-runtime` or `doc-only`.
 - Point to the chosen agents-routing file from `docs/governance/agents-routing/`.
-- Engineering projects should also point to `integrations/superpowers.md` and use Superpowers inside the selected lane.
+- Engineering projects may use Superpowers, Directed Development, GStack, or other external workflows only inside the selected lane; do not copy upstream `integrations/` into the target project by default.
 - Doc-only projects should say that Superpowers TDD and Directed Development are not enabled by default.
 - External workflow systems such as Superpowers or GStack run inside the lane selected by this router. They must not replace this project router.
 
@@ -40,4 +40,4 @@
 
 ## Upstream Rule
 
-Do not locally invent doc-gov core changes such as new document statuses, frontmatter schema, lifecycle rules, shared agents-routing rules, or shared AI rules. If such a change seems necessary, propose it upstream in `project-governance-system` first.
+Do not locally invent doc-gov core changes such as new document statuses, frontmatter schema, lifecycle rules, shared agents-routing rules, or external shared-rule placement contracts. If such a change seems necessary, propose it upstream in `project-governance-system` first.

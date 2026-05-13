@@ -28,7 +28,7 @@ Use `AGENTS.md` for startup reading. It should point agents to:
 - `docs/governance/doc-agent-rules.md`
 - `docs/governance/doc-types.md`
 - `docs/governance/agents-routing/<selected-profile>-v0.9.md`
-- `docs/reference/execution/current-work.md` when present
+- `docs/reference/execution/current-work.md`
 
 ## Areas
 

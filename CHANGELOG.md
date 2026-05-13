@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.1 - 2026-05-14
+
+- Removed the central `shared-rules/` copy and clarified that external shared
+  AI work rules are linked into target projects under `docs/policy/shared-rules/`.
+- Added router integrity protection against reintroducing central shared-rule
+  copies.
+- Added `starter/CLAUDE.template.md` and downstream router checks for thin
+  host-specific adapters.
+- Tightened the first-user path by creating `docs/reference/execution/` during
+  `doc-gov init` and treating `current-work.md` as required but lightweight.
+
 ## 0.2.0 - 2026-05-09
 
 - Absorbed SSOT rules into `docs/governance/ssot-v0.9.md`.

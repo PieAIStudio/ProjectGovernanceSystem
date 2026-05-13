@@ -1,4 +1,4 @@
-import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
@@ -155,6 +155,20 @@ test('fails when legacy governance roots come back', () => {
   );
 });
 
+test('fails when central shared-rule copies come back', () => {
+  const root = createFixture();
+  mkdirSync(join(root, 'shared-rules'), { recursive: true });
+  writeFileSync(join(root, 'shared-rules/ai-in-the-loop.md'), 'external rule copy\n');
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /Central repository must not keep external shared-rule copies at root path: shared-rules/
+  );
+});
+
 test('fails when non-root README files come back', () => {
   const root = createFixture();
   mkdirSync(join(root, 'docs/reference'), { recursive: true });
@@ -215,6 +229,33 @@ test('passes for a downstream project with one selected agents-routing file', ()
 
   assert.equal(result.ok, true);
   assert.deepEqual(result.issues, []);
+});
+
+test('fails for a downstream project when CLAUDE adapter is missing', () => {
+  const root = createProjectFixture();
+  rmSync(join(root, 'CLAUDE.md'));
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /Required router\/integration file is missing: CLAUDE\.md/
+  );
+});
+
+test('fails for a downstream project when root integrations directory is copied in', () => {
+  const root = createProjectFixture();
+  mkdirSync(join(root, 'integrations'), { recursive: true });
+  writeFileSync(join(root, 'integrations/superpowers.md'), 'Project-local copy.\n');
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /Project-level root integrations path must not exist: integrations/
+  );
 });
 
 test('fails for a downstream project when legacy shared SSOT remains in policy', () => {
@@ -302,18 +343,26 @@ function createFixture(
   writeFileSync(join(root, 'profiles/doc-only/profile.md'), 'Doc-only profile.\n');
   writeFileSync(
     join(root, 'starter/AGENTS.template.md'),
-      overrides.starterAgents ??
-        [
-          'The target project must name its adopted profile and chosen agents-routing file.',
-          '<!-- PGS-ROUTER:BEGIN v0.9 -->',
-          'Read docs/governance/boundary.md.',
-          'Read docs/governance/ssot-v0.9.md.',
-          'Read docs/governance/agents-routing/.',
-          'Read docs/governance/doc-agent-rules.md.',
-          'Read docs/governance/doc-types.md.',
-          'Read docs/policy/best-practice-for-this-project.md.',
-          '<!-- PGS-ROUTER:END -->',
-        ].join('\n')
+    overrides.starterAgents ??
+      [
+        'The target project must name its adopted profile and chosen agents-routing file.',
+        '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+        'Read docs/governance/boundary.md.',
+        'Read docs/governance/ssot-v0.9.md.',
+        'Read docs/governance/agents-routing/.',
+        'Read docs/governance/doc-agent-rules.md.',
+        'Read docs/governance/doc-types.md.',
+        'Read docs/policy/best-practice-for-this-project.md.',
+        '<!-- PGS-ROUTER:END -->',
+      ].join('\n')
+  );
+  writeFileSync(
+    join(root, 'starter/CLAUDE.template.md'),
+    [
+      '# Claude Adapter',
+      'Read `AGENTS.md` first and follow it as the project router.',
+      'Claude-specific workflow guidance may add tool usage details, but it must not replace `AGENTS.md`.',
+    ].join('\n')
   );
   writeFileSync(join(root, 'starter/docs/reference/execution/current-work.md'), 'Current work index.\n');
   writeFileSync(join(root, 'starter/docs/policy/best-practice-for-this-project.md'), 'Project AI development policy.\n');
@@ -347,6 +396,14 @@ function createProjectFixture(): string {
 
   writeFileSync(join(root, 'package.json'), '{ "name": "example-project" }\n');
   writeFileSync(join(root, 'README.md'), 'Human introduction.\n');
+  writeFileSync(
+    join(root, 'CLAUDE.md'),
+    [
+      '# Claude Adapter',
+      'Read `AGENTS.md` first and follow it as the project router.',
+      'Claude-specific workflow guidance may add tool usage details, but it must not replace `AGENTS.md`.',
+    ].join('\n')
+  );
   writeFileSync(join(root, 'projects/example-package/README.md'), 'Product package README.\n');
   writeFileSync(
     join(root, 'AGENTS.md'),

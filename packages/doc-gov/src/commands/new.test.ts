@@ -12,6 +12,7 @@ test('init writes templates and new creates every creatable doc type', () => {
 
   withCwd(root, () => withMutedConsole(() => {
     assert.equal(runInit([]), 0);
+    assert.equal(existsSync(join(root, 'docs/reference/execution')), true);
     for (const template of [
       'adr.md',
       'spec.md',

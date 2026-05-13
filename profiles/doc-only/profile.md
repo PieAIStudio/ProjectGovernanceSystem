@@ -6,7 +6,7 @@ Use for non-runtime projects: IP development, AI media production, research vaul
 
 - `packages/doc-gov`
 - `docs/governance/ssot-v0.9.md`
-- `shared-rules/ai-in-the-loop.md`
+- external AI-in-the-Loop policy linked by target projects under `docs/policy/shared-rules/ai-in-the-loop.md`
 - `docs/governance/agents-routing/doc-only-v0.9.md`
 - starter `docs/governance/` and `docs/policy/` templates
 

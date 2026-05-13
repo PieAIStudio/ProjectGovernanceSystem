@@ -69,7 +69,6 @@ Use this table before trying to understand the whole repository.
 | `packages/doc-gov/` | CLI, schema, lifecycle, templates, validation logic | `completed` status, manifest scan, link checks |
 | `starter/` | New-project starter files | `docs/`, `docs/governance/`, `AGENTS.template.md` |
 | `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
-| `shared-rules/` | Project-agnostic AI work rules | AI-in-the-Loop |
 | `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
 | `profiles/` | Optional adoption profiles by project type | engineering-runtime, doc-only |
 | `examples/` | Reference implementation notes | Supa, PieFlow, PieIP |
@@ -80,6 +79,9 @@ Use this table before trying to understand the whole repository.
 - PieFlow v4 product rules.
 - PieIP character, script, or asset canon.
 - Product prompts, generated media notes, source assets, or project-package workbench files.
+- Copies of external shared AI work rules. Target projects may link those inside
+  their docs/policy/shared-rules folder, but this repo does not keep their
+  bodies.
 - A fork or copy of the Superpowers plugin.
 - The body of the Directed Development skill.
 

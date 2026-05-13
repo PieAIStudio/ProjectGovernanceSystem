@@ -2,7 +2,9 @@ profile: engineering-runtime
 required:
   doc_gov: true
   ssot: true
-  ai_in_the_loop: true
+  ai_in_the_loop:
+    target: docs/policy/shared-rules/ai-in-the-loop.md
+    source: external shared-rule SSOT
   agents_routing: docs/governance/agents-routing/engineering-runtime-v0.9.md
   current_work: docs/reference/execution/current-work.md
 optional:

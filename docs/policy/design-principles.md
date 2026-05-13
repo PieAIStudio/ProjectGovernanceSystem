@@ -59,7 +59,7 @@ Use `current-work.md` in starters and future migrations to avoid "two routers" c
 
 ### 3. Upstream Core Changes First
 
-Do not locally invent new doc-gov statuses, schema fields, document types, shared agents-routing semantics, or shared AI rules.
+Do not locally invent new doc-gov statuses, schema fields, document types, shared agents-routing semantics, or external shared-rule placement contracts.
 
 If a project discovers a core gap, update this repo first, then sync projects from it.
 

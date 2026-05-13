@@ -38,7 +38,7 @@ function renderManifest(records: DocRecord[]): string {
     '# docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY',
     '# Regenerate: pnpm doc-gov scan',
     `generated_at: ${new Date().toISOString()}`,
-    'generator_version: doc-gov@0.2.0',
+    'generator_version: doc-gov@0.2.1',
     `docs_count: ${records.length}`,
     'docs:',
   ];

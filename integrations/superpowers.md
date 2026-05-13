@@ -18,7 +18,7 @@ Project Governance System owns:
 - documentation lifecycle
 - agents routing
 - current work index conventions
-- shared AI evidence rules
+- the governed location and boundary for externally sourced AI evidence rules
 
 ## Rule
 

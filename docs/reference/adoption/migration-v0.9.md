@@ -37,8 +37,9 @@ Move project AI/development policy into `docs/policy/`:
 
 - `governance/best-practice-for-this-project.md` -> `docs/policy/best-practice-for-this-project.md`
 - `governance/refactor-rules.md` -> `docs/policy/refactor-rules.md`
-- `governance/shared-rules/` -> `docs/policy/shared-rules/`, except `ssot.md`
-  and `task-routing.md`; those move into `docs/governance/` as listed below.
+- eligible `governance/shared-rules/` entries -> `docs/policy/shared-rules/`,
+  preferably as links to their external SSOT sources. Skip `ssot.md` and
+  `task-routing.md`; those move into `docs/governance/` as listed below.
 
 Move reusable governance rules into the new core:
 
