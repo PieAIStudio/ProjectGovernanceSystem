@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-04
+last_reviewed: 2026-06-05
 domain: adoption
 tags:
   - sync
@@ -68,6 +68,37 @@ This is now the preferred direction for new adoption work and for projects that
 can update scripts, local hooks, and CI in one deliberate change. Do not switch
 only the package command while leaving old guardrails behind; that creates a
 half-migrated project.
+
+## Package Naming Roadmap
+
+`@pieai/doc-gov` is the first npm package because it is the stable executable
+subsystem: the command-line tool that checks governed docs, router integrity,
+manifest freshness, links, health, and read-only migration readiness.
+
+Project Governance System is larger than `doc-gov`. It also includes starter
+files, profiles, agents-routing rules, adoption strategy, and integration
+boundaries. Those pieces are public in the GitHub repository, but they are not
+yet a safe one-command npm install.
+
+Do not rename `@pieai/doc-gov` to the full system name just because the GitHub
+project is called Project Governance System. That would overpromise. A full
+system package should wait until it can safely provide:
+
+- profile-aware `pgs init`
+- non-destructive `pgs upgrade`
+- starter/profile installation
+- safe AGENTS/CLAUDE/GEMINI merge behavior
+- guardrail wiring for local hooks and CI
+- clear rollback and migration checks
+
+Future package options:
+
+- keep `@pieai/doc-gov` as the low-level CLI engine
+- add `@pieai/pgs` or `@pieai/project-governance-system` later as the full
+  system installer that depends on `@pieai/doc-gov`
+
+Beginner version: publish the engine first. Publish the whole car only after it
+has doors, seats, steering, and safe upgrade instructions.
 
 ## Stage 3: Published Template / Init
 
