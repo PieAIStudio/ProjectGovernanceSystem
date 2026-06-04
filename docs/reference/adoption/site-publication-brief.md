@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-04
+last_reviewed: 2026-06-05
 domain: adoption
 tags:
   - website
@@ -74,9 +74,9 @@ problem it solves, why it matters, how doc-gov checks work, and how it fits next
 to Git, AGENTS.md, Superpowers, and project-local product truth.
 
 Keep the copy confident but accurate. Do not claim automatic migration or
-full replacement of existing workflow tools. If npm publication is live, include
-the package install command for @pieai/doc-gov. If npm publication is not live,
-describe it as the package target and point readers to the GitHub repository.
+full replacement of existing workflow tools. npm publication is live, so include
+the package install command for @pieai/doc-gov and link both the npm package and
+the GitHub repository.
 
 After implementation, run the site's normal quality/typecheck/build checks and
 verify the new public route plus sitemap entry.

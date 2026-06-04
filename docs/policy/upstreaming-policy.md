@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-05-07
+last_reviewed: 2026-06-05
 domain: governance
 tags:
   - upstreaming
@@ -64,7 +64,7 @@ Keep it in the project when the rule is about that project's product, stack, run
 
 Examples:
 
-- Supa Phase03 Boss Race
+- Non-Heroes product/runtime canon
 - PieFlow connector/write-back path safety
 - PieIP ModernFreaks production pipeline
 

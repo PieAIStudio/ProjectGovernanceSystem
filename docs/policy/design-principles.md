@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-05-07
+last_reviewed: 2026-06-05
 domain: governance
 tags:
   - design-principles
@@ -46,7 +46,7 @@ Only two profiles exist now:
 - `engineering-runtime`
 - `doc-only`
 
-Supa's game-specific rules stay in Supa. Do not create a central `game-runtime` profile until at least two game projects need the same reusable layer.
+Non-Heroes product-specific rules stay in Non-Heroes. Do not create a central `game-runtime` or product-specific profile until at least two projects need the same reusable layer.
 
 ### 2. Rename "Current Router" To "Current Work"
 

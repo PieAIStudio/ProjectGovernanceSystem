@@ -35,7 +35,7 @@
 - Added default document templates for all doc-gov creatable document types.
 - Added regression tests for `approve`, `supersede`, `archive`, and
   `verify-commit-msg`.
-- Expanded the Supa, PieFlow, and PieIP examples from stubs into adoption case
+- Expanded the Non-Heroes, PieFlow, and PieIP examples from stubs into adoption case
   studies.
 - Documented intentionally deferred work, including the migrate command and
   router YAML spec, in the self-review.
@@ -46,7 +46,7 @@
 
 ## 0.1.0 - 2026-05-06
 
-- Seeded central project governance system from the Supa/PieFlow doc-gov implementation.
+- Seeded central project governance system from early active project doc-gov implementations.
 - Added `completed` to the normal document lifecycle.
 - Added starter/profile structure for `doc-only` and `engineering-runtime` projects.
 - Documented the upstream/local relationship so projects do not hand-roll divergent governance systems.

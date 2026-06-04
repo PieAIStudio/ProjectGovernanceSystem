@@ -1,10 +1,11 @@
 # Project Governance System
 
 [![Docs Check](https://github.com/PieAIStudio/project-governance-system/actions/workflows/docs-check.yml/badge.svg)](https://github.com/PieAIStudio/project-governance-system/actions/workflows/docs-check.yml)
+[![npm](https://img.shields.io/npm/v/@pieai/doc-gov.svg)](https://www.npmjs.com/package/@pieai/doc-gov)
 
 AI-native documentation governance, agents routing, and workflow integration profiles for projects that work with AI agents over time.
 
-This repository is the upstream home of the Project Governance System and the `@pieai/doc-gov` CLI package target. It defines the thin shared rules that PieAI projects use to keep AI-generated plans, specs, decisions, references, and routing instructions from turning into unmanaged clutter.
+This repository is the upstream home of the Project Governance System and the published `@pieai/doc-gov` CLI package. It defines the thin shared rules that PieAI projects use to keep AI-generated plans, specs, decisions, references, and routing instructions from turning into unmanaged clutter.
 
 This root README is for humans. AI agents should use `AGENTS.md` as their startup entrypoint and only read this README when the task is about project positioning, public explanation, or the README itself.
 
@@ -98,11 +99,11 @@ Use this table before trying to understand the whole repository.
 | `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
 | `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
 | `profiles/` | Optional adoption profiles by project type | engineering-runtime, doc-only |
-| `examples/` | Reference implementation notes | Supa, PieFlow, PieIP |
+| `examples/` | Reference implementation notes | Non-Heroes, PieFlow, PieIP |
 
 ## What Does Not Belong Here
 
-- Supa Phase03 gameplay truth.
+- Non-Heroes product/runtime truth.
 - PieFlow v4 product rules.
 - PieIP character, script, or asset canon.
 - Product prompts, generated media notes, source assets, or project-package workbench files.
@@ -152,7 +153,6 @@ Do not treat the starter as a magic install. A useful project still needs local 
 
 | Project | Profile | Uses agents-routing? | Uses Directed Development? |
 | --- | --- | --- | --- |
-| Supa | `profiles/engineering-runtime/` plus Supa-local game rules | Yes, engineering agents routing | Yes, for mixed product/runtime work |
 | PieFlow | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
 | Non-Heroes | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
 | Show | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for cross-domain features |
@@ -190,7 +190,7 @@ When a project discovers a better rule:
 4. Project-local changes stay in the project.
 5. Other projects upgrade by comparing against the central profile, not by re-inventing the rule.
 
-Example: Supa's active-plan pileup revealed a core lifecycle gap. The fix is `completed`, so it belongs in `packages/doc-gov/` and the starter templates, not only in Supa.
+Example: an active project's plan pileup revealed a core lifecycle gap. The fix is `completed`, so it belongs in `packages/doc-gov/` and the starter templates, not only in that project.
 
 ## Minimality Rule
 

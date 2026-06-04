@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-05-07
+last_reviewed: 2026-06-05
 domain: adoption
 tags:
   - ownership
@@ -22,7 +22,7 @@ related:
 
 This file answers the most important beginner question:
 
-> If Supa already has doc-gov, and this central repo now exists, who owns what?
+> If Non-Heroes already has doc-gov, and this central repo now exists, who owns what?
 
 ## Short Answer
 
@@ -31,15 +31,15 @@ The central repo owns the **engine**. Each project owns its **local product cont
 | Thing | Owner |
 | --- | --- |
 | Status lifecycle, document types, SSOT, agents routing, CLI checks, templates | `project-governance-system` |
-| Supa Phase03 plans, Boss Race canon, game runtime rules | Supa |
+| Non-Heroes product plans, runtime canon, product rules | Non-Heroes |
 | PieFlow product truth, connector rules, browser lanes | PieFlow |
 | PieIP character/script/asset governance | PieIP |
 
-## Does Supa Now Import This Repo?
+## Does Non-Heroes Now Import This Repo?
 
 Not yet automatically.
 
-Right now Supa, PieFlow, and PieIP have local working copies because the system was born inside active projects. This central repo is the new upstream source. The next migration step is to make each project compare against it, then eventually install or sync from it.
+Right now Non-Heroes, PieFlow, and PieIP have local working copies because the system was born inside active projects. This central repo is the new upstream source. The next migration step is to make each project compare against it, then eventually install or sync from it.
 
 ## Why Not Auto-Symlink Everything?
 
@@ -53,7 +53,7 @@ The old `governance/` folder mixed both kinds. The clearer split is:
 - `docs/governance/` contains doc-system rules, SSOT, agents-routing, document types, templates, and manifest.
 - `docs/policy/` contains project-local AI development policy, lane wording, proof commands, and truth hierarchy.
 
-Symlinking or copying the whole policy layer would be wrong because Supa and PieFlow need different local lane profiles. The safe rule:
+Symlinking or copying the whole policy layer would be wrong because Non-Heroes and PieFlow need different local lane profiles. The safe rule:
 
 - shared rules may be symlinked
 - doc-gov core should become an installed/copied package
@@ -61,19 +61,19 @@ Symlinking or copying the whole policy layer would be wrong because Supa and Pie
 - project-local best-practice files remain in each project's `docs/policy/`
 - product artifacts outside `docs/**` stay in the product package unless a project explicitly opts them into doc-gov
 
-## How Supa Improvements Flow Upstream
+## How Non-Heroes Improvements Flow Upstream
 
-When Supa discovers a better governance rule:
+When Non-Heroes discovers a better governance rule:
 
-1. Ask: is this core, profile, or Supa-local?
+1. Ask: is this core, profile, or Non-Heroes-local?
 2. If core, update this repo.
 3. If profile, update the relevant `profiles/**`.
-4. If Supa-local, keep it in Supa.
+4. If Non-Heroes-local, keep it in Non-Heroes.
 5. Other projects then upgrade from this central source.
 
 Example:
 
-- Supa discovered active plans were piling up.
+- An active project discovered active plans were piling up.
 - The generic fix is a `completed` lifecycle state.
 - Therefore `completed` belongs in this repo's doc-gov core.
 
@@ -82,7 +82,7 @@ Example:
 Use an explicit migration task:
 
 1. Pick the profile:
-   - Supa: `profiles/engineering-runtime/` plus Supa-local game rules
+   - Non-Heroes: `profiles/engineering-runtime/` plus Non-Heroes-local product rules
    - PieFlow: `profiles/engineering-runtime/`
    - PieIP: `profiles/doc-only/`
 2. Compare local `tools/doc-gov` against `packages/doc-gov`.

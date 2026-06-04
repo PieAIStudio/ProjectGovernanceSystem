@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-04
+last_reviewed: 2026-06-05
 domain: adoption
 tags:
   - adoption
@@ -183,19 +183,19 @@ git diff --check
 
 Engineering projects should also run their local verification ladder.
 
-## Example: Migrating SupaChats
+## Example: Migrating A Runtime Product
 
-If SupaChats is an app/runtime project:
+If the target project is an app/runtime project:
 
 1. Pick `engineering-runtime`.
 2. Inventory existing docs and current runtime truth.
-3. Copy/sync `packages/doc-gov` into `SupaChats/tools/doc-gov` or wire the local package if package install is enabled.
+3. Install `@pieai/doc-gov` or keep the existing local tool copy until the project is ready to move scripts and CI together.
 4. Add governed `docs/governance/` and `docs/policy/` starter files.
-5. Write `SupaChats/docs/policy/best-practice-for-this-project.md` with SupaChats-specific truth, stack, lanes, and verification commands.
+5. Write `docs/policy/best-practice-for-this-project.md` with project-specific truth, stack, lanes, and verification commands.
 6. Create `docs/reference/execution/current-work.md`.
 7. Move current plans into `docs/plans/active/`; move finished plans into `docs/plans/completed/`.
 8. Move stable product truth into `docs/canon/`; guides into `docs/reference/`; historical material into `docs/archive/`.
 9. Delete or archive old parallel doc roots.
 10. Run validation and commit the migration as a clean checkpoint.
 
-If SupaChats is mostly a docs/content workspace, start with `doc-only` instead and do not install engineering routing until real runtime work requires it.
+If the project is mostly a docs/content workspace, start with `doc-only` instead and do not install engineering routing until real runtime work requires it.

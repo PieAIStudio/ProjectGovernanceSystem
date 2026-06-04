@@ -1,0 +1,33 @@
+name: npm-publish
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm doc-gov router-check
+      - run: pnpm doc-gov check
+      - run: pnpm doc-gov scan --check
+      - run: pnpm doc-gov links
+      - run: pnpm doc-gov audit
+      - run: npm publish --access public --registry https://registry.npmjs.org/
+        working-directory: packages/doc-gov

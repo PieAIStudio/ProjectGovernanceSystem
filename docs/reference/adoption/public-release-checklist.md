@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-04
+last_reviewed: 2026-06-05
 domain: adoption
 tags:
   - release
@@ -91,3 +91,22 @@ After GitHub and npm are live:
 - update downstream projects only through an explicit sync task
 - update public website copy from the current README and this checklist, not
   from stale chat history
+
+## Future: Trusted Publishing
+
+The first release may be published from a logged-in maintainer machine. Future
+releases should move to npm Trusted Publishing through GitHub Actions.
+
+Recommended future setup:
+
+1. On npmjs.com, open `@pieai/doc-gov` package settings.
+2. Add a Trusted Publisher for GitHub Actions:
+   - owner: `PieAIStudio`
+   - repository: `project-governance-system`
+   - workflow file: `npm-publish.yml`
+3. Keep the workflow as manual `workflow_dispatch` until the first trusted
+   publishing run succeeds.
+4. After that, optionally add a release-tag trigger such as `v0.3.1`.
+
+Trusted Publishing gives npm a verifiable GitHub build origin and avoids
+long-lived npm tokens.

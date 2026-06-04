@@ -30,7 +30,7 @@ Projects keep local copies. An AI migration task compares the project against th
 Benefits:
 
 - safest while the system is young
-- no accidental breakage across Supa, PieFlow, and PieIP
+- no accidental breakage across Non-Heroes, PieFlow, and PieIP
 - project-local differences stay visible
 
 Drawback:
