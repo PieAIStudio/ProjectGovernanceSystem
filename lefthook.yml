@@ -5,13 +5,10 @@
 pre-commit:
   parallel: false
   commands:
-    01-doc-gov-scan:
-      glob: "{docs/**/*.md,docs/governance/**/*.{md,yml,yaml},docs/policy/**/*.md,AGENTS.md,CLAUDE.md,GEMINI.md,README.md}"
-      run: pnpm doc-gov scan && git add docs/governance/MANIFEST.yml
-    02-doc-gov-router-check:
+    01-doc-gov-router-check:
       glob: "{AGENTS.md,CLAUDE.md,GEMINI.md,README.md,docs/**/*.{md,yml,yaml},starter/**/*.{md,yml,yaml},integrations/**/*.md,profiles/**/*.{md,yml,yaml},packages/doc-gov/src/**/*.ts}"
       run: pnpm doc-gov router-check
-    03-doc-gov-check:
+    02-doc-gov-check:
       glob: "{docs/**/*.md,docs/governance/**/*.{md,yml,yaml},docs/policy/**/*.md,AGENTS.md,CLAUDE.md,GEMINI.md,README.md,packages/doc-gov/src/**/*.ts}"
       run: pnpm doc-gov check && pnpm doc-gov scan --check && pnpm doc-gov links && pnpm doc-gov audit
 

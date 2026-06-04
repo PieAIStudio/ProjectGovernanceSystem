@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-09
-last_reviewed: 2026-06-04
+last_reviewed: 2026-06-05
 domain: governance
 tags:
   - versioning
@@ -42,9 +42,9 @@ mean rewriting the road rules.
 
 ## Current Version
 
-`v0.9` means the system is useful and enforced, but the install/sync model is
-still Stage 0: projects may keep local `tools/doc-gov` copies until package
-installation is deliberately enabled.
+`v0.9` means the system is useful and enforced. The CLI is distributed through
+`@pieai/doc-gov`; the governance contract remains intentionally conservative
+while project files, hooks, and CI are migrated project by project.
 
 The currently versioned governance files are:
 

@@ -1,6 +1,6 @@
 {
   "name": "@pieai/doc-gov",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "AI-native documentation governance CLI for project docs, agent routing, and lifecycle checks.",
   "keywords": [
     "ai-agents",

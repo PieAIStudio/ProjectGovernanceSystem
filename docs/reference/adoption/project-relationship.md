@@ -85,7 +85,7 @@ Use an explicit migration task:
    - Non-Heroes: `profiles/engineering-runtime/` plus Non-Heroes-local product rules
    - PieFlow: `profiles/engineering-runtime/`
    - PieIP: `profiles/doc-only/`
-2. Compare local `tools/doc-gov` against `packages/doc-gov`.
+2. Confirm the project uses `@pieai/doc-gov` as its CLI source.
 3. Compare local `docs/governance/` and `docs/policy/` starter docs against `starter/`.
 4. Compare selected local agents-routing against `docs/governance/agents-routing/`.
 5. Compare local shared AI work rules against their external SSOT targets, such

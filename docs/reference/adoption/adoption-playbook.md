@@ -57,10 +57,9 @@ Before moving anything, list:
 
 ## Step 3: Install The Governance Core
 
-Current Stage 0 method:
+Current package-based method:
 
-- compare or sync `packages/doc-gov/` into the target project's `tools/doc-gov/`
-  as a temporary local copy
+- install `@pieai/doc-gov` as the target project's CLI source
 - preserve project-local package scripts
 - run `doc-gov migrate --profile <engineering-runtime|doc-only> --check` before
   changing files so profile mismatches fail early
@@ -71,7 +70,8 @@ Current Stage 0 method:
   when the target project is ready for standard guardrails
 - run `doc-gov doctor` after wiring guardrails to verify they are actually
   connected
-- treat the local copy as a downstream mirror, not an independent fork
+- treat the npm package as the CLI source and the local `docs/governance/`
+  files as the project's checked-in governance contract
 
 Later Stage 2 method:
 

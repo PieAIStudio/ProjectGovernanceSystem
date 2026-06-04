@@ -3,8 +3,8 @@
 Documentation governance CLI for PieAI projects.
 
 This package is the upstream CLI source for Project Governance System. It can
-replace project-local `tools/doc-gov` copies when a project is ready to update
-its scripts and CI together.
+be installed by downstream projects as `@pieai/doc-gov` so scripts, hooks, and
+CI all use the same CLI source.
 
 ## Lifecycle
 
@@ -85,5 +85,5 @@ pnpm --filter @pieai/doc-gov typecheck
 ## Current Status
 
 This package is the preferred CLI source for new adoption work. Existing
-projects may keep local `tools/doc-gov` copies until their scripts, local hooks,
-and CI are moved together.
+legacy projects should move from local CLI copies to `@pieai/doc-gov` when
+their scripts, local hooks, and CI are updated together.

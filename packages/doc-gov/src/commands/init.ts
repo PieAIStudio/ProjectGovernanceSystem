@@ -8,8 +8,7 @@ import { ensureDefaultTemplates } from '../core/templates';
  * For the full starter (templates / agent-rules / optional hooks / optional
  * GitHub Action), use this repository's `starter/` and profile docs as the
  * upstream reference. Target projects may install `@pieai/doc-gov` as the CLI
- * source or run a locally built clone while they are migrating away from
- * vendored `tools/doc-gov/` copies.
+ * source while they migrate their checked-in governance files intentionally.
  */
 export function runInit(args: string[]): number {
   const force = args.includes('--force');

@@ -8,7 +8,6 @@ on:
       - "GEMINI.md"
       - "README.md"
       - "docs/**"
-      - "tools/doc-gov/**"
       - "lefthook.yml"
       - ".github/workflows/docs-check.yml"
       - "package.json"
@@ -22,7 +21,6 @@ on:
       - "GEMINI.md"
       - "README.md"
       - "docs/**"
-      - "tools/doc-gov/**"
       - "lefthook.yml"
       - ".github/workflows/docs-check.yml"
       - "package.json"
@@ -44,9 +42,6 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-
-      - name: Build doc-gov if the project vendors it
-        run: pnpm run doc-gov:build --if-present
 
       - name: Validate router and entry files
         run: pnpm doc-gov router-check

@@ -40,7 +40,7 @@ function renderManifest(records: DocRecord[]): string {
     '# docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY',
     '# Regenerate: pnpm doc-gov scan',
     `generated_at: ${new Date().toISOString()}`,
-    'generator_version: doc-gov@0.3.0',
+    `generator_version: doc-gov@${readPackageVersion()}`,
     `docs_count: ${records.length}`,
     'docs:',
   ];
@@ -57,4 +57,18 @@ function renderManifest(records: DocRecord[]): string {
 
   lines.push('');
   return lines.join('\n');
+}
+
+function readPackageVersion(): string {
+  for (const candidate of ['../package.json', '../../package.json']) {
+    try {
+      const packageJson = JSON.parse(readFileSync(new URL(candidate, import.meta.url), 'utf8')) as {
+        version?: unknown;
+      };
+      if (typeof packageJson.version === 'string') return packageJson.version;
+    } catch {
+      // Try the next layout. Source runs from src/core; bundled CLI runs from dist.
+    }
+  }
+  return 'unknown';
 }

@@ -117,8 +117,9 @@ Those are project-local or external systems. This repo only defines how projects
 
 ## Current Adoption Model
 
-The system is moving from Stage 0 into package-based distribution. The safe rule is:
-use the package for the CLI, but migrate each project's files intentionally.
+The system now uses package-based CLI distribution. The safe rule is: install
+`@pieai/doc-gov` for the command, but migrate each project's governance files
+intentionally.
 
 1. This repo records the upstream contract.
 2. The npm package can supply the `doc-gov` command once installed.
@@ -127,8 +128,8 @@ use the package for the CLI, but migrate each project's files intentionally.
    structural check before any sync work.
 5. `doc-gov doctor` checks whether router, docs, manifest, links, local hooks,
    and CI guardrails are actually connected.
-6. Downstream projects should switch from local `tools/doc-gov` copies to the
-   package only when they are ready to update their scripts and CI together.
+6. Downstream projects should prefer `@pieai/doc-gov`; legacy local copies
+   should be removed when scripts and CI are updated together.
 
 Do not silently replace project-local governance with this repo. Use the adoption guides and run each project's doc checks.
 
@@ -141,8 +142,8 @@ This repo can become a new-project starter for AI-assisted work, but only in sta
 1. Today: use it as the upstream design and compare projects against the matching profile.
 2. Now: use `doc-gov migrate --profile <profile> --check` and `doc-gov doctor`
    to find drift without changing files.
-3. Next: install `@pieai/doc-gov` as the CLI source in projects that are ready
-   to leave vendored `tools/doc-gov` copies behind.
+3. Now: install `@pieai/doc-gov` as the CLI source and remove vendored CLI
+   copies during the same migration.
 4. Later: add a safe `migrate --apply` path only after repeated projects show
    the same sync shape.
 5. Later: publish full init profiles for new projects.

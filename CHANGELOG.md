@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.3.1 - 2026-06-05
+
+- Changed the central and starter lefthook templates to keep pre-commit checks
+  read-only: hooks now use manifest freshness checks instead of regenerating
+  and staging `docs/governance/MANIFEST.yml`.
+- Removed stale starter CI references to vendored `tools/doc-gov` copies.
+- Updated adoption and package docs to treat `@pieai/doc-gov` as the preferred
+  CLI source for new migration work.
+
 ## 0.3.0 - 2026-06-04
 
 - Prepared the repository for public release by adding license, security,

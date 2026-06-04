@@ -20,12 +20,12 @@ related:
 
 # Sync Strategy
 
-## Stage 0: AI-Assisted Sync
+## Stage 0: Legacy AI-Assisted Sync
 
-Use this for projects that already have a local `tools/doc-gov` copy and should
+Use this only for legacy projects that still have a local CLI copy and should
 not be disturbed mid-flight.
 
-Projects keep local copies. An AI migration task compares the project against this repo and applies only the relevant profile.
+Projects temporarily keep local copies. An AI migration task compares the project against this repo and applies only the relevant profile.
 
 Benefits:
 
@@ -37,13 +37,17 @@ Drawback:
 
 - requires explicit migration prompts
 
-## Stage 1: Scripted Copy / Diff
+## Stage 1: Package Install + Scripted Diff
 
 Partially available now as a read-only check:
 
 ```bash
 doc-gov migrate --profile engineering-runtime --check
 ```
+
+New migration work should install `@pieai/doc-gov` as the CLI source and use
+`migrate --check`, `router-check`, and `doctor` to verify the local files,
+hooks, and CI.
 
 This does not update files yet. It verifies that the target project structurally
 matches the selected profile before a human or AI sync task edits anything.

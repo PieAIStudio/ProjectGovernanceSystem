@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-04T18:03:16.578Z
-generator_version: doc-gov@0.3.0
+generated_at: 2026-06-04T19:16:03.296Z
+generator_version: doc-gov@0.3.1
 docs_count: 14
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
@@ -58,7 +58,7 @@ docs:
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-06-04
+    last_reviewed: 2026-06-05
     pinned: false
   - id: REF-ADOPTION-PLAYBOOK
     path: docs/reference/adoption/adoption-playbook.md

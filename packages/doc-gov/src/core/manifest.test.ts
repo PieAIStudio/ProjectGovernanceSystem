@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
@@ -14,6 +14,18 @@ test('manifest sync ignores generator_version patch drift', () => {
   writeFileSync(join(root, 'docs/governance/MANIFEST.yml'), manifest);
 
   assert.equal(manifestInSync(root), true);
+});
+
+test('manifest generator_version follows package version', () => {
+  const root = createManifestFixture();
+  const packageJson = JSON.parse(
+    readFileSync(new URL('../../package.json', import.meta.url), 'utf8')
+  ) as { version: string };
+
+  assert.match(
+    buildManifest(root),
+    new RegExp(`^generator_version: doc-gov@${packageJson.version}$`, 'm')
+  );
 });
 
 function createManifestFixture(): string {
