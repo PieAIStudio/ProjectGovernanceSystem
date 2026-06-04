@@ -2,9 +2,11 @@ import { runApprove } from './commands/approve';
 import { runArchive } from './commands/archive';
 import { runAudit } from './commands/audit';
 import { runCheck } from './commands/check';
+import { runDoctor } from './commands/doctor';
 import { runFind } from './commands/find';
 import { runInit } from './commands/init';
 import { runLinks } from './commands/links';
+import { runMigrate } from './commands/migrate';
 import { runList } from './commands/list';
 import { runNew } from './commands/new';
 import { runRouterCheck } from './commands/router-check';
@@ -18,6 +20,8 @@ const COMMANDS = [
   'audit',
   'links',
   'router-check',
+  'doctor',
+  'migrate',
   'find',
   'list',
   'new',
@@ -36,6 +40,8 @@ else if (command === 'scan') exitCode = runScan(args);
 else if (command === 'audit') exitCode = runAudit();
 else if (command === 'links') exitCode = runLinks();
 else if (command === 'router-check') exitCode = runRouterCheck();
+else if (command === 'doctor') exitCode = runDoctor(args);
+else if (command === 'migrate') exitCode = runMigrate(args);
 else if (command === 'find') exitCode = runFind(args);
 else if (command === 'list') exitCode = runList(args);
 else if (command === 'new') exitCode = runNew(args);
@@ -66,6 +72,8 @@ function printHelp(): void {
   console.log('  audit                       Advisory health report');
   console.log('  links                       Validate current-layer local Markdown links');
   console.log('  router-check                Validate router/profile/Superpowers wiring');
+  console.log('  doctor                      Run the full governance health and guardrail check');
+  console.log('  migrate --profile X --check Check project readiness for a selected profile');
   console.log('  find <topic>                Search canonical docs by id/title/tag/path');
   console.log('  list [--type X] [--status Y] [--pinned]  List docs');
   console.log(

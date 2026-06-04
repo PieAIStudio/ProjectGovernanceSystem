@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0 - 2026-06-04
+
+- Added `doc-gov doctor` to run a combined governance health check for router
+  integrity, docs, manifest freshness, links, local lefthook installation, and
+  CI guardrail wiring.
+- Added read-only `doc-gov migrate --profile <profile> --check` so projects can
+  detect profile/agents-routing mismatch before any sync work changes files.
+- Added standard starter guardrail templates for `lefthook.yml` and
+  `.github/workflows/docs-check.yml`, both including `router-check` and `links`.
+- Tightened router integrity checks to reject machine-local absolute paths and
+  parent-directory escape paths in router-facing files.
+- Changed manifest sync comparison so `generator_version` patch drift no longer
+  creates false `scan --check` failures.
+
 ## 0.2.1 - 2026-05-14
 
 - Removed the central `shared-rules/` copy and clarified that external shared

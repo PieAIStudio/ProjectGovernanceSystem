@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-09
-last_reviewed: 2026-05-09
+last_reviewed: 2026-06-04
 domain: adoption
 tags:
   - migration
@@ -65,6 +65,7 @@ pnpm doc-gov router-check
 pnpm doc-gov scan --check
 pnpm doc-gov links
 pnpm doc-gov audit
+pnpm doc-gov doctor
 git diff --check
 ```
 

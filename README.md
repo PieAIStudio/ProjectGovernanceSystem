@@ -59,6 +59,8 @@ Use this table before trying to understand the whole repository.
 | Should this task be lightweight, doc-only, TDD, or Directed Development? | `docs/governance/agents-routing/` plus the project-local lane profile |
 | Should Superpowers run here? | the selected profile and `integrations/superpowers.md` |
 | Is the router/profile/Superpowers wiring still connected? | `doc-gov router-check` |
+| Is this project really wired, not just documented? | `doc-gov doctor` |
+| Is this project structurally ready for a selected profile? | `doc-gov migrate --profile <profile> --check` |
 | What happens after a plan is done? | `completed` status and completed folders, not active-plan pileup |
 | What stays local to a product project? | project-local canon, runtime truth, product artifacts, verification ladders, and lane wording |
 
@@ -94,7 +96,12 @@ Stage 0 is intentionally conservative:
 1. This repo records the upstream contract.
 2. Projects keep their local working copies.
 3. AI-assisted migrations compare a project against the matching profile.
-4. After Supa and PieFlow both validate the same lifecycle, the package can become the install source.
+4. `doc-gov migrate --profile <profile> --check` can now do the first read-only
+   structural check before any sync work.
+5. `doc-gov doctor` checks whether router, docs, manifest, links, local hooks,
+   and CI guardrails are actually connected.
+6. After the same lifecycle and guardrail model remain stable across more
+   projects, the package can become the install source.
 
 Do not silently replace project-local governance with this repo. Use the adoption guides and run each project's doc checks.
 
@@ -105,8 +112,11 @@ For migration steps, read `docs/reference/adoption/adoption-playbook.md`.
 This repo can become a new-project starter for AI-assisted work, but only in stages:
 
 1. Today: use it as the upstream design and compare projects against the matching profile.
-2. Next: add scripted migrate/check support so projects can update without hand-copying.
-3. Later: publish package and init commands for new projects.
+2. Now: use `doc-gov migrate --profile <profile> --check` and `doc-gov doctor`
+   to find drift without changing files.
+3. Next: add a safe `migrate --apply` path only after repeated projects show
+   the same sync shape.
+4. Later: publish package and init commands for new projects.
 
 Do not treat the starter as a magic install. A useful project still needs local truth: its product canon, runtime proof commands, asset provenance rules, product-package folders, and current work index. The central system supplies the governed shelves and guardrails; each project supplies the actual content.
 

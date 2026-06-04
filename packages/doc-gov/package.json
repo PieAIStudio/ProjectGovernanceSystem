@@ -1,6 +1,6 @@
 {
   "name": "@pieai/doc-gov",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Cross-project documentation governance CLI for PieAI projects.",
   "license": "MIT",
   "author": "PieAI <PIEAI@hotmail.com>",
@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "tsx src/cli.ts",
-    "build": "esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
+    "build": "node node_modules/esbuild/bin/esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
     "test": "tsx --test src/**/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

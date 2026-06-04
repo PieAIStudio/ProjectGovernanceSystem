@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-05-13T16:43:22.313Z
-generator_version: doc-gov@0.2.1
+generated_at: 2026-06-04T15:06:07.329Z
+generator_version: doc-gov@0.3.0
 docs_count: 12
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
@@ -44,7 +44,7 @@ docs:
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-05-07
+    last_reviewed: 2026-06-04
     pinned: true
   - id: POLICY-UPSTREAMING
     path: docs/policy/upstreaming-policy.md
@@ -58,21 +58,21 @@ docs:
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-05-09
+    last_reviewed: 2026-06-04
     pinned: false
   - id: REF-ADOPTION-PLAYBOOK
     path: docs/reference/adoption/adoption-playbook.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-05-07
+    last_reviewed: 2026-06-04
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-05-09
+    last_reviewed: 2026-06-04
     pinned: false
   - id: REF-PROJECT-RELATIONSHIP
     path: docs/reference/adoption/project-relationship.md
@@ -86,5 +86,5 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-05-09
+    last_reviewed: 2026-06-04
     pinned: false

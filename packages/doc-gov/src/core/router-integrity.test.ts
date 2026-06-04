@@ -77,6 +77,55 @@ test('fails when AGENTS points to a local path that does not exist', () => {
   );
 });
 
+test('fails when router text contains machine-local absolute paths', () => {
+  const root = createProjectFixture();
+  writeFileSync(
+    join(root, 'AGENTS.md'),
+    [
+      '# Example Project AI Router',
+      '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'README.md is human-facing and is not the default AI startup path.',
+      'Read docs/policy/.',
+      'Read docs/governance/boundary.md.',
+      'Read docs/governance/ssot-v0.9.md.',
+      'Read docs/governance/doc-agent-rules.md.',
+      'Read docs/governance/doc-types.md.',
+      'Read docs/governance/agents-routing/doc-only-v0.9.md.',
+      'Read docs/reference/execution/current-work.md.',
+      'Use /Users/yuanfei/PieAI/project-governance-system as the upstream source.',
+      '<!-- PGS-ROUTER:END -->',
+    ].join('\n')
+  );
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /AGENTS\.md must not contain machine-local or parent-escape paths/
+  );
+});
+
+test('fails when router text escapes the repository with parent paths', () => {
+  const root = createProjectFixture();
+  writeFileSync(
+    join(root, 'CLAUDE.md'),
+    [
+      '# Claude Adapter',
+      'Read `AGENTS.md` first and follow it as the project router.',
+      'Fallback source: `../project-governance-system/packages/doc-gov/dist/cli.js`.',
+    ].join('\n')
+  );
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /CLAUDE\.md must not contain machine-local or parent-escape paths/
+  );
+});
+
 test('fails when README points to a local path that does not exist', () => {
   const root = createFixture({
     readme: 'See `docs/governance/missing.md`.\n',
@@ -112,6 +161,24 @@ test('fails when starter AGENTS template points to a local path that does not ex
   assert.match(
     result.issues.map((issue) => issue.message).join('\n'),
     /starter\/AGENTS.template.md references a local path that does not exist: docs\/governance\/missing-template-target\.md/
+  );
+});
+
+test('fails when central starter guardrail templates are missing', () => {
+  const root = createFixture();
+  rmSync(join(root, 'starter/lefthook.template.yml'), { force: true });
+  rmSync(join(root, 'starter/.github/workflows/docs-check.yml'), { force: true });
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /Required router\/integration file is missing: starter\/lefthook\.template\.yml/
+  );
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /Required router\/integration file is missing: starter\/\.github\/workflows\/docs-check\.yml/
   );
 });
 
@@ -362,6 +429,36 @@ function createFixture(
       '# Claude Adapter',
       'Read `AGENTS.md` first and follow it as the project router.',
       'Claude-specific workflow guidance may add tool usage details, but it must not replace `AGENTS.md`.',
+    ].join('\n')
+  );
+  writeFileSync(
+    join(root, 'starter/lefthook.template.yml'),
+    [
+      'pre-commit:',
+      '  commands:',
+      '    doc-gov-router-check:',
+      '      run: pnpm doc-gov router-check',
+      '    doc-gov-check:',
+      '      run: pnpm doc-gov check && pnpm doc-gov scan --check && pnpm doc-gov links && pnpm doc-gov audit',
+      'commit-msg:',
+      '  commands:',
+      '    doc-gov-commit-msg:',
+      '      run: pnpm doc-gov verify-commit-msg "{1}"',
+    ].join('\n')
+  );
+  mkdirSync(join(root, 'starter/.github/workflows'), { recursive: true });
+  writeFileSync(
+    join(root, 'starter/.github/workflows/docs-check.yml'),
+    [
+      'name: docs-check',
+      'jobs:',
+      '  doc-gov:',
+      '    steps:',
+      '      - run: pnpm doc-gov router-check',
+      '      - run: pnpm doc-gov check',
+      '      - run: pnpm doc-gov scan --check',
+      '      - run: pnpm doc-gov links',
+      '      - run: pnpm doc-gov audit',
     ].join('\n')
   );
   writeFileSync(join(root, 'starter/docs/reference/execution/current-work.md'), 'Current work index.\n');

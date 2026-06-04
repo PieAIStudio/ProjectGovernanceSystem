@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-05-07
+last_reviewed: 2026-06-04
 domain: adoption
 tags:
   - adoption
@@ -62,8 +62,15 @@ Current Stage 0 method:
 - compare or sync `packages/doc-gov/` into the target project's `tools/doc-gov/`
   as a temporary local copy
 - preserve project-local package scripts
+- run `doc-gov migrate --profile <engineering-runtime|doc-only> --check` before
+  changing files so profile mismatches fail early
 - run `doc-gov router-check` after the sync so stale router/profile paths fail
   mechanically
+- copy `starter/lefthook.template.yml` to `lefthook.yml` and
+  `starter/.github/workflows/docs-check.yml` to `.github/workflows/docs-check.yml`
+  when the target project is ready for standard guardrails
+- run `doc-gov doctor` after wiring guardrails to verify they are actually
+  connected
 - treat the local copy as a downstream mirror, not an independent fork
 
 Later Stage 2 method:
@@ -170,6 +177,7 @@ pnpm doc-gov router-check
 pnpm doc-gov scan --check
 pnpm doc-gov links
 pnpm doc-gov audit
+pnpm doc-gov doctor
 git diff --check
 ```
 

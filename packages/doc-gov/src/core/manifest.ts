@@ -30,7 +30,9 @@ export function manifestInSync(rootDir = process.cwd()): boolean {
 }
 
 function normalizeManifest(value: string): string {
-  return value.replace(/^generated_at: .*$/m, 'generated_at: <ignored>');
+  return value
+    .replace(/^generated_at: .*$/m, 'generated_at: <ignored>')
+    .replace(/^generator_version: .*$/m, 'generator_version: <ignored>');
 }
 
 function renderManifest(records: DocRecord[]): string {
@@ -38,7 +40,7 @@ function renderManifest(records: DocRecord[]): string {
     '# docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY',
     '# Regenerate: pnpm doc-gov scan',
     `generated_at: ${new Date().toISOString()}`,
-    'generator_version: doc-gov@0.2.1',
+    'generator_version: doc-gov@0.3.0',
     `docs_count: ${records.length}`,
     'docs:',
   ];

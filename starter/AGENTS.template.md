@@ -25,8 +25,12 @@
 - Product artifacts outside `docs/**` are not governed docs unless this project explicitly opts them in.
 - Before creating docs: `pnpm doc-gov find <topic>`.
 - Before claiming doc work complete:
+  - `pnpm doc-gov router-check`
   - `pnpm doc-gov check`
   - `pnpm doc-gov scan --check`
+  - `pnpm doc-gov links`
+  - `pnpm doc-gov audit`
+  - `pnpm doc-gov doctor`
 
 ## Routing
 

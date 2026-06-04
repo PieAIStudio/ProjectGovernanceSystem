@@ -68,10 +68,12 @@ export function runInit(args: string[]): number {
   console.log(`  5. Pick a profile: profiles/engineering-runtime or profiles/doc-only.`);
   console.log(`  6. Stage 0: either sync a local tools/doc-gov copy from packages/doc-gov`);
   console.log(`     or run the built CLI directly while package install is not enabled.`);
-  console.log(`  7. Optional hard guardrails: add lefthook.yml and docs-check GitHub Action`);
-  console.log(`     only after the target project has those files wired intentionally.`);
+  console.log(`  7. Optional hard guardrails: copy starter/lefthook.template.yml to`);
+  console.log(`     lefthook.yml, and starter/.github/workflows/docs-check.yml to`);
+  console.log(`     .github/workflows/docs-check.yml when the project is ready for gates.`);
   console.log(`  8. Add the target project's doc-gov script or package bin wiring.`);
   console.log(`  9. Validate the router: doc-gov router-check`);
+  console.log(`     Full health check: doc-gov doctor`);
   console.log(`  10. Write your first ADR: doc-gov new decision adopt-doc-gov`);
   return 0;
 }

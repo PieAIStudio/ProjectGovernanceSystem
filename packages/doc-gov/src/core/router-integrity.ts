@@ -40,6 +40,8 @@ const CENTRAL_REQUIRED_FILES = [
   'profiles/doc-only/manifest.yml',
   'starter/AGENTS.template.md',
   'starter/CLAUDE.template.md',
+  'starter/lefthook.template.yml',
+  'starter/.github/workflows/docs-check.yml',
   'starter/docs/reference/execution/current-work.md',
   'starter/docs/policy/best-practice-for-this-project.md',
   'starter/docs/governance/boundary.md',
@@ -259,6 +261,26 @@ const CENTRAL_REQUIRED_NEEDLES: RequiredNeedle[] = [
     message:
       'Starter AGENTS template must keep project AI development policy in docs/policy/.',
   },
+  {
+    file: 'starter/lefthook.template.yml',
+    needle: 'pnpm doc-gov router-check',
+    message: 'Starter lefthook template must run doc-gov router-check.',
+  },
+  {
+    file: 'starter/lefthook.template.yml',
+    needle: 'pnpm doc-gov links',
+    message: 'Starter lefthook template must run doc-gov links.',
+  },
+  {
+    file: 'starter/.github/workflows/docs-check.yml',
+    needle: 'pnpm doc-gov router-check',
+    message: 'Starter docs-check workflow must run doc-gov router-check.',
+  },
+  {
+    file: 'starter/.github/workflows/docs-check.yml',
+    needle: 'pnpm doc-gov links',
+    message: 'Starter docs-check workflow must run doc-gov links.',
+  },
 ];
 
 const PROJECT_REQUIRED_NEEDLES: RequiredNeedle[] = [
@@ -427,6 +449,26 @@ export function checkRouterIntegrity(rootDir = process.cwd()): RouterIntegrityRe
     issues.push(...validateBacktickedLocalPaths(rootDir, 'starter/AGENTS.template.md', 'starter'));
   }
 
+  const portableRouterFiles = isCentral
+    ? [
+        'AGENTS.md',
+        'README.md',
+        'starter/AGENTS.template.md',
+        'starter/CLAUDE.template.md',
+        'docs/governance/agents-routing/engineering-runtime-v0.9.md',
+        'docs/governance/agents-routing/doc-only-v0.9.md',
+      ]
+    : [
+        'AGENTS.md',
+        'CLAUDE.md',
+        'README.md',
+        'docs/governance/agents-routing/engineering-runtime-v0.9.md',
+        'docs/governance/agents-routing/doc-only-v0.9.md',
+      ];
+  for (const file of portableRouterFiles) {
+    issues.push(...validatePortableRouterText(rootDir, file));
+  }
+
   return {
     ok: issues.length === 0,
     issues,
@@ -557,6 +599,32 @@ function isLocalPathReference(value: string): boolean {
     value.startsWith('starter/') ||
     value.startsWith('profiles/') ||
     value.startsWith('integrations/')
+  );
+}
+
+function validatePortableRouterText(rootDir: string, file: string): RouterIntegrityIssue[] {
+  const path = join(rootDir, file);
+  if (!existsSync(path)) return [];
+
+  const content = readFileSync(path, 'utf8');
+  if (!hasNonPortablePath(content)) return [];
+
+  return [
+    {
+      file,
+      code: 'non-portable-router-path',
+      message:
+        `${file} must not contain machine-local or parent-escape paths. ` +
+        'Use repository-relative paths or profile/starter references instead.',
+    },
+  ];
+}
+
+function hasNonPortablePath(content: string): boolean {
+  return (
+    /(^|[\s`'"])(\/Users\/|~\/|\$HOME(?:\/|\b)|%USERPROFILE%|[A-Za-z]:\\|\.\.\/)/.test(
+      content
+    ) || /\b(OneDrive|CloudStorage)\b/.test(content)
   );
 }
 

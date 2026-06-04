@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-09
-last_reviewed: 2026-05-09
+last_reviewed: 2026-06-04
 domain: governance
 tags:
   - versioning
@@ -31,7 +31,7 @@ This repository has two different version lines:
 - **Governance contract version**: `v0.9`, `v1.0`, etc. This appears in file
   names such as `ssot-v0.9.md`. Bump it when downstream projects must update
   required paths, startup reading, or agents-routing contracts.
-- **CLI/package version**: `0.2.0`, `0.2.1`, etc. This appears in
+- **CLI/package version**: `0.2.0`, `0.2.1`, `0.3.0`, etc. This appears in
   `package.json` and generated manifests. Bump it for implementation changes,
   bug fixes, tests, and packaging changes. A CLI/package bump does not always
   require downstream projects to change governance file names.

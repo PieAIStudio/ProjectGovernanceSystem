@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-05-09
+last_reviewed: 2026-06-04
 domain: meta
 tags:
   - self-review
@@ -39,8 +39,9 @@ The system is justified because it replaces repeated project-by-project reinvent
 - Kept Directed Development optional.
 - Renamed the "current router" concept to `current-work.md`.
 - Kept project-specific product truth out of the central repo.
-- Kept `doc-gov migrate` as a documented migration checklist instead of an
-  automatic command until more repeated migrations prove the need.
+- Added `doc-gov migrate --check` as a read-only profile readiness check, while
+  keeping `--apply` deferred until repeated migrations prove the exact safe
+  update shape.
 - Kept router integrity rules in TypeScript for now instead of adding a YAML
   router-spec layer. The current check is small enough that another config
   layer would add more cognitive load than it removes.
@@ -56,6 +57,8 @@ that mutate governed docs:
 - `supersede`
 - `archive`
 - `verify-commit-msg` for `Pinned-Override` and `Approves`
+- `doctor` for core health plus local/CI guardrail wiring
+- `migrate --check` for selected profile readiness
 - router integrity, non-root README rejection, governed docs paths, and link checks
 
 This does not make the CLI finished, but it protects the workflows most likely

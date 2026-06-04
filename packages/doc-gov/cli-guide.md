@@ -2,7 +2,8 @@
 
 Documentation governance CLI for PieAI projects.
 
-This package is currently the upstream source for project-local `tools/doc-gov` copies in Supa, PieFlow, and PieIP. It is not published yet.
+This package is currently the upstream source for project-local `tools/doc-gov`
+copies in PieAI projects. It is not published yet.
 
 ## Lifecycle
 
@@ -36,6 +37,8 @@ pnpm doc-gov scan --check
 pnpm doc-gov audit
 pnpm doc-gov links
 pnpm doc-gov router-check
+pnpm doc-gov doctor
+pnpm doc-gov migrate --profile doc-only --check
 ```
 
 `init` creates the directory skeleton and writes default templates under
@@ -56,6 +59,19 @@ pnpm doc-gov router-check
   instructions early.
 
 It does not choose a workflow for a specific task.
+
+`doctor` is the one-command health check:
+
+- It runs router integrity, governed-doc schema, manifest freshness, and local
+  Markdown link checks.
+- It checks whether `lefthook.yml` is both present and installed into
+  `.git/hooks/`.
+- It checks whether `.github/workflows/docs-check.yml` runs the standard
+  doc-gov gate, including `router-check` and `links`.
+
+`migrate --profile <engineering-runtime|doc-only> --check` is intentionally
+read-only. It checks whether the target project is structurally ready for the
+selected profile. It does not move files or rewrite local project truth yet.
 
 ## Build
 
