@@ -116,6 +116,9 @@ Do not treat the starter as a magic install. A useful project still needs local 
 | --- | --- | --- | --- |
 | Supa | `profiles/engineering-runtime/` plus Supa-local game rules | Yes, engineering agents routing | Yes, for mixed product/runtime work |
 | PieFlow | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
+| Non-Heroes | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
+| Show | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for cross-domain features |
+| PieHQ | `profiles/doc-only/` | Yes, doc-only agents routing | No by default |
 | PieIP | `profiles/doc-only/` | Yes, doc-only agents routing | No by default |
 
 ## Key Lifecycle Decision
