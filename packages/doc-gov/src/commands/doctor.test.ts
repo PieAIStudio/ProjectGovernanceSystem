@@ -36,7 +36,7 @@ function createDoctorProject(options: { installHooks: boolean; includeCi: boolea
       '# Doctor Fixture Router',
       '<!-- PGS-ROUTER:BEGIN v0.9 -->',
       'README.md is human-facing and is not the default AI startup path.',
-      'Read docs/policy/.',
+      'Read docs/policy/**/*.md, including subdirectories and symlinked shared-rule files.',
       'Read docs/governance/boundary.md.',
       'Read docs/governance/ssot-v0.9.md.',
       'Read docs/governance/doc-agent-rules.md.',

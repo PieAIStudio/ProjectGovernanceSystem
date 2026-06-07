@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.2 - 2026-06-07
+
+- Clarified AI startup routing so agents must read all
+  `docs/policy/**/*.md` files, including subdirectories and symlinked
+  shared-rule files.
+- Added router integrity regression checks that reject the narrower
+  "directly under docs/policy/" wording in central and downstream routers.
+- Updated the starter AGENTS template so new projects inherit the recursive
+  policy-read rule.
+
 ## 0.3.1 - 2026-06-05
 
 - Changed the central and starter lefthook templates to keep pre-commit checks

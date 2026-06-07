@@ -12,7 +12,8 @@ This repository is the upstream source for PieAI documentation governance, agent
 
 `README.md` is the human-facing project introduction. Do not use it as the default AI startup path unless the task is about project positioning, public explanation, or the README itself.
 
-1. All Markdown files directly under `docs/policy/`.
+1. All Markdown files under `docs/policy/**/*.md`, including files in
+   subdirectories and symlinked shared-rule files.
 2. `docs/governance/boundary.md`
 3. `docs/governance/ssot-v0.9.md`
 4. `starter/docs/governance/doc-agent-rules.md` if working on starter documentation governance.

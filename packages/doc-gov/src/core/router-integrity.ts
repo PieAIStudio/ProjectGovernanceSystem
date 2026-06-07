@@ -107,6 +107,18 @@ const CENTRAL_REQUIRED_NEEDLES: RequiredNeedle[] = [
   },
   {
     file: 'AGENTS.md',
+    needle: 'docs/policy/**/*.md',
+    message:
+      'AGENTS.md must tell agents to read docs/policy/**/*.md, including subdirectories and shared-rule symlinks.',
+  },
+  {
+    file: 'AGENTS.md',
+    needle: 'symlink',
+    message:
+      'AGENTS.md must state that symlinked shared-rule files under docs/policy/ are included.',
+  },
+  {
+    file: 'AGENTS.md',
     needle: 'docs/governance/boundary.md',
     message: 'AGENTS.md must mention docs/governance/boundary.md.',
   },
@@ -257,6 +269,18 @@ const CENTRAL_REQUIRED_NEEDLES: RequiredNeedle[] = [
   },
   {
     file: 'starter/AGENTS.template.md',
+    needle: 'docs/policy/**/*.md',
+    message:
+      'Starter AGENTS template must tell agents to read docs/policy/**/*.md, including subdirectories and shared-rule symlinks.',
+  },
+  {
+    file: 'starter/AGENTS.template.md',
+    needle: 'symlink',
+    message:
+      'Starter AGENTS template must state that symlinked shared-rule files under docs/policy/ are included.',
+  },
+  {
+    file: 'starter/AGENTS.template.md',
     needle: 'docs/policy/',
     message:
       'Starter AGENTS template must keep project AI development policy in docs/policy/.',
@@ -296,8 +320,15 @@ const PROJECT_REQUIRED_NEEDLES: RequiredNeedle[] = [
   },
   {
     file: 'AGENTS.md',
-    needle: 'docs/policy/',
-    message: 'AGENTS.md must point agents to docs/policy/.',
+    needle: 'docs/policy/**/*.md',
+    message:
+      'AGENTS.md must tell agents to read docs/policy/**/*.md, including subdirectories and shared-rule symlinks.',
+  },
+  {
+    file: 'AGENTS.md',
+    needle: 'symlink',
+    message:
+      'AGENTS.md must state that symlinked shared-rule files under docs/policy/ are included.',
   },
   {
     file: 'AGENTS.md',

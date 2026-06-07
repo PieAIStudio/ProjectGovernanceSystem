@@ -10,6 +10,7 @@ test('passes when router entrypoints and profile wiring are present', () => {
     agents: [
       '# Router',
       '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'Read docs/policy/**/*.md, including subdirectories and symlinked shared-rule files.',
       'Read docs/governance/boundary.md.',
       'Read docs/governance/ssot-v0.9.md.',
       'Read starter/docs/governance/doc-agent-rules.md.',
@@ -47,6 +48,45 @@ test('fails when AGENTS does not point agents to agents-routing files', () => {
   assert.match(
     result.issues.map((issue) => issue.message).join('\n'),
     /AGENTS.md must mention docs\/governance\/agents-routing\/engineering-runtime-v0.9.md/
+  );
+});
+
+test('fails when central router narrows docs/policy to direct children only', () => {
+  const root = createFixture({
+    agents: [
+      '# Router',
+      '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'Read all Markdown files directly under docs/policy/.',
+      'Read docs/governance/boundary.md.',
+      'Read docs/governance/ssot-v0.9.md.',
+      'Read starter/docs/governance/doc-agent-rules.md.',
+      'Read starter/docs/governance/doc-types.md.',
+      'Read docs/governance/agents-routing/engineering-runtime-v0.9.md.',
+      'Read docs/governance/agents-routing/doc-only-v0.9.md.',
+      'Read integrations/superpowers.md.',
+      'Read integrations/directed-development.md.',
+      'Use profiles/engineering-runtime/ and profiles/doc-only/.',
+      '<!-- PGS-ROUTER:END -->',
+    ].join('\n'),
+    starterAgents: [
+      'The target project must name its adopted profile and chosen agents-routing file.',
+      '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'Read all Markdown files directly under docs/policy/.',
+      'Read docs/governance/boundary.md.',
+      'Read docs/governance/ssot-v0.9.md.',
+      'Read docs/governance/agents-routing/.',
+      'Read docs/governance/doc-agent-rules.md.',
+      'Read docs/governance/doc-types.md.',
+      '<!-- PGS-ROUTER:END -->',
+    ].join('\n'),
+  });
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /must tell agents to read docs\/policy\/\*\*\/\*\.md/
   );
 });
 
@@ -298,6 +338,34 @@ test('passes for a downstream project with one selected agents-routing file', ()
   assert.deepEqual(result.issues, []);
 });
 
+test('fails for a downstream project when policy reading excludes subdirectories', () => {
+  const root = createProjectFixture();
+  writeFileSync(
+    join(root, 'AGENTS.md'),
+    [
+      '# Example Project AI Router',
+      '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'README.md is human-facing and is not the default AI startup path.',
+      'Read all Markdown files directly under docs/policy/.',
+      'Read docs/governance/boundary.md.',
+      'Read docs/governance/ssot-v0.9.md.',
+      'Read docs/governance/doc-agent-rules.md.',
+      'Read docs/governance/doc-types.md.',
+      'Read docs/governance/agents-routing/doc-only-v0.9.md.',
+      'Read docs/reference/execution/current-work.md.',
+      '<!-- PGS-ROUTER:END -->',
+    ].join('\n')
+  );
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, false);
+  assert.match(
+    result.issues.map((issue) => issue.message).join('\n'),
+    /must tell agents to read docs\/policy\/\*\*\/\*\.md/
+  );
+});
+
 test('fails for a downstream project when CLAUDE adapter is missing', () => {
   const root = createProjectFixture();
   rmSync(join(root, 'CLAUDE.md'));
@@ -364,6 +432,7 @@ function createFixture(
       [
         '# Router',
         '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+        'Read docs/policy/**/*.md, including subdirectories and symlinked shared-rule files.',
         'Read docs/governance/boundary.md.',
         'Read docs/governance/ssot-v0.9.md.',
         'Read starter/docs/governance/doc-agent-rules.md.',
@@ -412,9 +481,10 @@ function createFixture(
     join(root, 'starter/AGENTS.template.md'),
     overrides.starterAgents ??
       [
-        'The target project must name its adopted profile and chosen agents-routing file.',
-        '<!-- PGS-ROUTER:BEGIN v0.9 -->',
-        'Read docs/governance/boundary.md.',
+      'The target project must name its adopted profile and chosen agents-routing file.',
+      '<!-- PGS-ROUTER:BEGIN v0.9 -->',
+      'Read docs/policy/**/*.md, including subdirectories and symlinked shared-rule files.',
+      'Read docs/governance/boundary.md.',
         'Read docs/governance/ssot-v0.9.md.',
         'Read docs/governance/agents-routing/.',
         'Read docs/governance/doc-agent-rules.md.',
@@ -508,7 +578,7 @@ function createProjectFixture(): string {
       '# Example Project AI Router',
       '<!-- PGS-ROUTER:BEGIN v0.9 -->',
       'README.md is human-facing and is not the default AI startup path.',
-      'Read docs/policy/.',
+      'Read docs/policy/**/*.md, including subdirectories and symlinked shared-rule files.',
       'Read docs/governance/boundary.md.',
       'Read docs/governance/ssot-v0.9.md.',
       'Read docs/governance/doc-agent-rules.md.',
