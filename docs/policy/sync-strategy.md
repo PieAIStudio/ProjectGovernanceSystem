@@ -30,7 +30,7 @@ Projects temporarily keep local copies. An AI migration task compares the projec
 Benefits:
 
 - safest while the system is young
-- no accidental breakage across Non-Heroes, PieFlow, and PieIP
+- no accidental breakage across known downstream projects
 - project-local differences stay visible
 
 Drawback:
@@ -69,9 +69,10 @@ pnpm doc-gov check
 ```
 
 This is now the preferred direction for new adoption work and for projects that
-can update scripts, local hooks, and CI in one deliberate change. Do not switch
-only the package command while leaving old guardrails behind; that creates a
-half-migrated project.
+can update scripts, local hooks, and CI in one deliberate change. Record adopted
+projects in `docs/reference/adoption/downstream-project-registry.md`. Do not
+switch only the package command while leaving old guardrails behind; that
+creates a half-migrated project.
 
 ## Package Naming Roadmap
 

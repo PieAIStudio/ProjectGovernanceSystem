@@ -34,12 +34,19 @@ The central repo owns the **engine**. Each project owns its **local product cont
 | Non-Heroes product plans, runtime canon, product rules | Non-Heroes |
 | PieFlow product truth, connector rules, browser lanes | PieFlow |
 | PieIP character/script/asset governance | PieIP |
+| Current downstream adoption list and health snapshot | `docs/reference/adoption/downstream-project-registry.md` |
 
 ## Does Non-Heroes Now Import This Repo?
 
 Not yet automatically.
 
-Right now Non-Heroes, PieFlow, and PieIP have local working copies because the system was born inside active projects. This central repo is the new upstream source. The next migration step is to make each project compare against it, then eventually install or sync from it.
+Known downstream projects are listed in
+`docs/reference/adoption/downstream-project-registry.md`.
+
+Originally Non-Heroes, PieFlow, and PieIP had local working copies because the
+system was born inside active projects. This central repo is now the upstream
+source, and downstream projects should use `@pieai/doc-gov` plus their selected
+profile instead of keeping a private CLI copy.
 
 ## Why Not Auto-Symlink Everything?
 
@@ -82,9 +89,10 @@ Example:
 Use an explicit migration task:
 
 1. Pick the profile:
-   - Non-Heroes: `profiles/engineering-runtime/` plus Non-Heroes-local product rules
-   - PieFlow: `profiles/engineering-runtime/`
-   - PieIP: `profiles/doc-only/`
+   - engineering-runtime projects: apps, services, runtimes, websites, games,
+     CLIs, and behavior-critical systems
+   - doc-only projects: IP, research, audit, media, and asset-governance
+     workspaces without behavior-critical runtime work
 2. Confirm the project uses `@pieai/doc-gov` as its CLI source.
 3. Compare local `docs/governance/` and `docs/policy/` starter docs against `starter/`.
 4. Compare selected local agents-routing against `docs/governance/agents-routing/`.

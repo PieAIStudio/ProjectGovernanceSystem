@@ -99,7 +99,7 @@ Use this table before trying to understand the whole repository.
 | `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
 | `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
 | `profiles/` | Optional adoption profiles by project type | engineering-runtime, doc-only |
-| `examples/` | Reference implementation notes | Non-Heroes, PieFlow, PieIP |
+| `examples/` | Representative implementation notes | Non-Heroes, PieFlow, PieIP |
 
 ## What Does Not Belong Here
 
@@ -150,15 +150,17 @@ This repo can become a new-project starter for AI-assisted work, but only in sta
 
 Do not treat the starter as a magic install. A useful project still needs local truth: its product canon, runtime proof commands, asset provenance rules, product-package folders, and current work index. The central system supplies the governed shelves and guardrails; each project supplies the actual content.
 
-## Project Profiles
+## Downstream Projects
 
-| Project | Profile | Uses agents-routing? | Uses Directed Development? |
-| --- | --- | --- | --- |
-| PieFlow | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
-| Non-Heroes | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for mixed app/runtime work |
-| Show | `profiles/engineering-runtime/` | Yes, engineering agents routing | Yes, for cross-domain features |
-| PieHQ | `profiles/doc-only/` | Yes, doc-only agents routing | No by default |
-| PieIP | `profiles/doc-only/` | Yes, doc-only agents routing | No by default |
+The current local downstream ledger lives in
+`docs/reference/adoption/downstream-project-registry.md`.
+
+That registry is the source for which local projects are currently using this
+system, which profile each project adopts, which `@pieai/doc-gov` package
+version is installed, and whether the latest health check passed.
+
+Representative examples live under `examples/`; they are teaching cases, not
+the exhaustive project list.
 
 ## Key Lifecycle Decision
 
