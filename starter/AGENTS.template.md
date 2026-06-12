@@ -45,4 +45,4 @@
 
 ## Upstream Rule
 
-Do not locally invent doc-gov core changes such as new document statuses, frontmatter schema, lifecycle rules, shared agents-routing rules, or external shared-rule placement contracts. If such a change seems necessary, propose it upstream in `project-governance-system` first.
+Do not locally invent doc-gov core changes such as new document statuses, frontmatter schema, lifecycle rules, shared agents-routing rules, or external shared-rule placement contracts. If such a change seems necessary, propose it upstream in the Project Governance System upstream repository first.

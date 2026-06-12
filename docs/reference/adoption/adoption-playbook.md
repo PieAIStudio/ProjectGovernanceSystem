@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - adoption
@@ -83,6 +83,12 @@ Do not jump to Stage 2 until package installation is deliberately enabled.
 Do not use an absolute-path script as the default for collaborators; it is fine
 for one local machine, but it is brittle once a repo moves or another person
 checks it out.
+
+Keep the upstream checkout path out of reusable project wiring. The central
+repository may be checked out locally as `ProjectGovernanceSystem`, while its
+GitHub/package slug can remain `project-governance-system`. Target projects
+should use `@pieai/doc-gov` for commands and refer to the source as the Project
+Governance System upstream repository.
 
 ## Step 4: Add Starter Structure
 

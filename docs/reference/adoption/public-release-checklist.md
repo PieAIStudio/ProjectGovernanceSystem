@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - release
@@ -102,7 +102,8 @@ Recommended future setup:
 1. On npmjs.com, open `@pieai/doc-gov` package settings.
 2. Add a Trusted Publisher for GitHub Actions:
    - owner: `PieAIStudio`
-   - repository: `project-governance-system`
+   - repository: `project-governance-system` (GitHub slug, not local checkout
+     folder)
    - workflow file: `npm-publish.yml`
 3. Keep the workflow as manual `workflow_dispatch` until the first trusted
    publishing run succeeds.

@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-09
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - downstream
@@ -36,6 +36,10 @@ downstream projects.
   have local working-tree cleanup in progress.
 - Do not add a project-specific profile here unless at least two projects need
   the same reusable profile.
+- Do not use this registry to freeze the upstream local checkout path. The
+  current local upstream folder may be `ProjectGovernanceSystem`, but downstream
+  governed docs should prefer `@pieai/doc-gov` and "Project Governance System
+  upstream repository" wording over machine-local paths.
 
 ## Current Downstream Projects
 

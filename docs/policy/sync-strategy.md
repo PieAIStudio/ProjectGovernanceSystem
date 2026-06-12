@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - sync
@@ -104,6 +104,20 @@ Future package options:
 
 Beginner version: publish the engine first. Publish the whole car only after it
 has doors, seats, steering, and safe upgrade instructions.
+
+## Checkout Path Boundary
+
+The local checkout folder can be renamed independently from package and
+repository identity. The current local convention is `ProjectGovernanceSystem`,
+while the GitHub slug/private root package identity can remain
+`project-governance-system`, and the installed CLI remains `@pieai/doc-gov`.
+
+Do not hard-code a machine-local upstream checkout path into downstream project
+scripts, routers, or governed docs. Use `@pieai/doc-gov` for executable wiring,
+repository-relative paths inside this repo, and plain "Project Governance System
+upstream repository" wording when a downstream project needs to name the source.
+If a one-off handoff prompt needs a local clone, use a placeholder such as
+`<local ProjectGovernanceSystem checkout path>`.
 
 ## Stage 3: Published Template / Init
 

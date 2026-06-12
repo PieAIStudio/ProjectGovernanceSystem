@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - ownership
@@ -30,11 +30,27 @@ The central repo owns the **engine**. Each project owns its **local product cont
 
 | Thing | Owner |
 | --- | --- |
-| Status lifecycle, document types, SSOT, agents routing, CLI checks, templates | `project-governance-system` |
+| Status lifecycle, document types, SSOT, agents routing, CLI checks, templates | Project Governance System upstream repository |
 | Non-Heroes product plans, runtime canon, product rules | Non-Heroes |
 | PieFlow product truth, connector rules, browser lanes | PieFlow |
 | PieIP character/script/asset governance | PieIP |
 | Current downstream adoption list and health snapshot | `docs/reference/adoption/downstream-project-registry.md` |
+
+## Naming And Checkout Paths
+
+Keep these identities separate:
+
+- **System name:** Project Governance System.
+- **Local upstream checkout:** currently `ProjectGovernanceSystem`.
+- **GitHub/private package slug:** `project-governance-system`.
+- **Published CLI package:** `@pieai/doc-gov`.
+
+A local folder rename should not force downstream projects to rewrite package
+names, GitHub URLs, or CLI commands. Downstream projects should point to the
+package and the upstream repository concept, not to a hard-coded local checkout
+path. If a local automation or handoff prompt truly needs a clone path, write it
+as `<local ProjectGovernanceSystem checkout path>` and keep it out of reusable
+router text.
 
 ## Does Non-Heroes Now Import This Repo?
 

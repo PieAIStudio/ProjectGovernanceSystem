@@ -132,7 +132,7 @@ test('fails when router text contains machine-local absolute paths', () => {
       'Read docs/governance/doc-types.md.',
       'Read docs/governance/agents-routing/doc-only-v0.9.md.',
       'Read docs/reference/execution/current-work.md.',
-      'Use /Users/example/project-governance-system as the upstream source.',
+      'Use /Users/example/ProjectGovernanceSystem as the upstream source.',
       '<!-- PGS-ROUTER:END -->',
     ].join('\n')
   );
@@ -153,7 +153,7 @@ test('fails when router text escapes the repository with parent paths', () => {
     [
       '# Claude Adapter',
       'Read `AGENTS.md` first and follow it as the project router.',
-      'Fallback source: `../project-governance-system/packages/doc-gov/dist/cli.js`.',
+      'Fallback source: `../ProjectGovernanceSystem/packages/doc-gov/dist/cli.js`.',
     ].join('\n')
   );
 

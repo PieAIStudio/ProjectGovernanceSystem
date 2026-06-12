@@ -1,6 +1,6 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-09T04:50:41.645Z
+generated_at: 2026-06-12T04:11:11.107Z
 generator_version: doc-gov@0.3.2
 docs_count: 15
 docs:
@@ -44,7 +44,7 @@ docs:
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-12
     pinned: true
   - id: POLICY-UPSTREAMING
     path: docs/policy/upstreaming-policy.md
@@ -65,14 +65,14 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-12
     pinned: false
   - id: REF-DOWNSTREAM-PROJECT-REGISTRY
     path: docs/reference/adoption/downstream-project-registry.md
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-06-09
+    last_reviewed: 2026-06-12
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
@@ -86,21 +86,21 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-12
     pinned: false
   - id: REF-PUBLIC-RELEASE-CHECKLIST
     path: docs/reference/adoption/public-release-checklist.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-12
     pinned: false
   - id: REF-SITE-PUBLICATION-BRIEF
     path: docs/reference/adoption/site-publication-brief.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-12
     pinned: false
   - id: REF-SELF-REVIEW
     path: docs/reference/meta/self-review.md

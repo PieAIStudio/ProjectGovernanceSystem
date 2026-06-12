@@ -428,7 +428,7 @@ export function checkRouterIntegrity(rootDir = process.cwd()): RouterIntegrityRe
         issues.push({
           file,
           code: 'project-root-integration-path',
-          message: `Project-level root integrations path must not exist: ${file}. Keep upstream integration docs in project-governance-system; use AGENTS.md or docs/reference/integrations/ only when project-specific guidance is needed.`,
+          message: `Project-level root integrations path must not exist: ${file}. Keep upstream integration docs in the Project Governance System upstream repository; use AGENTS.md or docs/reference/integrations/ only when project-specific guidance is needed.`,
         });
       }
     }

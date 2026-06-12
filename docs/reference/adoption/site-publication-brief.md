@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-12
 domain: adoption
 tags:
   - website
@@ -58,7 +58,7 @@ Beginner-friendly description:
 ## Suggested Website Prompt
 
 ```text
-Read <local project-governance-system path> as the source project.
+Read <local ProjectGovernanceSystem checkout path> as the source project.
 
 Add Project Governance System to <local PieAIStudio-Site path> as a
 public project surface. Follow the existing project-page pattern, homepage card

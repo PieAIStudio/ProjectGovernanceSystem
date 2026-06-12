@@ -61,8 +61,21 @@ pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 If the npm package is not available in your environment yet, run the same commands from a clone:
 
 ```bash
-node /path/to/project-governance-system/packages/doc-gov/dist/cli.js doctor
+node /path/to/ProjectGovernanceSystem/packages/doc-gov/dist/cli.js doctor
 ```
+
+## Local Checkout Naming
+
+This project has separate naming surfaces:
+
+- **System name:** Project Governance System.
+- **Current local checkout folder:** `ProjectGovernanceSystem`.
+- **GitHub/package identity:** `project-governance-system` for the repository
+  slug/private root package name, and `@pieai/doc-gov` for the published CLI.
+
+Do not treat a local checkout folder rename as a package or repository identity
+rename. Downstream projects should prefer `@pieai/doc-gov` commands and
+repository-relative paths, not machine-local paths to this checkout.
 
 ## Start Here By Role
 
