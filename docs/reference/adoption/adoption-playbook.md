@@ -85,10 +85,11 @@ for one local machine, but it is brittle once a repo moves or another person
 checks it out.
 
 Keep the upstream checkout path out of reusable project wiring. The central
-repository may be checked out locally as `ProjectGovernanceSystem`, while its
-GitHub/package slug can remain `project-governance-system`. Target projects
-should use `@pieai/doc-gov` for commands and refer to the source as the Project
-Governance System upstream repository.
+repository and local checkout currently use `ProjectGovernanceSystem`, while
+the private root package name remains `project-governance-system`. Target
+projects should use `@pieai/doc-gov` for commands, use the canonical GitHub URL
+for public links, and refer to the source as the Project Governance System
+upstream repository.
 
 ## Step 4: Add Starter Structure
 

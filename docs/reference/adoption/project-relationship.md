@@ -42,15 +42,17 @@ Keep these identities separate:
 
 - **System name:** Project Governance System.
 - **Local upstream checkout:** currently `ProjectGovernanceSystem`.
-- **GitHub/private package slug:** `project-governance-system`.
+- **GitHub repository slug:** `ProjectGovernanceSystem`.
+- **Private root package name:** `project-governance-system`.
 - **Published CLI package:** `@pieai/doc-gov`.
 
 A local folder rename should not force downstream projects to rewrite package
-names, GitHub URLs, or CLI commands. Downstream projects should point to the
-package and the upstream repository concept, not to a hard-coded local checkout
-path. If a local automation or handoff prompt truly needs a clone path, write it
-as `<local ProjectGovernanceSystem checkout path>` and keep it out of reusable
-router text.
+names or CLI commands. If the GitHub repository slug changes, downstream public
+links and repository remotes should use the canonical repository URL. Downstream
+projects should point to the package and the upstream repository concept, not to
+a hard-coded local checkout path. If a local automation or handoff prompt truly
+needs a clone path, write it as `<local ProjectGovernanceSystem checkout path>`
+and keep it out of reusable router text.
 
 ## Does Non-Heroes Now Import This Repo?
 

@@ -1,6 +1,6 @@
 # Project Governance System
 
-[![Docs Check](https://github.com/PieAIStudio/project-governance-system/actions/workflows/docs-check.yml/badge.svg)](https://github.com/PieAIStudio/project-governance-system/actions/workflows/docs-check.yml)
+[![Docs Check](https://github.com/PieAIStudio/ProjectGovernanceSystem/actions/workflows/docs-check.yml/badge.svg)](https://github.com/PieAIStudio/ProjectGovernanceSystem/actions/workflows/docs-check.yml)
 [![npm](https://img.shields.io/npm/v/@pieai/doc-gov.svg)](https://www.npmjs.com/package/@pieai/doc-gov)
 
 AI-native documentation governance, agents routing, and workflow integration profiles for projects that work with AI agents over time.
@@ -70,12 +70,14 @@ This project has separate naming surfaces:
 
 - **System name:** Project Governance System.
 - **Current local checkout folder:** `ProjectGovernanceSystem`.
-- **GitHub/package identity:** `project-governance-system` for the repository
-  slug/private root package name, and `@pieai/doc-gov` for the published CLI.
+- **GitHub repository slug:** `ProjectGovernanceSystem`.
+- **Package identity:** `project-governance-system` for the private root package
+  name, and `@pieai/doc-gov` for the published CLI.
 
-Do not treat a local checkout folder rename as a package or repository identity
-rename. Downstream projects should prefer `@pieai/doc-gov` commands and
-repository-relative paths, not machine-local paths to this checkout.
+Do not treat a local checkout folder rename as an npm package identity rename.
+Downstream projects should prefer `@pieai/doc-gov` commands, the canonical
+GitHub repository URL, and repository-relative paths, not machine-local paths to
+this checkout.
 
 ## Start Here By Role
 

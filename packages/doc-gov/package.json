@@ -10,15 +10,15 @@
     "project-management",
     "markdown"
   ],
-  "homepage": "https://github.com/PieAIStudio/project-governance-system#readme",
+  "homepage": "https://github.com/PieAIStudio/ProjectGovernanceSystem#readme",
   "bugs": {
-    "url": "https://github.com/PieAIStudio/project-governance-system/issues"
+    "url": "https://github.com/PieAIStudio/ProjectGovernanceSystem/issues"
   },
   "license": "MIT",
   "author": "PieAI <PIEAI@hotmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PieAIStudio/project-governance-system.git",
+    "url": "git+https://github.com/PieAIStudio/ProjectGovernanceSystem.git",
     "directory": "packages/doc-gov"
   },
   "bin": {
