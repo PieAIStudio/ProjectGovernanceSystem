@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-12T04:11:11.107Z
+generated_at: 2026-06-12T15:35:01.763Z
 generator_version: doc-gov@0.3.2
-docs_count: 15
+docs_count: 16
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -108,4 +108,11 @@ docs:
     status: stable
     canonical: true
     last_reviewed: 2026-06-04
+    pinned: false
+  - id: SPEC-0001
+    path: docs/specs/active/SPEC-0001-cross-host-doc-gov-hooks.md
+    type: spec
+    status: draft
+    canonical: false
+    last_reviewed: 2026-06-12
     pinned: false
