@@ -2,8 +2,8 @@
 id: SPEC-0002
 title: Pro-Gov Project Package
 type: spec
-status: draft
-canonical: false
+status: completed
+canonical: true
 owner: ai-assisted
 created: 2026-06-13
 last_reviewed: 2026-06-13
@@ -202,5 +202,6 @@ The first implementation is complete when:
 
 ## Review State
 
-This draft is approved for implementation by the repository owner request on
-2026-06-13. Keep the first release conservative and read-only by default.
+This spec was implemented on 2026-06-13 as the first `@pieai/pro-gov` package
+surface. Keep the first release conservative and read-only by default until
+multiple downstream projects prove the same write-mode sync shape.

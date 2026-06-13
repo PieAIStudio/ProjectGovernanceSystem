@@ -2,7 +2,7 @@
 id: PLAN-0001
 title: Pro-Gov Project Package Implementation
 type: plan
-status: active
+status: completed
 canonical: true
 owner: ai-assisted
 created: 2026-06-13
@@ -67,12 +67,12 @@ workspaces, npm package metadata.
 - Create: `packages/pro-gov/cli-guide.md`
 - Create: `packages/pro-gov/src/cli.ts`
 
-- [ ] **Step 1: Write a failing CLI smoke test**
+- [x] **Step 1: Write a failing CLI smoke test**
 
 Create `packages/pro-gov/src/cli.test.ts` with a subprocess test that expects
 `node packages/pro-gov/dist/cli.js --help` to print `pro-gov`.
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -82,12 +82,12 @@ pnpm --filter @pieai/pro-gov test
 
 Expected: failure because `@pieai/pro-gov` and `dist/cli.js` do not exist yet.
 
-- [ ] **Step 3: Add the minimal package skeleton**
+- [x] **Step 3: Add the minimal package skeleton**
 
 Add the package files, a bundled CLI build script, and a help command that
 prints the command list.
 
-- [ ] **Step 4: Run the focused test and verify it passes**
+- [x] **Step 4: Run the focused test and verify it passes**
 
 Run:
 
@@ -108,7 +108,7 @@ Expected: the smoke test passes.
 - Modify: `packages/pro-gov/src/cli.ts`
 - Modify: `packages/pro-gov/package.json`
 
-- [ ] **Step 1: Write failing inventory tests**
+- [x] **Step 1: Write failing inventory tests**
 
 Tests must assert that the inventory includes:
 
@@ -119,7 +119,7 @@ Tests must assert that the inventory includes:
 - `integrations/superpowers.md`
 - `docs/reference/adoption/adoption-playbook.md`
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -129,12 +129,12 @@ pnpm --filter @pieai/pro-gov test
 
 Expected: failure because asset inventory is missing.
 
-- [ ] **Step 3: Implement asset inventory and `assets list`**
+- [x] **Step 3: Implement asset inventory and `assets list`**
 
 Implement deterministic asset listing from packaged directories. Include the
 asset directories in the package `files` field.
 
-- [ ] **Step 4: Run the focused tests and CLI**
+- [x] **Step 4: Run the focused tests and CLI**
 
 Run:
 
@@ -154,7 +154,7 @@ Expected: tests pass and the CLI prints packaged asset paths.
 - Create: `packages/pro-gov/src/init.test.ts`
 - Modify: `packages/pro-gov/src/cli.ts`
 
-- [ ] **Step 1: Write failing dry-run tests**
+- [x] **Step 1: Write failing dry-run tests**
 
 Tests must assert:
 
@@ -163,7 +163,7 @@ Tests must assert:
 - dry-run reports planned files;
 - dry-run does not create files in an empty temp project.
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -173,11 +173,11 @@ pnpm --filter @pieai/pro-gov test
 
 Expected: failure because init command is missing.
 
-- [ ] **Step 3: Implement `init --profile <profile> --dry-run`**
+- [x] **Step 3: Implement `init --profile <profile> --dry-run`**
 
 Implement read-only planning for starter files and selected profile files.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 Run:
 
@@ -197,7 +197,7 @@ Expected: init tests pass.
 - Create: `packages/pro-gov/src/doctor.test.ts`
 - Modify: `packages/pro-gov/src/cli.ts`
 
-- [ ] **Step 1: Write failing sync and doctor tests**
+- [x] **Step 1: Write failing sync and doctor tests**
 
 Tests must assert:
 
@@ -206,7 +206,7 @@ Tests must assert:
 - `doctor` passes package asset checks;
 - `doctor` does not fail solely because `doc-gov` is absent from a temp project.
 
-- [ ] **Step 2: Run the test and verify it fails**
+- [x] **Step 2: Run the test and verify it fails**
 
 Run:
 
@@ -216,12 +216,12 @@ pnpm --filter @pieai/pro-gov test
 
 Expected: failure because sync and doctor commands are missing.
 
-- [ ] **Step 3: Implement read-only sync and doctor**
+- [x] **Step 3: Implement read-only sync and doctor**
 
 Implement stable summaries and non-mutating checks. `doctor` may report `doc-gov`
 availability as a warning when absent.
 
-- [ ] **Step 4: Run focused tests**
+- [x] **Step 4: Run focused tests**
 
 Run:
 
@@ -244,17 +244,17 @@ Expected: all pro-gov tests pass.
 - Modify: `docs/reference/adoption/adoption-playbook.md`
 - Modify: `docs/reference/adoption/public-release-checklist.md`
 
-- [ ] **Step 1: Update package metadata**
+- [x] **Step 1: Update package metadata**
 
 Align both packages for a future `0.3.3` release and fix the `@pieai/doc-gov`
 repository slug metadata to `ProjectGovernanceSystem`.
 
-- [ ] **Step 2: Update docs**
+- [x] **Step 2: Update docs**
 
 Explain that `doc-gov` is the validator package and `pro-gov` is the
 project-level distribution package.
 
-- [ ] **Step 3: Run full verification**
+- [x] **Step 3: Run full verification**
 
 Run:
 
@@ -276,17 +276,16 @@ Expected: all commands exit `0`; pack dry-runs show only intended files.
 
 ## Acceptance
 
-- [ ] `@pieai/pro-gov` package exists.
-- [ ] `pro-gov --help` works after build.
-- [ ] `pro-gov assets list` lists packaged reusable assets.
-- [ ] `pro-gov init --profile <profile> --dry-run` is read-only.
-- [ ] `pro-gov sync --check` is read-only and detects missing/different files.
-- [ ] `pro-gov doctor` checks package health and reports `doc-gov` availability.
-- [ ] `@pieai/doc-gov` metadata points at `ProjectGovernanceSystem`.
-- [ ] Full verification passes.
+- [x] `@pieai/pro-gov` package exists.
+- [x] `pro-gov --help` works after build.
+- [x] `pro-gov assets list` lists packaged reusable assets.
+- [x] `pro-gov init --profile <profile> --dry-run` is read-only.
+- [x] `pro-gov sync --check` is read-only and detects missing/different files.
+- [x] `pro-gov doctor` checks package health and reports `doc-gov` availability.
+- [x] `@pieai/doc-gov` metadata points at `ProjectGovernanceSystem`.
+- [x] Full verification passes.
 
 ## Closeout
 
-When complete, move this plan to `docs/plans/completed/`, set
-`status: completed`, keep `canonical: true`, regenerate the manifest, and commit
-the completed work.
+Completed on 2026-06-13. This plan was moved to `docs/plans/completed/`,
+kept `canonical: true`, and retained as the implementation proof record.

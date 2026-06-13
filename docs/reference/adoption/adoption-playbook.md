@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-12
+last_reviewed: 2026-06-13
 domain: adoption
 tags:
   - adoption
@@ -26,7 +26,7 @@ Use this when a project wants to migrate into the Project Governance System.
 
 1. Pick one profile.
 2. Inventory the project's current docs/rules.
-3. Install or copy doc-gov.
+3. Install the governance packages.
 4. Add starter `docs/governance/` and `docs/policy/` files.
 5. Add the selected `docs/governance/agents-routing/` profile rule.
 6. Move current truth into the governed layers.
@@ -59,8 +59,13 @@ Before moving anything, list:
 
 Current package-based method:
 
-- install `@pieai/doc-gov` as the target project's CLI source
+- install `@pieai/pro-gov` as the target project's project-level asset source
+- install `@pieai/doc-gov` as the target project's validator CLI source
 - preserve project-local package scripts
+- run `pro-gov init --profile <engineering-runtime|doc-only> --dry-run` to see
+  the starter files that would be installed
+- run `pro-gov sync --check` to compare reusable starter files without changing
+  the project
 - run `doc-gov migrate --profile <engineering-runtime|doc-only> --check` before
   changing files so profile mismatches fail early
 - run `doc-gov router-check` after the sync so stale router/profile paths fail
@@ -76,18 +81,19 @@ Current package-based method:
 Later Stage 2 method:
 
 ```bash
-pnpm add -D @pieai/doc-gov
+pnpm add -D @pieai/pro-gov @pieai/doc-gov
 ```
 
-Do not jump to Stage 2 until package installation is deliberately enabled.
+Do not jump to write-mode installation until package installation is
+deliberately enabled and the read-only checks are understood.
 Do not use an absolute-path script as the default for collaborators; it is fine
 for one local machine, but it is brittle once a repo moves or another person
 checks it out.
 
 Keep the upstream checkout path out of reusable project wiring. The central
 repository and local checkout currently use `ProjectGovernanceSystem`, while
-the private root package name remains `project-governance-system`. Target
-projects should use `@pieai/doc-gov` for commands, use the canonical GitHub URL
+the private workspace package name is `pro-gov`. Target projects should use
+`@pieai/pro-gov` and `@pieai/doc-gov` for commands, use the canonical GitHub URL
 for public links, and refer to the source as the Project Governance System
 upstream repository.
 
@@ -196,7 +202,8 @@ If the target project is an app/runtime project:
 
 1. Pick `engineering-runtime`.
 2. Inventory existing docs and current runtime truth.
-3. Install `@pieai/doc-gov` or keep the existing local tool copy until the project is ready to move scripts and CI together.
+3. Install `@pieai/pro-gov` and `@pieai/doc-gov`, or keep the existing local
+   tool copy until the project is ready to move scripts and CI together.
 4. Add governed `docs/governance/` and `docs/policy/` starter files.
 5. Write `docs/policy/best-practice-for-this-project.md` with project-specific truth, stack, lanes, and verification commands.
 6. Create `docs/reference/execution/current-work.md`.

@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-12
+last_reviewed: 2026-06-13
 domain: adoption
 tags:
   - downstream
@@ -30,16 +30,17 @@ downstream projects.
 ## Registry Rules
 
 - Update this file when a project adopts, leaves, renames, or changes profile.
-- Treat `@pieai/doc-gov` version as the package version installed in the
-  downstream project's `package.json`.
+- Treat package versions as the versions installed in the downstream project's
+  `package.json`. Existing rows may list only `doc-gov` until that project is
+  intentionally synced to `pro-gov`.
 - Treat health as a snapshot. A project can be on the latest version but still
   have local working-tree cleanup in progress.
 - Do not add a project-specific profile here unless at least two projects need
   the same reusable profile.
 - Do not use this registry to freeze the upstream local checkout path. The
   current local upstream folder may be `ProjectGovernanceSystem`, but downstream
-  governed docs should prefer `@pieai/doc-gov` and "Project Governance System
-  upstream repository" wording over machine-local paths.
+  governed docs should prefer `@pieai/doc-gov`, `@pieai/pro-gov`, and "Project
+  Governance System upstream repository" wording over machine-local paths.
 
 ## Current Downstream Projects
 

@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-12
+last_reviewed: 2026-06-13
 domain: adoption
 tags:
   - sync
@@ -37,34 +37,38 @@ Drawback:
 
 - requires explicit migration prompts
 
-## Stage 1: Package Install + Scripted Diff
+## Stage 1: Package Install + Read-Only Diff
 
 Partially available now as a read-only check:
 
 ```bash
+pro-gov init --profile engineering-runtime --dry-run
+pro-gov sync --check
 doc-gov migrate --profile engineering-runtime --check
 ```
 
-New migration work should install `@pieai/doc-gov` as the CLI source and use
-`migrate --check`, `router-check`, and `doctor` to verify the local files,
-hooks, and CI.
+New migration work should install `@pieai/pro-gov` as the project-level
+starter/profile asset source and `@pieai/doc-gov` as the validator source. Use
+`pro-gov init --dry-run`, `pro-gov sync --check`, `doc-gov migrate --check`,
+`router-check`, and `doctor` to verify local files, hooks, and CI.
 
 This does not update files yet. It verifies that the target project structurally
 matches the selected profile before a human or AI sync task edits anything.
 
-The future `--apply` mode should update core/starter files while preserving
-local profile sections:
+The future write mode should update core/starter files while preserving local
+profile sections:
 
 ```bash
-doc-gov migrate --profile engineering-runtime --apply
+pro-gov init --profile engineering-runtime --apply
 ```
 
-## Stage 2: Package Install
+## Stage 2: Package-Based Adoption
 
-Projects depend on `@pieai/doc-gov` instead of keeping local CLI source:
+Projects depend on the packages instead of keeping local CLI or starter copies:
 
 ```bash
-pnpm add -D @pieai/doc-gov
+pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov doctor
 pnpm doc-gov check
 ```
 
@@ -74,59 +78,52 @@ projects in `docs/reference/adoption/downstream-project-registry.md`. Do not
 switch only the package command while leaving old guardrails behind; that
 creates a half-migrated project.
 
-## Package Naming Roadmap
+## Package Naming Model
 
-`@pieai/doc-gov` is the first npm package because it is the stable executable
-subsystem: the command-line tool that checks governed docs, router integrity,
-manifest freshness, links, health, and read-only migration readiness.
+`@pieai/doc-gov` is the stable validator subsystem: the command-line tool that
+checks governed docs, router integrity, manifest freshness, links, health, and
+read-only migration readiness.
 
-Project Governance System is larger than `doc-gov`. It also includes starter
-files, profiles, agents-routing rules, adoption strategy, and integration
-boundaries. Those pieces are public in the GitHub repository, but they are not
-yet a safe one-command npm install.
+`@pieai/pro-gov` is the project-level distribution subsystem: the package that
+ships starter files, profiles, agents-routing references, adoption references,
+and read-only init/sync/doctor commands.
 
-Do not rename `@pieai/doc-gov` to the full system name just because the GitHub
-project is called Project Governance System. That would overpromise. A full
-system package should wait until it can safely provide:
+Do not rename `@pieai/doc-gov` to `pro-gov`. They do different jobs:
 
-- profile-aware `pgs init`
-- non-destructive `pgs upgrade`
-- starter/profile installation
-- safe AGENTS/CLAUDE/GEMINI merge behavior
-- guardrail wiring for local hooks and CI
-- clear rollback and migration checks
+| Package | Role |
+| --- | --- |
+| `@pieai/doc-gov` | Validate governed docs, router integrity, manifest, links, hooks, CI, and migration readiness. |
+| `@pieai/pro-gov` | Distribute project-level governance assets and run conservative read-only init/sync checks. |
 
-Future package options:
-
-- keep `@pieai/doc-gov` as the low-level CLI engine
-- add `@pieai/pgs` or `@pieai/project-governance-system` later as the full
-  system installer that depends on `@pieai/doc-gov`
-
-Beginner version: publish the engine first. Publish the whole car only after it
-has doors, seats, steering, and safe upgrade instructions.
+Beginner version: `doc-gov` is the inspection machine. `pro-gov` is the setup
+kit and parts catalog. The first `pro-gov` release still keeps write behavior
+off by default, because overwriting another project's router or policies without
+a review is too risky.
 
 ## Checkout Path Boundary
 
 The local checkout folder and GitHub repository slug are currently
-`ProjectGovernanceSystem`. The private root package identity remains
-`project-governance-system`, and the installed CLI remains `@pieai/doc-gov`.
+`ProjectGovernanceSystem`. The private workspace package identity is `pro-gov`,
+and the installed package identities are `@pieai/doc-gov` and
+`@pieai/pro-gov`.
 
 Do not hard-code a machine-local upstream checkout path into downstream project
-scripts, routers, or governed docs. Use `@pieai/doc-gov` for executable wiring,
+scripts, routers, or governed docs. Use package commands for executable wiring,
 the canonical GitHub repository URL for public links, repository-relative paths
 inside this repo, and plain "Project Governance System upstream repository"
-wording when a downstream project needs to name the source. If a one-off handoff
-prompt needs a local clone, use a placeholder such as
+wording when a downstream project needs to name the source. If a one-off
+handoff prompt needs a local clone, use a placeholder such as
 `<local ProjectGovernanceSystem checkout path>`.
 
-## Stage 3: Published Template / Init
+## Stage 3: Write-Mode Template / Init
 
-New projects can start with:
+Future projects may start with a write-mode command such as:
 
 ```bash
-pnpm dlx @pieai/doc-gov init --profile doc-only
-pnpm dlx @pieai/doc-gov init --profile engineering-runtime
+pnpm dlx @pieai/pro-gov init --profile doc-only --apply
+pnpm dlx @pieai/pro-gov init --profile engineering-runtime --apply
 ```
 
-Do not jump here before Stage 1 proves the selected profile is structurally
-ready.
+Do not add this until Stage 1 proves the selected profile is structurally ready
+across multiple downstream projects and the command has safe non-overwrite or
+merge behavior.

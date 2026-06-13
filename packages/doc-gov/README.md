@@ -6,6 +6,9 @@ AI-assisted projects.
 It checks whether governed Markdown documents have the right frontmatter,
 lifecycle status, links, manifest freshness, agents-routing, and project wiring.
 
+`@pieai/doc-gov` is the validator package. For reusable starter/profile assets
+and read-only project-level init/sync checks, use `@pieai/pro-gov` beside it.
+
 ## Install
 
 ```bash
@@ -61,5 +64,6 @@ The CLI is in public preview. The read-only checks are the stable path:
 - `doctor`
 - `migrate --profile <profile> --check`
 
-Future `migrate --apply` and full init profiles should be added only after more
-real projects prove the same migration shape.
+Future write-mode migration or apply behavior should be added only after more
+real projects prove the same migration shape. Project-level write behavior
+belongs in `pro-gov`, not in the validator by default.

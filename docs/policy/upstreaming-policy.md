@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-05
+last_reviewed: 2026-06-13
 domain: governance
 tags:
   - upstreaming
@@ -24,7 +24,8 @@ Use this decision tree before moving a rule from a project into this repository.
 
 ## Core
 
-Move to `docs/governance/`, `packages/doc-gov/`, or `starter/` when the rule is
+Move to `docs/governance/`, `packages/doc-gov/`, `packages/pro-gov/`, or
+`starter/` when the rule is
 true for most projects and belongs to the governance system itself.
 
 Examples:

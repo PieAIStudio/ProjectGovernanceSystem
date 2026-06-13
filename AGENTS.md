@@ -6,7 +6,9 @@
 
 ## Purpose
 
-This repository is the upstream source for PieAI documentation governance, agents routing, and workflow integration profiles.
+This repository is the upstream source for PieAI documentation governance,
+project-level governance distribution, agents routing, and workflow integration
+profiles.
 
 ## Read First
 
@@ -59,6 +61,9 @@ node packages/doc-gov/dist/cli.js check
 node packages/doc-gov/dist/cli.js scan --check
 node packages/doc-gov/dist/cli.js links
 node packages/doc-gov/dist/cli.js audit
+node packages/pro-gov/dist/cli.js doctor
+pnpm --filter @pieai/doc-gov pack --dry-run
+pnpm --filter @pieai/pro-gov pack --dry-run
 git diff --check
 ```
 

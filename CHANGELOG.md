@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.3 - 2026-06-13
+
+- Added the `@pieai/pro-gov` project-level package with the `pro-gov` CLI for
+  reusable starter/profile/integration assets.
+- Added read-only `pro-gov assets list`, `pro-gov init --profile <profile>
+  --dry-run`, `pro-gov sync --check`, and `pro-gov doctor` commands.
+- Kept `@pieai/doc-gov` as the validator package and aligned both packages on
+  the `0.3.3` release line.
+- Updated project package metadata, adoption docs, and release docs to explain
+  the `doc-gov` / `pro-gov` split.
+- Renamed the private workspace package identity to `pro-gov`; the GitHub slug
+  and local checkout identity remain `ProjectGovernanceSystem`.
+
 ## 0.3.2 - 2026-06-07
 
 - Clarified AI startup routing so agents must read all

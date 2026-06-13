@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-12
+last_reviewed: 2026-06-13
 domain: adoption
 tags:
   - website
@@ -44,6 +44,8 @@ Beginner-friendly description:
 - It has two practical profiles: engineering-runtime and doc-only.
 - It provides `doc-gov` commands for schema checks, manifest freshness, link
   checks, router integrity, health checks, and read-only migration checks.
+- It provides `pro-gov` commands for packaged starter/profile assets,
+  read-only init planning, read-only sync checks, and package health checks.
 - It is designed to work with external workflow systems instead of replacing
   them.
 
@@ -65,18 +67,19 @@ public project surface. Follow the existing project-page pattern, homepage card
 pattern, translations, and sitemap conventions in that website repository.
 
 Use the central repo's README.md, packages/doc-gov/README.md,
-docs/reference/adoption/public-release-checklist.md, and
-docs/reference/adoption/site-publication-brief.md as source material.
+packages/pro-gov/README.md, docs/reference/adoption/public-release-checklist.md,
+and docs/reference/adoption/site-publication-brief.md as source material.
 
 Position it for normal readers as an AI-era documentation governance system:
 the librarian and traffic desk for AI-created project documents. Explain what
 problem it solves, why it matters, how doc-gov checks work, and how it fits next
-to Git, AGENTS.md, Superpowers, and project-local product truth.
+to Git, AGENTS.md, Superpowers, pro-gov starter/profile distribution, and
+project-local product truth.
 
 Keep the copy confident but accurate. Do not claim automatic migration or
 full replacement of existing workflow tools. npm publication is live, so include
-the package install command for @pieai/doc-gov and link both the npm package and
-the GitHub repository.
+the package install commands for @pieai/doc-gov and @pieai/pro-gov, and link the
+npm packages plus the GitHub repository.
 
 After implementation, run the site's normal quality/typecheck/build checks and
 verify the new public route plus sitemap entry.

@@ -6,6 +6,10 @@ This package is the upstream CLI source for Project Governance System. It can
 be installed by downstream projects as `@pieai/doc-gov` so scripts, hooks, and
 CI all use the same CLI source.
 
+It is intentionally the validator package. Install `@pieai/pro-gov` beside it
+when a project needs packaged starter/profile assets or read-only init/sync
+planning.
+
 ## Lifecycle
 
 Normal documents:
@@ -86,4 +90,6 @@ pnpm --filter @pieai/doc-gov typecheck
 
 This package is the preferred CLI source for new adoption work. Existing
 legacy projects should move from local CLI copies to `@pieai/doc-gov` when
-their scripts, local hooks, and CI are updated together.
+their scripts, local hooks, and CI are updated together. Use `@pieai/pro-gov`
+for the project-level asset surface instead of copying the whole upstream
+repository into each target project.

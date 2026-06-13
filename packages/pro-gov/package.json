@@ -1,14 +1,13 @@
 {
-  "name": "@pieai/doc-gov",
+  "name": "@pieai/pro-gov",
   "version": "0.3.3",
-  "description": "AI-native documentation governance CLI for project docs, agent routing, and lifecycle checks.",
+  "description": "Project-level distribution kit for Project Governance System.",
   "keywords": [
     "ai-agents",
-    "documentation",
     "governance",
-    "cli",
     "project-management",
-    "markdown"
+    "documentation",
+    "cli"
   ],
   "homepage": "https://github.com/PieAIStudio/ProjectGovernanceSystem#readme",
   "bugs": {
@@ -19,13 +18,14 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PieAIStudio/ProjectGovernanceSystem.git",
-    "directory": "packages/doc-gov"
+    "directory": "packages/pro-gov"
   },
   "bin": {
-    "doc-gov": "dist/cli.js"
+    "pro-gov": "dist/cli.js"
   },
   "files": [
     "dist",
+    "assets",
     "README.md",
     "LICENSE",
     "cli-guide.md"
@@ -36,10 +36,14 @@
   },
   "scripts": {
     "dev": "tsx src/cli.ts",
-    "build": "node node_modules/esbuild/bin/esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
+    "build": "node scripts/copy-assets.mjs && node node_modules/esbuild/bin/esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
     "prepack": "pnpm build",
+    "pretest": "pnpm --filter @pieai/doc-gov build && pnpm build",
     "test": "tsx --test src/**/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@pieai/doc-gov": "workspace:^"
   },
   "devDependencies": {
     "@types/node": "25.0.0",

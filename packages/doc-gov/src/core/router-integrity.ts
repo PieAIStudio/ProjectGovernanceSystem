@@ -509,9 +509,22 @@ export function checkRouterIntegrity(rootDir = process.cwd()): RouterIntegrityRe
 function isCentralRepository(rootDir: string): boolean {
   const packageJsonPath = join(rootDir, 'package.json');
   if (!existsSync(packageJsonPath)) return false;
-  const packageJson = readFileSync(packageJsonPath, 'utf8');
+  const packageName = readPackageName(packageJsonPath);
+  const centralPackageNames = new Set(['project-governance-system', 'pro-gov']);
+  return centralPackageNames.has(packageName) && hasCentralRepositoryShape(rootDir);
+}
+
+function readPackageName(packageJsonPath: string): string {
+  try {
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8')) as { name?: unknown };
+    return typeof packageJson.name === 'string' ? packageJson.name : '';
+  } catch {
+    return '';
+  }
+}
+
+function hasCentralRepositoryShape(rootDir: string): boolean {
   return (
-    packageJson.includes('"name": "project-governance-system"') &&
     existsSync(join(rootDir, 'profiles')) &&
     existsSync(join(rootDir, 'starter')) &&
     existsSync(join(rootDir, 'integrations'))

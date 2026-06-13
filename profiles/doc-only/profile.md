@@ -5,6 +5,7 @@ Use for non-runtime projects: IP development, AI media production, research vaul
 ## Includes
 
 - `packages/doc-gov`
+- `packages/pro-gov`
 - `docs/governance/ssot-v0.9.md`
 - external AI-in-the-Loop policy linked by target projects under `docs/policy/shared-rules/ai-in-the-loop.md`
 - `docs/governance/agents-routing/doc-only-v0.9.md`
@@ -29,7 +30,8 @@ Each project must define:
 
 ## Automation Boundary
 
-This profile is a human/AI adoption contract. The CLI currently validates the
-resulting project shape, but it does not consume this file as an installable
-image. Until package/profile installation is deliberately added, use
-`starter/`, this profile, and `manifest.yml` as the reference checklist.
+This profile is a human/AI adoption contract. `doc-gov` validates the resulting
+project shape. `pro-gov` packages reusable starter/profile assets and exposes
+read-only init/sync checks, but it does not overwrite project-local files in
+the first release. Use `starter/`, this profile, and `manifest.yml` as the
+reference checklist.

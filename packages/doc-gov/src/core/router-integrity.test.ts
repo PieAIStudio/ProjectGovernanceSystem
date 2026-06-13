@@ -37,6 +37,15 @@ test('passes when router entrypoints and profile wiring are present', () => {
   assert.deepEqual(result.issues, []);
 });
 
+test('recognizes pro-gov private workspace name as the central repository', () => {
+  const root = createFixture({ packageName: 'pro-gov' });
+
+  const result = checkRouterIntegrity(root);
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.issues, []);
+});
+
 test('fails when AGENTS does not point agents to agents-routing files', () => {
   const root = createFixture({
     agents: '# Router\nRead README.md only.',
@@ -408,7 +417,13 @@ test('fails for a downstream project when legacy shared SSOT remains in policy',
 });
 
 function createFixture(
-  overrides: { agents?: string; superpowers?: string; readme?: string; starterAgents?: string } = {}
+  overrides: {
+    agents?: string;
+    packageName?: string;
+    superpowers?: string;
+    readme?: string;
+    starterAgents?: string;
+  } = {}
 ): string {
   const root = mkdtempSync(join(tmpdir(), 'doc-gov-router-check-'));
   mkdirSync(join(root, 'docs/governance/agents-routing'), { recursive: true });
@@ -420,7 +435,10 @@ function createFixture(
   mkdirSync(join(root, 'starter/docs/policy'), { recursive: true });
   mkdirSync(join(root, 'starter/docs/reference/execution'), { recursive: true });
 
-  writeFileSync(join(root, 'package.json'), '{ "name": "project-governance-system" }\n');
+  writeFileSync(
+    join(root, 'package.json'),
+    `${JSON.stringify({ name: overrides.packageName ?? 'project-governance-system' })}\n`
+  );
   writeFileSync(
     join(root, 'README.md'),
     overrides.readme ??

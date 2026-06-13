@@ -1,6 +1,7 @@
 profile: engineering-runtime
 required:
   doc_gov: true
+  pro_gov: true
   ssot: true
   ai_in_the_loop:
     target: docs/policy/shared-rules/ai-in-the-loop.md

@@ -1,14 +1,15 @@
 {
-  "name": "project-governance-system",
+  "name": "pro-gov",
   "private": true,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Central upstream for PieAI project documentation governance, agents routing, and workflow profiles.",
   "type": "module",
   "scripts": {
     "doc-gov": "node packages/doc-gov/dist/cli.js",
-    "build": "pnpm --filter @pieai/doc-gov build",
-    "test": "pnpm --filter @pieai/doc-gov test",
-    "typecheck": "pnpm --filter @pieai/doc-gov typecheck"
+    "pro-gov": "node packages/pro-gov/dist/cli.js",
+    "build": "pnpm --filter @pieai/doc-gov build && pnpm --filter @pieai/pro-gov build",
+    "test": "pnpm --filter @pieai/doc-gov test && pnpm --filter @pieai/pro-gov test",
+    "typecheck": "pnpm --filter @pieai/doc-gov typecheck && pnpm --filter @pieai/pro-gov typecheck"
   },
   "devDependencies": {
     "lefthook": "^2.1.9"

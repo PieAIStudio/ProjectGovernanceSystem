@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-13T00:32:15.039Z
-generator_version: doc-gov@0.3.2
+generated_at: 2026-06-13T00:52:26.215Z
+generator_version: doc-gov@0.3.3
 docs_count: 18
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
@@ -33,9 +33,9 @@ docs:
     last_reviewed: 2026-05-09
     pinned: true
   - id: PLAN-0001
-    path: docs/plans/active/PLAN-0001-pro-gov-project-package.md
+    path: docs/plans/completed/PLAN-0001-pro-gov-project-package.md
     type: plan
-    status: active
+    status: completed
     canonical: true
     last_reviewed: 2026-06-13
     pinned: false
@@ -51,35 +51,35 @@ docs:
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: true
   - id: POLICY-UPSTREAMING
     path: docs/policy/upstreaming-policy.md
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-13
     pinned: true
   - id: POLICY-VERSIONING
     path: docs/policy/versioning-policy.md
     type: policy
     status: stable
     canonical: true
-    last_reviewed: 2026-06-05
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-ADOPTION-PLAYBOOK
     path: docs/reference/adoption/adoption-playbook.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-DOWNSTREAM-PROJECT-REGISTRY
     path: docs/reference/adoption/downstream-project-registry.md
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
@@ -93,21 +93,21 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-PUBLIC-RELEASE-CHECKLIST
     path: docs/reference/adoption/public-release-checklist.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-SITE-PUBLICATION-BRIEF
     path: docs/reference/adoption/site-publication-brief.md
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-12
+    last_reviewed: 2026-06-13
     pinned: false
   - id: REF-SELF-REVIEW
     path: docs/reference/meta/self-review.md
@@ -124,9 +124,9 @@ docs:
     last_reviewed: 2026-06-12
     pinned: false
   - id: SPEC-0002
-    path: docs/specs/active/SPEC-0002-pro-gov-project-package.md
+    path: docs/specs/completed/SPEC-0002-pro-gov-project-package.md
     type: spec
-    status: draft
-    canonical: false
+    status: completed
+    canonical: true
     last_reviewed: 2026-06-13
     pinned: false

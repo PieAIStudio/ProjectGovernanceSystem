@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-12
+last_reviewed: 2026-06-13
 domain: adoption
 tags:
   - ownership
@@ -43,8 +43,9 @@ Keep these identities separate:
 - **System name:** Project Governance System.
 - **Local upstream checkout:** currently `ProjectGovernanceSystem`.
 - **GitHub repository slug:** `ProjectGovernanceSystem`.
-- **Private root package name:** `project-governance-system`.
-- **Published CLI package:** `@pieai/doc-gov`.
+- **Private workspace package name:** `pro-gov`.
+- **Published validator package:** `@pieai/doc-gov`.
+- **Project-level distribution package:** `@pieai/pro-gov`.
 
 A local folder rename should not force downstream projects to rewrite package
 names or CLI commands. If the GitHub repository slug changes, downstream public
@@ -63,8 +64,8 @@ Known downstream projects are listed in
 
 Originally Non-Heroes, PieFlow, and PieIP had local working copies because the
 system was born inside active projects. This central repo is now the upstream
-source, and downstream projects should use `@pieai/doc-gov` plus their selected
-profile instead of keeping a private CLI copy.
+source, and downstream projects should use `@pieai/doc-gov`, `@pieai/pro-gov`,
+and their selected profile instead of keeping private CLI or starter copies.
 
 ## Why Not Auto-Symlink Everything?
 
@@ -81,7 +82,8 @@ The old `governance/` folder mixed both kinds. The clearer split is:
 Symlinking or copying the whole policy layer would be wrong because Non-Heroes and PieFlow need different local lane profiles. The safe rule:
 
 - shared rules may be symlinked
-- doc-gov core should become an installed/copied package
+- doc-gov core should become the installed validator package
+- pro-gov should become the installed project-level asset package
 - project profiles are templates
 - project-local best-practice files remain in each project's `docs/policy/`
 - product artifacts outside `docs/**` stay in the product package unless a project explicitly opts them into doc-gov
@@ -111,12 +113,16 @@ Use an explicit migration task:
      CLIs, and behavior-critical systems
    - doc-only projects: IP, research, audit, media, and asset-governance
      workspaces without behavior-critical runtime work
-2. Confirm the project uses `@pieai/doc-gov` as its CLI source.
-3. Compare local `docs/governance/` and `docs/policy/` starter docs against `starter/`.
-4. Compare selected local agents-routing against `docs/governance/agents-routing/`.
-5. Compare local shared AI work rules against their external SSOT targets, such
+2. Confirm the project uses `@pieai/doc-gov` as its validator source.
+3. Confirm the project can inspect `@pieai/pro-gov` assets with
+   `pro-gov assets list`.
+4. Compare local `docs/governance/` and `docs/policy/` starter docs against
+   packaged starter assets.
+5. Compare selected local agents-routing against `docs/governance/agents-routing/`.
+6. Compare local shared AI work rules against their external SSOT targets, such
    as symlinked files under `docs/policy/shared-rules/`.
-6. Keep project-local docs and product artifacts local.
-7. Run project validation.
+7. Keep project-local docs and product artifacts local.
+8. Run project validation.
 
-This is AI-assisted comparison now. Later it can become `doc-gov migrate`.
+This is AI-assisted comparison now. Later, write-mode installation can become a
+`pro-gov` command after the read-only checks prove safe.
