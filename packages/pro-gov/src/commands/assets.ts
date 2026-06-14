@@ -1,7 +1,12 @@
 import { listAssets } from '../assets';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { loadAgentAssetBundles } from '../asset-bundles/bundles';
 import { loadAgentAssetRegistry } from '../asset-registry/loader';
+import { applyAssetInstallPlan } from '../asset-targets/apply';
+import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
+import type { AssetInstallPlan } from '../asset-targets/install-plan';
 import { recommendBundlesForTarget } from '../asset-targets/recommend';
 import type {
   AgentAssetRegistryEntry,
@@ -22,9 +27,62 @@ export function runAssets(args: string[]): number {
   if (subcommand === 'plan') {
     return runAssetsPlan(rest);
   }
+  if (subcommand === 'apply') {
+    return runAssetsApply(rest);
+  }
+  if (subcommand === 'check') {
+    return runAssetsCheck(rest);
+  }
 
   printUsage();
   return 1;
+}
+
+function runAssetsApply(args: string[]): number {
+  const options = parseApplyOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+
+  try {
+    const plan = JSON.parse(readFileSync(options.value.planPath, 'utf8')) as AssetInstallPlan;
+    const result = applyAssetInstallPlan(plan);
+    console.log(`applied-actions: ${result.appliedActions.length}`);
+    return 0;
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error));
+    return 1;
+  }
+}
+
+function runAssetsCheck(args: string[]): number {
+  const options = parseTargetJsonOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+
+  const loaded = loadAgentAssetRegistry();
+  const result = checkInstalledAssets({
+    targetDir: options.value.targetDir,
+    agentAssetsDir: loaded.agentAssetsDir,
+    registry: loaded.registry,
+  });
+
+  if (options.value.json) {
+    console.log(JSON.stringify(result, null, 2));
+  } else if (result.issues.length === 0) {
+    console.log('assets check passed');
+  } else {
+    for (const issue of result.issues) {
+      console.log(`${issue.type}: ${issue.message}`);
+    }
+  }
+
+  return result.issues.length === 0 ? 0 : 1;
 }
 
 function runAssetsList(args: string[]): number {
@@ -102,6 +160,13 @@ function runAssetsPlan(args: string[]): number {
       console.log(`actions: ${plan.actions.length}`);
       console.log('dry-run: true');
     }
+    if (options.value.outPath) {
+      mkdirSync(dirname(options.value.outPath), { recursive: true });
+      writeFileSync(options.value.outPath, `${JSON.stringify(plan, null, 2)}\n`);
+      if (!options.value.json) {
+        console.log(`plan: ${options.value.outPath}`);
+      }
+    }
     return 0;
   } catch (error) {
     console.error(error instanceof Error ? error.message : String(error));
@@ -127,6 +192,11 @@ interface TargetJsonOptions {
 interface PlanOptions extends TargetJsonOptions {
   bundleIds: string[];
   host: AssetRegistryHost;
+  outPath?: string;
+}
+
+interface ApplyOptions {
+  planPath: string;
 }
 
 type TargetJsonParseResult =
@@ -135,6 +205,10 @@ type TargetJsonParseResult =
 
 type PlanParseResult =
   | { ok: true; value: PlanOptions }
+  | { ok: false; error: string };
+
+type ApplyParseResult =
+  | { ok: true; value: ApplyOptions }
   | { ok: false; error: string };
 
 function parseListOptions(args: string[]): ParseResult {
@@ -212,8 +286,18 @@ function parsePlanOptions(args: string[]): PlanParseResult {
       index += 1;
     } else if (arg === '--host') {
       const host = args[index + 1];
-      if (!isHost(host)) return { ok: false, error: 'Expected --host codex' };
+      if (!isHost(host)) {
+        return {
+          ok: false,
+          error: 'Expected --host codex|claude-code|gemini-cli|antigravity',
+        };
+      }
       options.host = host;
+      index += 1;
+    } else if (arg === '--out') {
+      const outPath = args[index + 1];
+      if (!outPath) return { ok: false, error: 'Expected --out <path>' };
+      options.outPath = outPath;
       index += 1;
     } else if (arg === '--json') {
       options.json = true;
@@ -227,6 +311,25 @@ function parsePlanOptions(args: string[]): PlanParseResult {
   }
 
   return { ok: true, value: options };
+}
+
+function parseApplyOptions(args: string[]): ApplyParseResult {
+  let planPath = '';
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === '--plan') {
+      const value = args[index + 1];
+      if (!value) return { ok: false, error: 'Expected --plan <path>' };
+      planPath = value;
+      index += 1;
+    } else {
+      return { ok: false, error: `Unknown assets apply option: ${arg}` };
+    }
+  }
+
+  if (!planPath) return { ok: false, error: 'Expected --plan <path>' };
+  return { ok: true, value: { planPath } };
 }
 
 function listRegistryAssets(options: AssetListOptions): number {
@@ -274,12 +377,19 @@ function isVisibilityFilter(value: string | undefined): value is VisibilityFilte
 }
 
 function isHost(value: string | undefined): value is AssetRegistryHost {
-  return value === 'codex';
+  return (
+    value === 'codex' ||
+    value === 'claude-code' ||
+    value === 'gemini-cli' ||
+    value === 'antigravity'
+  );
 }
 
 function printUsage(): void {
   console.error('Usage:');
   console.error('  pro-gov assets list [--registry] [--json] [--visibility public|private|third-party|all]');
   console.error('  pro-gov assets recommend [--target <path>] [--json]');
-  console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex] [--json]');
+  console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--out <path>] [--json]');
+  console.error('  pro-gov assets apply --plan <path>');
+  console.error('  pro-gov assets check [--target <path>] [--json]');
 }

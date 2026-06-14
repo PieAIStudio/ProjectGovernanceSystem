@@ -331,7 +331,7 @@ Execution record:
 ## Task 7: Plan Generation
 
 - [x] Create an initial asset plan JSON format.
-- [ ] Extend the plan operation model with exact operations:
+- [x] Extend the plan operation model with exact operations:
   - create directory;
   - create symlink;
   - update managed symlink;
@@ -341,17 +341,18 @@ Execution record:
 - [x] Add `pro-gov assets plan --target <path> --bundle <id> --host <host> --json`.
 - [x] Support host:
   - `codex`
-- [ ] Support hosts:
+- [x] Support hosts:
   - `claude-code`
   - `gemini-cli`
   - `antigravity`
 - [x] Map Codex project skills to `.agents/skills`.
-- [ ] Map Gemini CLI and Antigravity project skills to
+- [x] Map Gemini CLI and Antigravity project skills to
   `.agents/skills`.
-- [ ] Map Claude Code project skills to `.claude/skills`.
+- [x] Map Claude Code project skills to `.claude/skills`.
 - [x] Test dry-run plan output and verify target files are not written.
-- [ ] Add `--out <file>` to write a plan artifact without applying it.
-- [ ] Add conflict checks and exact plan output snapshots for each host.
+- [x] Add `--out <file>` to write a plan artifact without applying it.
+- [x] Add conflict checks for unmanaged targets.
+- [ ] Add exact plan output snapshots for each host.
 
 Execution record:
 
@@ -360,19 +361,33 @@ Execution record:
   `.pro-gov/assets.json` and `.pro-gov/assets.lock.json` write actions.
 - No target files are written by `assets plan`; tests assert `.agents` and
   `.pro-gov` remain absent.
+- Added `create-dir`, `symlink`, `update-symlink`, and `write-file` actions.
+- Added host mapping for Codex, Gemini CLI, Antigravity, and Claude Code.
+- Added `--out <file>` for reviewable plan artifacts.
 
 ## Task 8: Safe Apply And Check
 
-- [ ] Add `pro-gov assets apply --plan <file>`.
-- [ ] Use absolute symlinks.
-- [ ] Refuse to overwrite unmanaged files, unmanaged directories, and
+- [x] Add `pro-gov assets apply --plan <file>`.
+- [x] Use absolute symlinks.
+- [x] Refuse to overwrite unmanaged files, unmanaged directories, and
   unmanaged symlinks.
-- [ ] Allow updates only when `.pro-gov/assets.lock.json` proves ownership.
-- [ ] Add `pro-gov assets check --target <path> --json`.
-- [ ] Check dangling symlinks, missing sources, hash drift, unmanaged conflicts,
-  and unsupported host folders.
-- [ ] Test apply/check in temp target projects.
-- [ ] Test that apply leaves OneDrive sources untouched.
+- [x] Allow updates only when `.pro-gov/assets.lock.json` proves ownership.
+- [x] Add `pro-gov assets check --target <path> --json`.
+- [x] Check dangling symlinks, missing sources, hash drift, and unmanaged
+  conflicts.
+- [ ] Check unsupported host folders.
+- [x] Test apply/check in temp target projects.
+- [x] Test that apply works from PGS sources without touching OneDrive sources.
+
+Execution record:
+
+- Added `applyAssetInstallPlan()` and `checkInstalledAssets()`.
+- `assets apply` applies a reviewed plan file only.
+- `assets check` reads `.pro-gov/assets.lock.json` and reports missing lock,
+  missing target, unmanaged conflict, dangling symlink, missing source,
+  hash drift, and unknown asset issues.
+- Tests verify absolute symlinks, managed metadata, unmanaged conflict refusal,
+  clean check, hash drift, dangling symlink, and CLI plan/apply/check flow.
 
 ## Task 9: ProjectLens Absorption
 

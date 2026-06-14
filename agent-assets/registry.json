@@ -10,7 +10,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/beginner-friendly-docs",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -29,7 +32,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/chapter-doctor",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -48,7 +54,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/comm-coach",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -67,7 +76,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/directed-development",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -86,7 +98,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/doc-cross-validator",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -105,7 +120,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/experience-capture",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -124,7 +142,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/founder-log-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -143,7 +164,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/goalcascade",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -162,7 +186,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/knowledge-node",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -181,7 +208,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/mermaid-diagrams",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -200,7 +230,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/my-skills-manager",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -219,7 +252,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/novel-chapter-orchestrator",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -238,7 +274,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/pieai-publish",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -257,7 +296,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/plot-beats",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -276,7 +318,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/project-architecture-lens",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -296,7 +341,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/prose-lint",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -315,7 +363,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/prose-signature",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -334,7 +385,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/publish-gate",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -353,7 +407,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/reader-experience-map",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -372,7 +429,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/screenwalk",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -391,7 +451,10 @@
       "sourceKind": "local",
       "sourcePath": "skills/pie-skills/truth-surface-audit",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -411,7 +474,10 @@
       "sourceKind": "local-pack",
       "sourcePath": "skills/dokobot/deep-research",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -431,7 +497,10 @@
       "sourceKind": "local-pack",
       "sourcePath": "skills/dokobot/dokobot",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -451,7 +520,10 @@
       "sourceKind": "local-pack",
       "sourcePath": "skills/dokobot/web-search",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -471,7 +543,10 @@
       "sourceKind": "local-pack",
       "sourcePath": "skills/dokobot/web-summarization",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -491,7 +566,10 @@
       "sourceKind": "local-pack",
       "sourcePath": "skills/dokobot/web-translation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -511,7 +589,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/agent-browser",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -531,7 +612,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/agent-device",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -551,7 +635,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/algorithmic-art",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -571,7 +658,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/android-device-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -591,7 +681,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/brand-guidelines",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -611,7 +704,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/browser-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -631,7 +727,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/canvas-design",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -651,7 +750,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/claude-api",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -671,7 +773,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/computer-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -691,7 +796,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/defuddle",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -711,7 +819,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/doc-coauthoring",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -731,7 +842,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/docx",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -751,7 +865,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/dogfood",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -771,7 +888,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/frontend-design",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -791,7 +911,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/generate2dmap",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -811,7 +934,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/generate2dsprite",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -831,7 +957,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/harmonyos-device-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -851,7 +980,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/impeccable",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -871,7 +1003,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/internal-comms",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -891,7 +1026,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/ios-device-automation",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -911,7 +1049,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/json-canvas",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -931,7 +1072,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/mcp-builder",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -951,7 +1095,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/obsidian-bases",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -971,7 +1118,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/obsidian-cli",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -991,7 +1141,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/obsidian-markdown",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1011,7 +1164,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/pdf",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1031,7 +1187,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/pptx",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1051,7 +1210,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/skill-creator",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1071,7 +1233,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/slack-gif-creator",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1091,7 +1256,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/sprite-sheet-pipeline",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1111,7 +1279,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/startup-pressure-test",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1131,7 +1302,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/supabase",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1151,7 +1325,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/supabase-postgres-best-practices",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1171,7 +1348,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/template-skill",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1191,7 +1371,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/theme-factory",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1211,7 +1394,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/ui-ux-pro-max",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1231,7 +1417,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/vitest-midscene-e2e",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1251,7 +1440,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/web-artifacts-builder",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",
@@ -1271,7 +1463,10 @@
       "sourceKind": "npx",
       "sourcePath": "skills/npx-skills/.agents/skills/xlsx",
       "hosts": [
-        "codex"
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
       ],
       "tags": [
         "skill",

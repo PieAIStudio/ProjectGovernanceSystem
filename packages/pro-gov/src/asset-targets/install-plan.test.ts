@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
@@ -18,7 +18,7 @@ const registry: AgentAssetRegistry = {
       visibility: 'private',
       sourceKind: 'local',
       sourcePath: 'skills/pie-skills/example',
-      hosts: ['codex'],
+      hosts: ['codex', 'claude-code', 'gemini-cli', 'antigravity'],
       tags: ['skill'],
       publishable: false,
       origin: 'test',
@@ -63,18 +63,65 @@ test('createAssetInstallPlan creates a dry install plan without writing target f
   assert.equal(plan.dryRun, true);
   assert.deepEqual(plan.bundleIds, ['base-governance']);
   assert.ok(
+    plan.actions.some((action) => action.type === 'create-dir' && action.targetPath === '.agents/skills'),
+  );
+  assert.ok(
     plan.actions.some(
       (action) => action.type === 'symlink' && action.targetPath === '.agents/skills/example',
     ),
   );
   assert.ok(
     plan.actions.some(
-      (action) =>
-        action.type === 'write-file' && action.targetPath === '.pro-gov/assets.lock.json',
+      (action) => action.type === 'write-file' && action.targetPath === '.pro-gov/assets.lock.json',
     ),
   );
   assert.equal(existsSync(join(targetDir, '.agents')), false);
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
+});
+
+test('createAssetInstallPlan maps supported hosts to the right skill directories', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+
+  const claudePlan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
+    bundleIds: ['base-governance'],
+    host: 'claude-code',
+  });
+  const geminiPlan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
+    bundleIds: ['base-governance'],
+    host: 'gemini-cli',
+  });
+  const antigravityPlan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
+    bundleIds: ['base-governance'],
+    host: 'antigravity',
+  });
+
+  assert.ok(
+    claudePlan.actions.some(
+      (action) => action.type === 'symlink' && action.targetPath === '.claude/skills/example',
+    ),
+  );
+  assert.ok(
+    geminiPlan.actions.some(
+      (action) => action.type === 'symlink' && action.targetPath === '.agents/skills/example',
+    ),
+  );
+  assert.ok(
+    antigravityPlan.actions.some(
+      (action) => action.type === 'symlink' && action.targetPath === '.agents/skills/example',
+    ),
+  );
 });
 
 test('createAssetInstallPlan reports unsupported hosts and missing asset ids', () => {
@@ -92,6 +139,12 @@ test('createAssetInstallPlan reports unsupported hosts and missing asset ids', (
       }),
     /Unknown asset id/,
   );
+});
+
+test('createAssetInstallPlan refuses unmanaged existing targets', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  writeFileSync(join(targetDir, '.agents/skills/example'), 'unmanaged file\n');
 
   assert.throws(
     () =>
@@ -108,9 +161,53 @@ test('createAssetInstallPlan reports unsupported hosts and missing asset ids', (
           },
         ],
         bundleIds: ['base-governance'],
-        host: 'claude-code',
+        host: 'codex',
       }),
-    /Only the codex host adapter/,
+    /Refusing to overwrite unmanaged target/,
+  );
+});
+
+test('createAssetInstallPlan allows managed symlink updates', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  const oldSource = join(agentAssetsDir, 'old-example');
+  writeFileSync(oldSource, 'old\n');
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  symlinkSync(oldSource, join(targetDir, '.agents/skills/example'));
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        bundleIds: ['base-governance'],
+        assets: [
+          {
+            id: 'pie-skills/example',
+            sourcePath: 'skills/pie-skills/example',
+            targetPath: '.agents/skills/example',
+            contentHash: 'sha256:old',
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const plan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
+    bundleIds: ['base-governance'],
+    host: 'codex',
+  });
+
+  assert.ok(
+    plan.actions.some(
+      (action) => action.type === 'update-symlink' && action.targetPath === '.agents/skills/example',
+    ),
   );
 });
 

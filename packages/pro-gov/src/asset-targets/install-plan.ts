@@ -1,4 +1,5 @@
-import { basename, join } from 'node:path';
+import { existsSync, lstatSync, readFileSync } from 'node:fs';
+import { basename, dirname, join } from 'node:path';
 
 import { createAgentAssetLockEntries } from '../asset-registry/loader';
 import type { AgentAssetRegistry, AgentAssetRegistryEntry, AssetRegistryHost } from '../asset-registry/registry';
@@ -6,7 +7,17 @@ import type { AgentAssetBundle } from '../asset-bundles/bundles';
 
 export type AssetInstallAction =
   | {
+      type: 'create-dir';
+      targetPath: string;
+    }
+  | {
       type: 'symlink';
+      assetId: string;
+      sourcePath: string;
+      targetPath: string;
+    }
+  | {
+      type: 'update-symlink';
       assetId: string;
       sourcePath: string;
       targetPath: string;
@@ -37,19 +48,22 @@ export interface CreateAssetInstallPlanOptions {
 }
 
 export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): AssetInstallPlan {
-  if (options.host !== 'codex') {
-    throw new Error('Only the codex host adapter is implemented for asset install plans.');
-  }
-
   const assetsById = new Map(options.registry.assets.map((asset) => [asset.id, asset]));
   const bundlesById = new Map(options.bundles.map((bundle) => [bundle.id, bundle]));
   const assetIds = resolveBundleAssetIds(options.bundleIds, bundlesById);
   const assets = assetIds.map((assetId) => {
     const asset = assetsById.get(assetId);
     if (!asset) throw new Error(`Unknown asset id in bundle: ${assetId}`);
+    if (asset.kind === 'skill' && !asset.hosts.includes(options.host)) {
+      throw new Error(`Asset ${assetId} does not support host ${options.host}`);
+    }
     return asset;
   });
   const lockEntries = createAgentAssetLockEntries(options.registry, options.agentAssetsDir, assetIds);
+  const managedTargets = readManagedTargets(options.targetDir);
+  const assetActions = assets.map((asset) =>
+    createAssetAction(asset, options.agentAssetsDir, options.targetDir, options.host, managedTargets),
+  );
   const manifest = {
     schemaVersion: 1,
     host: options.host,
@@ -60,8 +74,26 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
     schemaVersion: 1,
     host: options.host,
     bundleIds: [...options.bundleIds],
-    assets: lockEntries,
+    assets: lockEntries.map((entry) => {
+      const action = assetActions.find((candidate) => 'assetId' in candidate && candidate.assetId === entry.id);
+      return {
+        ...entry,
+        targetPath: action && 'targetPath' in action ? action.targetPath : '',
+      };
+    }),
   };
+  const writeActions: AssetInstallAction[] = [
+    {
+      type: 'write-file',
+      targetPath: '.pro-gov/assets.json',
+      content: `${JSON.stringify(manifest, null, 2)}\n`,
+    },
+    {
+      type: 'write-file',
+      targetPath: '.pro-gov/assets.lock.json',
+      content: `${JSON.stringify(lockfile, null, 2)}\n`,
+    },
+  ];
 
   return {
     schemaVersion: 1,
@@ -70,19 +102,7 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
     host: options.host,
     bundleIds: [...options.bundleIds],
     assetIds,
-    actions: [
-      ...assets.map((asset) => createSymlinkAction(asset, options.agentAssetsDir)),
-      {
-        type: 'write-file',
-        targetPath: '.pro-gov/assets.json',
-        content: `${JSON.stringify(manifest, null, 2)}\n`,
-      },
-      {
-        type: 'write-file',
-        targetPath: '.pro-gov/assets.lock.json',
-        content: `${JSON.stringify(lockfile, null, 2)}\n`,
-      },
-    ],
+    actions: [...createDirectoryActions([...assetActions, ...writeActions]), ...assetActions, ...writeActions],
   };
 }
 
@@ -101,25 +121,80 @@ function resolveBundleAssetIds(
   return [...ids].sort();
 }
 
-function createSymlinkAction(
+function createAssetAction(
   asset: AgentAssetRegistryEntry,
   agentAssetsDir: string,
+  targetDir: string,
+  host: AssetRegistryHost,
+  managedTargets: ReadonlySet<string>,
 ): AssetInstallAction {
   const sourcePath = join(agentAssetsDir, asset.sourcePath);
+  const targetPath = resolveHostTargetPath(asset, host);
+  const targetAbsolutePath = join(targetDir, targetPath);
+  const targetExists = pathExistsEvenIfDanglingSymlink(targetAbsolutePath);
+
+  if (targetExists) {
+    const stats = lstatSync(targetAbsolutePath);
+    if (stats.isSymbolicLink() && managedTargets.has(targetPath)) {
+      return {
+        type: 'update-symlink',
+        assetId: asset.id,
+        sourcePath,
+        targetPath,
+      };
+    }
+    throw new Error(`Refusing to overwrite unmanaged target: ${targetPath}`);
+  }
+
   return {
     type: 'symlink',
     assetId: asset.id,
     sourcePath,
-    targetPath: resolveCodexTargetPath(asset),
+    targetPath,
   };
 }
 
-function resolveCodexTargetPath(asset: AgentAssetRegistryEntry): string {
+function resolveHostTargetPath(asset: AgentAssetRegistryEntry, host: AssetRegistryHost): string {
   if (asset.kind === 'skill') {
+    if (host === 'claude-code') {
+      return `.claude/skills/${basename(asset.sourcePath)}`;
+    }
     return `.agents/skills/${basename(asset.sourcePath)}`;
   }
   if (asset.kind === 'rule') {
     return `.pro-gov/agent-assets/rules/${basename(asset.sourcePath)}`;
   }
   return `.pro-gov/agent-assets/commands/${basename(asset.sourcePath)}`;
+}
+
+function createDirectoryActions(actions: readonly AssetInstallAction[]): AssetInstallAction[] {
+  const directories = new Set<string>();
+  for (const action of actions) {
+    if (action.type === 'create-dir') continue;
+    const directory = dirname(action.targetPath);
+    if (directory !== '.') directories.add(directory);
+  }
+  return [...directories].sort().map((targetPath) => ({ type: 'create-dir', targetPath }));
+}
+
+function readManagedTargets(targetDir: string): ReadonlySet<string> {
+  const lockfilePath = join(targetDir, '.pro-gov/assets.lock.json');
+  if (!existsSync(lockfilePath)) return new Set();
+  try {
+    const lockfile = JSON.parse(readFileSync(lockfilePath, 'utf8')) as {
+      assets?: Array<{ targetPath?: string }>;
+    };
+    return new Set((lockfile.assets ?? []).map((asset) => asset.targetPath).filter(Boolean) as string[]);
+  } catch {
+    return new Set();
+  }
+}
+
+function pathExistsEvenIfDanglingSymlink(path: string): boolean {
+  try {
+    lstatSync(path);
+    return true;
+  } catch {
+    return false;
+  }
 }
