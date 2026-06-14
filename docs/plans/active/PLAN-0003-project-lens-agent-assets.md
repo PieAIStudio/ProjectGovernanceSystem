@@ -151,7 +151,7 @@ Expected: all pass before feature work begins.
 
 ## Task 2: Asset Inventory Snapshot
 
-- [ ] Create a read-only inventory script or test helper that scans:
+- [x] Create a read-only inventory script or test helper that scans:
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyGlobalSkills`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/_npx_skills/.agents/skills`
@@ -161,15 +161,33 @@ Expected: all pass before feature work begins.
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectRules`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectCommands`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyGlobalCommands`
-- [ ] Exclude `.DS_Store`, `.git`, `node_modules`, temp files, and generated
+- [x] Exclude `.DS_Store`, `.git`, `node_modules`, temp files, and generated
   output.
-- [ ] Produce an inventory report with counts, missing `SKILL.md` files,
+- [x] Produce an inventory report with counts, missing `SKILL.md` files,
   dangling symlinks, duplicate names, and likely command-to-skill candidates.
-- [ ] Classify source families as `pie-skills`, `dokobot`, `npx-skills`,
+- [x] Classify source families as `pie-skills`, `dokobot`, `npx-skills`,
   `pie-rules`, or `pie-commands`.
-- [ ] Report npx lock entries whose skill directory is missing and skill
+- [x] Report npx lock entries whose skill directory is missing and skill
   directories missing from the lock.
-- [ ] Do not modify the OneDrive sources.
+- [x] Do not modify the OneDrive sources.
+
+Result on 2026-06-15:
+
+- `pie-skills`: 19
+- `dokobot`: 5
+- `npx-skills`: 39
+- `pie-rules`: 5
+- `pie-commands`: 4
+- total assets: 72
+- issues: 5
+
+Issues found:
+
+- Dangling npx compatibility symlink:
+  `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/_npx_skills/skills/webapp-testing`
+- Directories missing root `SKILL.md` and therefore not treated as skills:
+  `founder-log-automation-workspace`, `knowledge-node-workspace`,
+  `novel-creator-skill`, `superpowers`
 
 ## Task 3: Agent Asset Storage Skeleton
 
