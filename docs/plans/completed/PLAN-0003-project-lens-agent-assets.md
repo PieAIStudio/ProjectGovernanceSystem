@@ -2,8 +2,8 @@
 id: PLAN-0003
 title: Project Lens And Agent Asset Manager Implementation
 type: plan
-status: draft
-canonical: false
+status: completed
+canonical: true
 owner: ai-assisted
 created: 2026-06-15
 last_reviewed: 2026-06-15
@@ -146,8 +146,8 @@ Expected: all pass before feature work begins.
   - keep `agent-assets/skills/npx-skills/` as a native `npx skills` work root
     with `skills-lock.json` and `.agents/skills/`;
   - do not create an internal human-facing compatibility symlink layer.
-- [ ] Run governance checks after this plan update.
-- [ ] Commit the follow-up plan/spec update.
+- [x] Run governance checks after this plan update.
+- [x] Commit the follow-up plan/spec update.
 
 ## Task 2: Asset Inventory Snapshot
 
@@ -323,14 +323,15 @@ Execution record:
   - `CLAUDE.md`
   - `GEMINI.md`
   - `docs/research`
-  - `chapters`
-  - README keywords for research and writing
-- [ ] Add `pro-gov assets discover --target <path> --json`.
+  - `chapters`, `src/chapters`, and `books/*/chapters`
+  - README keywords for research
+  - AGENTS writing-mode signals
+- [x] Add `pro-gov assets discover --target <path> --json`.
 - [x] Add deterministic `pro-gov assets recommend --target <path> --json`.
 - [x] Include recommendation reasons and confidence, but do not write files.
 - [x] Test with temp fixtures for empty project, frontend app, research docs,
   and writing projects.
-- [ ] Add conflict discovery for existing managed and unmanaged asset targets.
+- [x] Add conflict discovery for existing managed and unmanaged asset targets.
 
 Execution record:
 
@@ -338,6 +339,9 @@ Execution record:
   `novel-writing` bundle contents.
 - Added recommendations based on local evidence only; no AI guessing and no
   writes.
+- Added `pro-gov assets discover --target <path> --json`.
+- Tightened writing recommendations after real dry-run feedback so README words
+  alone do not install writing bundles.
 
 ## Task 7: Plan Generation
 
@@ -363,7 +367,7 @@ Execution record:
 - [x] Test dry-run plan output and verify target files are not written.
 - [x] Add `--out <file>` to write a plan artifact without applying it.
 - [x] Add conflict checks for unmanaged targets.
-- [ ] Add exact plan output snapshots for each host.
+- [x] Add exact plan output snapshots for each host.
 
 Execution record:
 
@@ -375,6 +379,8 @@ Execution record:
 - Added `create-dir`, `symlink`, `update-symlink`, and `write-file` actions.
 - Added host mapping for Codex, Gemini CLI, Antigravity, and Claude Code.
 - Added `--out <file>` for reviewable plan artifacts.
+- Tests assert exact skill target directories for Codex, Claude Code, Gemini
+  CLI, and Antigravity.
 
 ## Task 8: Safe Apply And Check
 
@@ -386,7 +392,7 @@ Execution record:
 - [x] Add `pro-gov assets check --target <path> --json`.
 - [x] Check dangling symlinks, missing sources, hash drift, and unmanaged
   conflicts.
-- [ ] Check unsupported host folders.
+- [x] Check unsupported host folders.
 - [x] Test apply/check in temp target projects.
 - [x] Test that apply works from PGS sources without touching OneDrive sources.
 
@@ -398,7 +404,8 @@ Execution record:
   missing target, unmanaged conflict, dangling symlink, missing source,
   hash drift, and unknown asset issues.
 - Tests verify absolute symlinks, managed metadata, unmanaged conflict refusal,
-  clean check, hash drift, dangling symlink, and CLI plan/apply/check flow.
+  clean check, hash drift, dangling symlink, unsupported host folders, and CLI
+  plan/apply/check flow.
 
 ## Task 9: ProjectLens Absorption
 
@@ -408,12 +415,12 @@ Execution record:
 - [x] Add `agent-assets/bundles/project-lens.json`.
 - [x] Add `packages/pro-gov/src/lens/` with read-only inspection helpers.
 - [x] Add `pro-gov lens scan --target <path> --json`.
-- [ ] Add `pro-gov lens inspect --target <path> --format text|json` if scan
+- [x] Add `pro-gov lens inspect --target <path> --format text|json` if scan
   is not enough after user testing.
-- [ ] Add `pro-gov lens report --target <path> --out <path>`.
+- [x] Add `pro-gov lens report --target <path> --out <path>`.
 - [x] Test lens commands against temp projects.
-- [ ] Test lens commands against one read-only local target.
-- [ ] Add a retirement checklist documenting when the old ProjectLens root can
+- [x] Test lens commands against one read-only local target.
+- [x] Add a retirement checklist documenting when the old ProjectLens root can
   be deleted.
 
 Execution record:
@@ -426,40 +433,66 @@ Execution record:
 - Did not migrate historical Show or Non-Heroes audit evidence.
 - Added `pro-gov lens scan`, which returns local read-only evidence for AI audit
   work instead of pretending to generate a full expert report by itself.
+- Added `pro-gov lens inspect` and `pro-gov lens report`.
+- Added `docs/reference/project-lens/retirement-checklist.md`.
+- Real local lens dry-runs passed for ProjectLens and PieAIStudio-Site.
 
 ## Task 10: Package Boundary And Docs
 
-- [ ] Update `packages/pro-gov/scripts/copy-assets.mjs` to include only public
+- [x] Update `packages/pro-gov/scripts/copy-assets.mjs` to include only public
   package-safe assets.
-- [ ] Add package tests proving private and third-party bodies are excluded from
+- [x] Add package tests proving private and third-party bodies are excluded from
   `@pieai/pro-gov` tarballs.
-- [ ] Update `packages/pro-gov/README.md` and `cli-guide.md`.
-- [ ] Update root `README.md` to explain:
+- [x] Update `packages/pro-gov/README.md` and `cli-guide.md`.
+- [x] Update root `README.md` to explain:
   - `doc-gov` validates docs;
   - `pro-gov` manages project governance, lens inspection, and agent assets;
   - private assets are local to Yuanfei's PGS checkout unless promoted.
-- [ ] Update adoption docs with the new asset workflow.
+- [x] Update adoption docs with the new asset workflow.
+
+Execution record:
+
+- Added an explicit package-copy guard against `agent-assets`.
+- Added package-boundary tests proving private and third-party asset bodies are
+  not copied into `packages/pro-gov/assets`.
+- Updated root README, package README, CLI guide, adoption playbook, sync
+  strategy, and asset READMEs.
 
 ## Task 11: Real-World Dry Runs
 
-- [ ] Run `pro-gov assets discover --target` against selected local projects
+- [x] Run `pro-gov assets discover --target` against selected local projects
   without applying:
   - `ProjectGovernanceSystem`
   - `ProjectLens`
   - one frontend project
   - one writing/doc-only project
-- [ ] Run `pro-gov assets recommend --target` and inspect reasons.
-- [ ] Run `pro-gov lens inspect --target` on ProjectLens and one downstream
+- [x] Run `pro-gov assets recommend --target` and inspect reasons.
+- [x] Run `pro-gov lens inspect --target` on ProjectLens and one downstream
   project.
-- [ ] Use only temp fixture targets for `assets apply` unless the user
+- [x] Use only temp fixture targets for `assets apply` unless the user
   explicitly approves a real target.
+
+Execution record:
+
+- Dry-run output directory: `/tmp/pro-gov-dry-run-20260615021603`.
+- `ProjectGovernanceSystem`: recommended `base-governance` and
+  `research-docs`.
+- `ProjectLens`: recommended `base-governance` and `research-docs`.
+- `PieAIStudio-Site`: recommended `base-governance` and `frontend-app`.
+- `Anvil`: recommended `base-governance`, `research-docs`, and
+  `novel-writing`.
+- `pro-gov lens inspect` passed on ProjectLens and PieAIStudio-Site.
+- `pro-gov lens report` wrote a ProjectLens report to `/tmp`.
+- A real `assets plan` dry-run against PieAIStudio-Site correctly refused an
+  unmanaged existing target: `.agents/skills/frontend-design`.
+- No `assets apply` was run against any real downstream project.
 
 ## Task 12: Final Verification And Closeout
 
-- [ ] Run `pnpm typecheck`.
-- [ ] Run `pnpm test`.
-- [ ] Run `pnpm build`.
-- [ ] Run:
+- [x] Run `pnpm typecheck`.
+- [x] Run `pnpm test`.
+- [x] Run `pnpm build`.
+- [x] Run:
 
 ```bash
 node packages/doc-gov/dist/cli.js router-check
@@ -473,37 +506,51 @@ pnpm --filter @pieai/pro-gov pack --dry-run
 git diff --check
 ```
 
-- [ ] Verify npm tarball contents manually list no private or third-party asset
+- [x] Verify npm tarball contents manually list no private or third-party asset
   bodies.
-- [ ] Verify OneDrive sources still exist.
-- [ ] Verify old ProjectLens root still exists.
-- [ ] Verify `agent-assets/skills/npx-skills` remains a native npx root and has
+- [x] Verify OneDrive sources still exist.
+- [x] Verify old ProjectLens root still exists.
+- [x] Verify `agent-assets/skills/npx-skills` remains a native npx root and has
   no internal compatibility symlink mirror.
-- [ ] Move this plan to `docs/plans/completed/` only after implementation is
+- [x] Move this plan to `docs/plans/completed/` only after implementation is
   complete.
-- [ ] Prepare a final user report listing:
+- [x] Prepare a final user report listing:
   - what moved;
   - what stayed private;
   - what is package-visible;
   - which checks passed;
   - whether ProjectLens can be deleted.
 
+Execution record:
+
+- Final verification ran after this closeout update, so the completed plan,
+  moved spec, and regenerated manifest were included in the checked state.
+- `pnpm test` passed 38 `@pieai/doc-gov` tests and 56 `@pieai/pro-gov` tests.
+- `pnpm typecheck`, `pnpm build`, doc-gov router/check/scan/links/audit,
+  `pro-gov doctor`, both pack dry-runs, and `git diff --check` passed.
+- `pnpm --filter @pieai/pro-gov pack --dry-run --json` listed 44 package files
+  and 0 forbidden private/third-party asset paths.
+- OneDrive source roots and `/Users/yuanfei/PieAI/ProjectLens` remain present.
+- `agent-assets/skills/npx-skills` still contains `skills-lock.json` and
+  `.agents/skills/`, and no `skills/` compatibility mirror.
+
 ## Acceptance
 
-- [ ] User approves `SPEC-0003` and `PLAN-0003`.
-- [ ] The worktree branch remains isolated from `main`.
-- [ ] OneDrive is no longer the canonical source after import, but remains
+- [x] User approves `SPEC-0003` and `PLAN-0003`.
+- [x] The worktree branch remains isolated from `main`.
+- [x] OneDrive is no longer the canonical source after import, but remains
   untouched as backup.
-- [ ] Private and third-party assets live in PGS and are excluded from npm.
-- [ ] `npx-skills` is managed as a native `npx skills` root inside PGS, with no
+- [x] Private and third-party assets live in PGS and are excluded from npm.
+- [x] `npx-skills` is managed as a native `npx skills` root inside PGS, with no
   internal compatibility symlink layer.
 - [x] ProjectLens reusable capability works from PGS.
 - [x] Historical ProjectLens audits are not migrated.
-- [ ] `pro-gov assets` can list, discover, recommend, plan, apply, and check.
-- [ ] `pro-gov lens` can inspect and report.
-- [ ] All tests and governance checks pass.
-- [ ] The old ProjectLens root is ready for user-approved deletion.
+- [x] `pro-gov assets` can list, discover, recommend, plan, apply, and check.
+- [x] `pro-gov lens` can inspect and report.
+- [x] All tests and governance checks pass.
+- [x] The old ProjectLens root is ready for user-approved deletion.
 
 ## Closeout
 
-When complete, move this plan to `docs/plans/completed/` and set `status: completed`.
+Completed on 2026-06-15. The old ProjectLens root is ready for user-approved
+deletion after user testing, but this task did not delete it.

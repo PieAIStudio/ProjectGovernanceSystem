@@ -21,6 +21,17 @@ test('asset inventory includes reusable project-governance assets', () => {
   assert.ok(paths.includes('docs/reference/adoption/adoption-playbook.md'));
 });
 
+test('package asset copy excludes private and third-party agent asset bodies', () => {
+  const packageJson = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8')) as {
+    files: string[];
+  };
+
+  assert.equal(packageJson.files.includes('agent-assets'), false);
+  assert.equal(existsSync(join(packageRoot, 'assets/agent-assets')), false);
+  assert.equal(existsSync(join(packageRoot, 'assets/skills')), false);
+  assert.equal(existsSync(join(packageRoot, 'assets/docs/reference/adoption')), true);
+});
+
 test('assets list prints packaged asset paths', () => {
   const result = spawnSync(process.execPath, [join(packageRoot, 'dist/cli.js'), 'assets', 'list'], {
     cwd: packageRoot,

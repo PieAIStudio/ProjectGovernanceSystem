@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export interface TargetSignals {
@@ -42,12 +42,16 @@ export function discoverTargetSignals(targetDir: string): TargetSignals {
   );
   const researchSignals = [
     existsSync(join(targetDir, 'docs/research')) ? 'docs/research' : '',
+    existsSync(join(targetDir, 'research')) ? 'research' : '',
+    hasBookChildDirectory(targetDir, 'research') ? 'books/*/research' : '',
     textFileIncludes(join(targetDir, 'README.md'), ['research', '调研']) ? 'README research' : '',
   ].filter(Boolean);
   const writingSignals = [
     existsSync(join(targetDir, 'chapters')) ? 'chapters' : '',
-    textFileIncludes(join(targetDir, 'README.md'), ['novel', 'fiction', 'story', '小说'])
-      ? 'README writing'
+    existsSync(join(targetDir, 'src/chapters')) ? 'src/chapters' : '',
+    hasBookChildDirectory(targetDir, 'chapters') ? 'books/*/chapters' : '',
+    textFileIncludes(join(targetDir, 'AGENTS.md'), ['writing mode', 'novel chapter', 'book content'])
+      ? 'AGENTS writing'
       : '',
   ].filter(Boolean);
 
@@ -115,4 +119,16 @@ function textFileIncludes(path: string, needles: readonly string[]): boolean {
   if (!existsSync(path)) return false;
   const contents = readFileSync(path, 'utf8').toLowerCase();
   return needles.some((needle) => contents.includes(needle.toLowerCase()));
+}
+
+function hasBookChildDirectory(targetDir: string, childName: string): boolean {
+  const booksDir = join(targetDir, 'books');
+  if (!existsSync(booksDir)) return false;
+  try {
+    return readdirSync(booksDir, { withFileTypes: true }).some(
+      (entry) => entry.isDirectory() && existsSync(join(booksDir, entry.name, childName)),
+    );
+  } catch {
+    return false;
+  }
 }

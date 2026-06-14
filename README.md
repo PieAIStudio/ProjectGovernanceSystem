@@ -7,9 +7,12 @@ AI-native documentation governance, agents routing, and workflow integration pro
 
 This repository is the upstream home of the Project Governance System, the
 published `@pieai/doc-gov` validator package, and the project-level
-`@pieai/pro-gov` package surface. It defines the thin shared rules that PieAI
-projects use to keep AI-generated plans, specs, decisions, references, and
-routing instructions from turning into unmanaged clutter.
+`@pieai/pro-gov` package surface. It also holds Yuanfei's local private
+`agent-assets/` registry for agent-facing skills, rules, commands, and the
+absorbed ProjectLens inspection capability. It defines the thin shared rules
+that PieAI projects use to keep AI-generated plans, specs, decisions,
+references, routing instructions, and optional agent assets from turning into
+unmanaged clutter.
 
 This root README is for humans. AI agents should use `AGENTS.md` as their startup entrypoint and only read this README when the task is about project positioning, public explanation, or the README itself.
 
@@ -62,6 +65,9 @@ governance wiring:
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list
+pnpm dlx @pieai/pro-gov assets discover --target .
+pnpm dlx @pieai/pro-gov assets recommend --target .
+pnpm dlx @pieai/pro-gov lens inspect --target .
 pnpm dlx @pieai/pro-gov init --profile doc-only --dry-run
 pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
 pnpm dlx @pieai/doc-gov migrate --profile doc-only --check
@@ -73,6 +79,17 @@ If the npm package is not available in your environment yet, run the same comman
 ```bash
 node /path/to/ProjectGovernanceSystem/packages/doc-gov/dist/cli.js doctor
 node /path/to/ProjectGovernanceSystem/packages/pro-gov/dist/cli.js assets list
+```
+
+For Yuanfei's private local agent asset registry, use a full checkout of this
+repository. The public npm package intentionally excludes private and
+third-party skill bodies:
+
+```bash
+node packages/pro-gov/dist/cli.js assets list --json
+node packages/pro-gov/dist/cli.js assets plan --bundle base-governance --target /path/to/project --out /tmp/pro-gov-asset-plan.json
+node packages/pro-gov/dist/cli.js assets apply --plan /tmp/pro-gov-asset-plan.json
+node packages/pro-gov/dist/cli.js assets check --target /path/to/project
 ```
 
 ## Local Checkout Naming
@@ -115,6 +132,8 @@ Use this table before trying to understand the whole repository.
 | Is this project really wired, not just documented? | `doc-gov doctor` |
 | Is this project structurally ready for a selected profile? | `doc-gov migrate --profile <profile> --check` |
 | What project-level assets would be installed or checked? | `pro-gov assets list`, `pro-gov init --profile <profile> --dry-run`, and `pro-gov sync --check` |
+| What agent-facing assets are recommended for a target project? | `pro-gov assets discover`, `pro-gov assets recommend`, and, from a full PGS checkout, `pro-gov assets plan/apply/check` |
+| What local ProjectLens evidence can be collected? | `pro-gov lens inspect` and `pro-gov lens report` |
 | What happens after a plan is done? | `completed` status and completed folders, not active-plan pileup |
 | What stays local to a product project? | project-local canon, runtime truth, product artifacts, verification ladders, and lane wording |
 
@@ -123,7 +142,8 @@ Use this table before trying to understand the whole repository.
 | Layer | Purpose | Example |
 | --- | --- | --- |
 | `packages/doc-gov/` | Validator CLI, schema, lifecycle, templates, validation logic | `completed` status, manifest scan, link checks |
-| `packages/pro-gov/` | Project-level package, reusable asset inventory, read-only init/sync checks | `pro-gov assets list`, `pro-gov init --dry-run`, `pro-gov sync --check` |
+| `packages/pro-gov/` | Project-level package, reusable asset inventory, local inspection, read-only init/sync checks | `pro-gov assets list`, `pro-gov lens inspect`, `pro-gov init --dry-run`, `pro-gov sync --check` |
+| `agent-assets/` | Local private registry for agent-facing skills, rules, commands, bundles, and npx skill cache | `pie-skills`, `dokobot`, `npx-skills`, `pie-rules`, `pie-commands` |
 | `starter/` | New-project starter files | `docs/`, `docs/governance/`, `AGENTS.template.md` |
 | `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
 | `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
@@ -141,6 +161,7 @@ Use this table before trying to understand the whole repository.
   bodies.
 - A fork or copy of the Superpowers plugin.
 - The body of the Directed Development skill.
+- Private or third-party `agent-assets/` bodies inside the public npm package.
 
 Those are project-local or external systems. This repo only defines how projects should integrate with them.
 
@@ -153,8 +174,8 @@ files intentionally.
 
 1. This repo records the upstream contract.
 2. The `@pieai/doc-gov` package supplies the `doc-gov` validation command.
-3. The `@pieai/pro-gov` package supplies starter/profile assets and read-only
-   project-level inspection commands.
+3. The `@pieai/pro-gov` package supplies starter/profile assets, public
+   project-level inspection commands, and read-only sync checks.
 4. AI-assisted migrations compare a project against the matching profile.
 5. `doc-gov migrate --profile <profile> --check` can now do the first read-only
    structural check before any sync work.
@@ -163,7 +184,11 @@ files intentionally.
 7. `pro-gov init --profile <profile> --dry-run`, `pro-gov sync --check`, and
    `pro-gov doctor` help inspect packaged project-level assets without
    overwriting local truth.
-8. Downstream projects should prefer the npm packages; legacy local copies
+8. `pro-gov assets discover`, `pro-gov assets recommend`, and `pro-gov lens
+   inspect/report` can collect local evidence without writing.
+9. A full PGS checkout can additionally plan, apply, and check managed
+   agent-asset symlinks, but only from explicit plan files.
+10. Downstream projects should prefer the npm packages; legacy local copies
    should be removed when scripts and CI are updated together.
 
 Do not silently replace project-local governance with this repo. Use the adoption guides and run each project's doc checks.

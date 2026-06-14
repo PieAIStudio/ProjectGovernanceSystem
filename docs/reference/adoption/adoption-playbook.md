@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-13
+last_reviewed: 2026-06-15
 domain: adoption
 tags:
   - adoption
@@ -27,11 +27,12 @@ Use this when a project wants to migrate into the Project Governance System.
 1. Pick one profile.
 2. Inventory the project's current docs/rules.
 3. Install the governance packages.
-4. Add starter `docs/governance/` and `docs/policy/` files.
-5. Add the selected `docs/governance/agents-routing/` profile rule.
-6. Move current truth into the governed layers.
-7. Archive or delete old systems.
-8. Run validation.
+4. Run project and agent-asset discovery.
+5. Add starter `docs/governance/` and `docs/policy/` files.
+6. Add the selected `docs/governance/agents-routing/` profile rule.
+7. Move current truth into the governed layers.
+8. Archive or delete old systems.
+9. Run validation.
 
 Do not migrate by slowly adding random files. Migrate by making one clear current work surface.
 
@@ -66,6 +67,11 @@ Current package-based method:
   the starter files that would be installed
 - run `pro-gov sync --check` to compare reusable starter files without changing
   the project
+- run `pro-gov assets discover --target <path>` and
+  `pro-gov assets recommend --target <path>` to collect local project signals
+  and suggested agent-asset bundles without changing the project
+- run `pro-gov lens inspect --target <path>` when the project needs a
+  ProjectLens-style local evidence packet
 - run `doc-gov migrate --profile <engineering-runtime|doc-only> --check` before
   changing files so profile mismatches fail early
 - run `doc-gov router-check` after the sync so stale router/profile paths fail
@@ -96,6 +102,27 @@ the private workspace package name is `pro-gov`. Target projects should use
 `@pieai/pro-gov` and `@pieai/doc-gov` for commands, use the canonical GitHub URL
 for public links, and refer to the source as the Project Governance System
 upstream repository.
+
+### Optional: Managed Agent Assets
+
+Agent assets are skills, rules, and commands exposed to AI hosts. They are not
+the same as governed project docs.
+
+Use this flow only from a full Project Governance System checkout that contains
+`agent-assets/`; the public npm package excludes Yuanfei's private and
+third-party skill bodies by design:
+
+```bash
+pro-gov assets discover --target /path/to/project --json
+pro-gov assets recommend --target /path/to/project --json
+pro-gov assets plan --target /path/to/project --bundle base-governance --host codex --out /tmp/pro-gov-asset-plan.json
+pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
+pro-gov assets check --target /path/to/project --json
+```
+
+The plan file is the safety gate. Review it before applying. It creates managed
+symlinks and `.pro-gov/assets.lock.json`; it should not overwrite unmanaged
+project files.
 
 ## Step 4: Add Starter Structure
 
