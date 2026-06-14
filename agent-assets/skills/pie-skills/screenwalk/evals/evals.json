@@ -1,0 +1,90 @@
+{
+  "skill_name": "screenwalk",
+  "evals": [
+    {
+      "id": "sw-screenshot-packet",
+      "prompt": "Use $screenwalk to review 5 screenshots from a first-time onboarding flow. The user is a newcomer trying to finish setup. I need structured findings that another AI can turn into tasks, not just opinions.",
+      "expected_output": "Should frame user/goal/success, order screens by journey, apply the 7-question lens, and output evidence packets with issue id, screen id, journey step, role, severity, layer, evidence type, visual region, description, repro steps, and recommended next action.",
+      "files": []
+    },
+    {
+      "id": "sw-dynamic-sequence",
+      "prompt": "Use $screenwalk on a browser game battle flow. I suspect result overlays, missing motion, and unclear state changes make it feel unlike a normal game. I have before/after screenshots from two turns but no video.",
+      "expected_output": "Should choose the game surface adapter, require ordered screenshot evidence for dynamic issues, mark motion/game-feel claims as sequence or flow-inference rather than screenshot-visible when appropriate, and include game-feel or UIUX roles without pretending the evidence is real user research.",
+      "files": []
+    },
+    {
+      "id": "sw-capture-blocked",
+      "prompt": "Use $screenwalk to review my app, but I cannot provide screenshots, URL, prototype, or any visual artifact. I only remember that it felt confusing.",
+      "expected_output": "Should not hallucinate visual findings. Should mark capture-blocked, ask for screenshots or capture access, and optionally suggest goalcascade only if the issue is really direction-level.",
+      "files": []
+    },
+    {
+      "id": "sw-supa-game-ui",
+      "prompt": "Use $screenwalk for Non-Heroes' first-time player journey: enter game, understand the PvE Boss Race, start battle, see one turn result. Roles should include first-time player, UIUX designer, game-feel reviewer, and skeptical payer. The owner cares about commercial success, PieIP influence, The Swimmer’s Guide to the AI Tsunami, and non-disgusting monetization.",
+      "expected_output": "Should choose game or mixed surface adapter, use project-specific game roles, stay anchored in screens and journey evidence, create evidence packets with surface_type, and escalate upstream to goalcascade only for conflicts about monetization/doctrine/target user rather than silently deciding them.",
+      "files": []
+    },
+    {
+      "id": "sw-visual-obstruction-structured",
+      "prompt": "Use $screenwalk on a game battle screenshot where friendly character nameplates, HP bars, and status chips visibly cover the characters' head/face region. Produce an actionable evidence packet instead of summarizing this only as dense HUD.",
+      "expected_output": "Should create an atomic visual obstruction issue with structured fields rather than only prose. Required structural assertions: issue_type == visual_obstruction, category == head-covered, crop_paths length >= 1, bbox is present, obstruction_findings length >= 1, source_hints length >= 1, related_packets is present, and recommended_next == fix-now.",
+      "assertions": {
+        "contains_packet": {
+          "issue_type": "visual_obstruction",
+          "category": "head-covered",
+          "recommended_next": "fix-now",
+          "min_crop_paths": 1,
+          "requires_bbox": true,
+          "min_obstruction_findings": 1,
+          "min_source_hints": 1,
+          "requires_related_packets": true
+        }
+      },
+      "files": []
+    },
+    {
+      "id": "sw-cross-skill-origin-link",
+      "prompt": "Use $screenwalk to confirm an Experience Capture packet EC-003 that was routed with recommended_next=send-to-screenwalk. The static crop confirms the same obstruction.",
+      "expected_output": "Should create a SW packet that preserves EC-003 in related_packets with relation originated-from, then merge SW/EC packets without keeping duplicate owner-decision items.",
+      "assertions": {
+        "contains_packet": {
+          "source": "screenwalk",
+          "related_packets_contains": {
+            "issue_id": "EC-003",
+            "relation": "originated-from"
+          }
+        }
+      },
+      "files": []
+    },
+    {
+      "id": "sw-owner-review-brief",
+      "prompt": "Use $screenwalk to review three game battle screenshots with first-time player, UIUX designer, and game art director roles. The owner wants to learn from the findings before approving any repair.",
+      "expected_output": "Should remain review-only by default, produce evidence packets, create owner-review-brief.md, include Markdown-rendered screenshot/crop/annotated evidence near the relevant findings, and present an owner decision queue instead of editing code or claiming fixes.",
+      "assertions": {
+        "requires_outputs": [
+          "owner-review-brief.md",
+          "evidence-packets.json"
+        ],
+        "forbids": [
+          "product code edits without owner-selected issue IDs",
+          "auto-repair by default"
+        ]
+      },
+      "files": []
+    },
+    {
+      "id": "sw-pricing-conflict",
+      "prompt": "Use $screenwalk on a pricing-heavy onboarding flow for an AI app. There are 4 screens and conflicting suggestions about whether to push pricing earlier or later.",
+      "expected_output": "Should identify screen-level friction, use merge logic for conflicts, and explicitly recommend upstream goalcascade review when disagreement is really about charging boundary or target user.",
+      "files": []
+    },
+    {
+      "id": "sw-negative-direction-only",
+      "prompt": "A user has no screenshots, no prototype, and no demo URL. They ask whether the product should be a cash-flow product, a community product, or a doctrine showcase in the next 60 days.",
+      "expected_output": "Should not pretend to run ScreenWalk or invent visual evidence. Should recommend goalcascade because the request is upstream direction and has no screen surface.",
+      "files": []
+    }
+  ]
+}

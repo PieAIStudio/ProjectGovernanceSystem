@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<title>读者体验图谱 · dashboard mockup</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#14161c;color:#e8e8ec;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding:22px;line-height:1.55}
+  .wrap{max-width:760px;margin:0 auto}
+  h1{font-size:19px;font-weight:600}
+  h1 .dim{color:#9aa0ad;font-weight:400;font-size:13px}
+  .note{color:#7f8593;font-size:11.5px;margin-top:3px}
+  .readers{display:flex;gap:8px;align-items:center;margin:15px 0}
+  .rtab{padding:5px 13px;border-radius:999px;background:#1e212b;border:1px solid #2e323f;font-size:12.5px;color:#c4c8d2}
+  .rtab.active{background:#2d4a6b;border-color:#3a6ea5;color:#fff}
+  .rhint{color:#737888;font-size:11px;margin-left:2px}
+  .card{background:#1e212b;border:1px solid #2e323f;border-radius:10px;padding:15px 16px;margin-bottom:13px}
+  .legend{display:flex;gap:13px;flex-wrap:wrap;font-size:12px;color:#c4c8d2;margin-bottom:4px}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .ctitle{font-size:12.5px;font-weight:600;color:#aab0bd;margin-bottom:7px;letter-spacing:.3px}
+  svg{display:block;width:100%;height:auto}
+  .drill-head{font-size:14px;font-weight:600}
+  .drill-sub{font-size:11px;color:#7f8593;margin:2px 0 13px}
+  .drill-grid{display:grid;grid-template-columns:1.15fr 1fr;gap:15px}
+  table.emo{width:100%;border-collapse:collapse;font-size:11.5px}
+  table.emo th{color:#9aa0ad;font-weight:500;text-align:center;padding:2px 4px;font-size:10.5px}
+  table.emo td{padding:3px 4px}
+  table.emo td.en{color:#c4c8d2;white-space:nowrap}
+  .bar{position:relative;height:15px;background:#262a35;border-radius:4px;min-width:54px}
+  .bar .fill{position:absolute;left:0;top:0;height:100%;border-radius:4px;opacity:.88}
+  .bar b{position:absolute;right:5px;top:0;font-size:10px;line-height:15px;color:#eef0f4;font-weight:600}
+  .kv{font-size:12px;margin-bottom:5px}
+  .kv .k{color:#9aa0ad}
+  .diag{background:#2a1c1c;border:1px solid #5a2d2d;border-radius:7px;padding:9px 11px;font-size:12px}
+  .diag .dt{color:#ef8a8a;font-weight:600;margin-bottom:3px}
+  .fix{color:#7fd49b}
+  .monologue{margin-top:14px;border-top:1px solid #2e323f;padding-top:12px}
+  .mono-line{font-size:12.5px;margin-bottom:7px;color:#d4d7df}
+  .who{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;margin-right:7px;font-weight:600}
+  .who.core{background:#2d4a6b;color:#cfe2f7}
+  .who.vet{background:#5a4326;color:#f0dcb4}
+  .sect{font-size:13px;color:#9aa0ad;margin:18px 0 7px;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>读者体验图谱 <span class="dim">/ deepfake-v1 · 第 1–12 章</span></h1>
+  <p class="note">示意 mockup —— 曲线、数值、独白均为演示用,非真实分析结果</p>
+
+  <div class="readers">
+    <span class="rtab active">核心读者</span>
+    <span class="rtab">老书虫</span>
+    <span class="rtab">路人</span>
+    <span class="rhint">← 主图一次画一个读者;三人对比放在下方详情卡</span>
+  </div>
+
+  <!-- ===== 主图 + 认知层 ===== -->
+  <div class="card">
+    <div class="legend">
+      <span><i style="background:#4f86c6"></i>悲伤</span>
+      <span><i style="background:#ecc94b"></i>想笑</span>
+      <span><i style="background:#9d6bd0"></i>紧张</span>
+      <span><i style="background:#48bb78"></i>高兴</span>
+      <span><i style="background:#e05a5a"></i>愤怒</span>
+    </div>
+
+    <svg viewBox="0 0 720 296">
+      <!-- 横向网格 -->
+      <g stroke="#2b2f3b" stroke-width="1">
+        <line x1="60" y1="250" x2="690" y2="250"/>
+        <line x1="60" y1="195" x2="690" y2="195"/>
+        <line x1="60" y1="140" x2="690" y2="140"/>
+        <line x1="60" y1="85"  x2="690" y2="85"/>
+        <line x1="60" y1="30"  x2="690" y2="30"/>
+      </g>
+      <g fill="#6b7080" font-size="9.5" text-anchor="end">
+        <text x="51" y="253">0</text><text x="51" y="198">25</text>
+        <text x="51" y="143">50</text><text x="51" y="88">75</text>
+        <text x="51" y="34">100</text>
+      </g>
+
+      <!-- 第7章问题区高亮 -->
+      <rect x="386" y="30" width="36" height="220" fill="#e05a5a" opacity="0.10"/>
+
+      <!-- 复合情绪 / 诊断 竖标记 -->
+      <g stroke-dasharray="3 3" stroke-width="1">
+        <line x1="232" y1="30" x2="232" y2="250" stroke="#525767"/>
+        <line x1="346" y1="30" x2="346" y2="250" stroke="#525767"/>
+        <line x1="518" y1="30" x2="518" y2="250" stroke="#525767"/>
+        <line x1="404" y1="24" x2="404" y2="250" stroke="#e05a5a"/>
+      </g>
+      <g font-size="10.5" text-anchor="middle">
+        <text x="232" y="18" fill="#9aa0ad">▽ 憋屈</text>
+        <text x="346" y="18" fill="#e0a05a">▽ 义愤</text>
+        <text x="404" y="18" fill="#ef7676">⚠ 走平</text>
+        <text x="518" y="18" fill="#7fd49b">▽ 解气</text>
+      </g>
+
+      <!-- 五条情绪轨 -->
+      <g fill="none" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+        <polyline stroke="#4f86c6" points="60,217 117,206 175,184 232,151 289,162 346,166 404,158 461,173 518,184 575,144 633,162 690,173"/>
+        <polyline stroke="#9d6bd0" points="60,206 117,184 175,173 232,151 289,140 346,129 404,85 461,118 518,74 575,78 633,63 690,56"/>
+        <polyline stroke="#48bb78" points="60,162 117,173 175,184 232,206 289,202 346,195 404,206 461,173 518,129 575,188 633,195 690,184"/>
+        <polyline stroke="#e05a5a" points="60,228 117,210 175,195 232,162 289,129 346,114 404,140 461,151 518,184 575,129 633,118 690,140"/>
+        <polyline stroke="#ecc94b" points="60,129 117,118 175,140 232,151 289,144 346,136 404,224 461,162 518,122 575,140 633,149 690,153"/>
+      </g>
+      <!-- 强调点:想笑第7章塌方 / 解气第9章高兴峰 -->
+      <circle cx="404" cy="224" r="4.5" fill="#ecc94b" stroke="#14161c" stroke-width="1.5"/>
+      <circle cx="518" cy="129" r="4.5" fill="#48bb78" stroke="#14161c" stroke-width="1.5"/>
+
+      <!-- X 轴章节 -->
+      <g fill="#6b7080" font-size="9.5" text-anchor="middle">
+        <text x="60" y="266">1</text><text x="117" y="266">2</text><text x="175" y="266">3</text>
+        <text x="232" y="266">4</text><text x="289" y="266">5</text><text x="346" y="266">6</text>
+        <text x="404" y="266">7</text><text x="461" y="266">8</text><text x="518" y="266">9</text>
+        <text x="575" y="266">10</text><text x="633" y="266">11</text><text x="690" y="266">12</text>
+      </g>
+      <text x="375" y="286" fill="#7f8593" font-size="10" text-anchor="middle">章节 ·  纵轴 = 情绪强度 0–100</text>
+    </svg>
+
+    <div class="ctitle" style="margin-top:10px">认知层</div>
+    <svg viewBox="0 0 720 80">
+      <rect x="117" y="14" width="573" height="20" rx="4" fill="#2f7f7f"/>
+      <text x="125" y="28" fill="#dff3f3" font-size="10.5">戏剧反讽 · 读者知道「黄心语是卧底」,丁一与戴尔蒙在鼓里 → 全程进行</text>
+      <rect x="175" y="44" width="343" height="20" rx="4" fill="#a8772f"/>
+      <text x="183" y="58" fill="#f6e6cb" font-size="10.5">信息差:戴尔真实身份未明</text>
+      <text x="523" y="58" fill="#e0a05a" font-size="10">┤第9章合拢</text>
+    </svg>
+  </div>
+
+  <!-- ===== 钻取详情卡 (B) ===== -->
+  <div class="sect">点击主图任意节拍 → 展开详情(下方示意:第 7 章问题拍)</div>
+  <div class="card">
+    <div class="drill-head">▼ 第 7 章 ·「丁一与戴尔第三次互相指控」</div>
+    <div class="drill-sub">这一拍正是主图里 ⚠ 标记、想笑曲线砸到底的地方</div>
+
+    <div class="drill-grid">
+      <div>
+        <div class="ctitle">三读者 · 五维情绪</div>
+        <table class="emo">
+          <tr><th></th><th>核心</th><th>老书虫</th><th>路人</th></tr>
+          <tr><td class="en">悲伤</td>
+            <td><div class="bar"><div class="fill" style="width:30%;background:#4f86c6"></div><b>30</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:20%;background:#4f86c6"></div><b>20</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:25%;background:#4f86c6"></div><b>25</b></div></td></tr>
+          <tr><td class="en">想笑</td>
+            <td><div class="bar"><div class="fill" style="width:12%;background:#ecc94b"></div><b>12</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:8%;background:#ecc94b"></div><b>8</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:10%;background:#ecc94b"></div><b>10</b></div></td></tr>
+          <tr><td class="en">紧张</td>
+            <td><div class="bar"><div class="fill" style="width:55%;background:#9d6bd0"></div><b>55</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:35%;background:#9d6bd0"></div><b>35</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:45%;background:#9d6bd0"></div><b>45</b></div></td></tr>
+          <tr><td class="en">高兴</td>
+            <td><div class="bar"><div class="fill" style="width:18%;background:#48bb78"></div><b>18</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:10%;background:#48bb78"></div><b>10</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:12%;background:#48bb78"></div><b>12</b></div></td></tr>
+          <tr><td class="en">愤怒</td>
+            <td><div class="bar"><div class="fill" style="width:35%;background:#e05a5a"></div><b>35</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:50%;background:#e05a5a"></div><b>50</b></div></td>
+            <td><div class="bar"><div class="fill" style="width:30%;background:#e05a5a"></div><b>30</b></div></td></tr>
+        </table>
+      </div>
+
+      <div>
+        <div class="ctitle">认知</div>
+        <div class="kv"><span class="k">新信息:</span>无 —— 读者早知双方都在演</div>
+        <div class="kv"><span class="k">信息差:</span>未推进</div>
+        <div class="kv" style="margin-bottom:11px"><span class="k">复合情绪:</span>核心读者「不耐烦」= 想笑骤降 + 愤怒微升</div>
+        <div class="diag">
+          <div class="dt">⚠ 走平 · 套路</div>
+          <div>命中:老书虫、路人　|　想笑 52 → 12</div>
+          <div>原因:"互相指控"来回第 3 轮,信息零增量</div>
+          <div class="fix">改:换成"被迫合作"的反差,或并掉一轮</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="monologue">
+      <div class="ctitle">读者独白(C)—— 把分数翻译成人话</div>
+      <div class="mono-line"><span class="who core">核心读者</span>"又来?这俩到底谁在骗谁……前面还挺逗,这段我有点想划走了。"</div>
+      <div class="mono-line"><span class="who vet">老书虫</span>"第三遍'互相指控'了。作者,这段你是舍不得删吧?"</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

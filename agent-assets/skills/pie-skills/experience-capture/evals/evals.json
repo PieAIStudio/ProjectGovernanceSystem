@@ -1,0 +1,68 @@
+{
+  "mode": "contract-smoke",
+  "notes": "These are structured contract cases. Use scripts/normalize-review-json.py, scripts/validate-experience-packets.py, and scripts/merge-evidence-packets.py for executable smoke checks.",
+  "cases": [
+    {
+      "name": "gemini_review_normalizes_to_timestamped_packets",
+      "input_shape": "review_json.timeline_issues[]",
+      "assertions": [
+        "packets[0].issue_id startsWith EC-",
+        "packets[0].source == experience-capture",
+        "packets[0].evidence_type == video",
+        "packets[0].timestamp_start is present",
+        "packets[0].recommended_next is one of fix-now,map-to-work-item,send-to-screenwalk"
+      ]
+    },
+    {
+      "name": "obstruction_candidate_routes_to_screenwalk",
+      "input_hint": "timeline issue mentions tooltip obstruction or visual blocking",
+      "assertions": [
+        "issue_type == obstruction_candidate",
+        "recommended_next == send-to-screenwalk"
+      ]
+    },
+    {
+      "name": "video_packet_requires_video_paths",
+      "input_shape": "packet.evidence_type == video",
+      "assertions": [
+        "video_paths.length >= 1"
+      ]
+    },
+    {
+      "name": "compound_issue_is_blocked_before_repair",
+      "input_hint": "one timeline issue combines obstruction and CTA distance with two fixes",
+      "assertions": [
+        "needs_split == true",
+        "validate-experience-packets.py exits nonzero"
+      ]
+    },
+    {
+      "name": "adapter_injects_source_hints",
+      "input_hint": "project adapter contains Source Hints keys matching category, issue_type, or journey_step",
+      "assertions": [
+        "source_hints is present",
+        "source_hints entries have kind in code-path,asset,config",
+        "source_hints entries have nonempty path"
+      ]
+    },
+    {
+      "name": "cross_skill_duplicate_merge_preserves_traceability",
+      "input_hint": "one SW packet and one EC packet share surface_type, category, and overlapping bbox or timestamp",
+      "assertions": [
+        "merged output contains one packet for the duplicate issue",
+        "merged_with contains the losing issue_id",
+        "related_packets contains relation merged-from"
+      ]
+    },
+    {
+      "name": "multi_clip_review_creates_owner_brief_before_repair",
+      "input_hint": "three short game clips reviewed by Gemini or manual reviewer with normalized EC packets",
+      "assertions": [
+        "owner-review-brief.md is created",
+        "brief includes clip paths and representative screenshot/keyframe paths",
+        "brief groups candidate decisions for owner review",
+        "no product code edits occur before owner-selected issue IDs"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "ScreenWalk"
+  short_description: "Review app/game screens with evidence, crops, annotations, and owner briefs"
+  default_prompt: "Use $screenwalk in review-only mode to inspect this user journey from screenshots or a live product, produce evidence packets, annotated screenshot references, and an owner-review-brief before any repair."

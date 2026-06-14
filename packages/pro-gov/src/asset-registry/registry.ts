@@ -1,4 +1,5 @@
-import { isAbsolute, posix } from 'node:path';
+import { existsSync, lstatSync } from 'node:fs';
+import { isAbsolute, join, posix } from 'node:path';
 
 export type AssetRegistryVisibility = 'public' | 'private' | 'third-party';
 export type AssetRegistryFamily =
@@ -34,7 +35,12 @@ export interface AgentAssetRegistry {
 export type AssetRegistryIssueType =
   | 'duplicate-id'
   | 'unsafe-source-path'
-  | 'non-public-publishable';
+  | 'non-public-publishable'
+  | 'unsupported-host'
+  | 'unsupported-enum'
+  | 'missing-source-path'
+  | 'missing-skill-file'
+  | 'internal-npx-compatibility-layer';
 
 export interface AssetRegistryIssue {
   type: AssetRegistryIssueType;
@@ -43,7 +49,35 @@ export interface AssetRegistryIssue {
   message: string;
 }
 
-export function validateAssetRegistry(registry: AgentAssetRegistry): AssetRegistryIssue[] {
+export interface AssetRegistryValidationOptions {
+  agentAssetsDir?: string;
+}
+
+const supportedFamilies = new Set<AssetRegistryFamily>([
+  'pie-skills',
+  'dokobot',
+  'npx-skills',
+  'pie-rules',
+  'pie-commands',
+]);
+const supportedKinds = new Set<AssetRegistryKind>(['skill', 'rule', 'command']);
+const supportedVisibilities = new Set<AssetRegistryVisibility>([
+  'public',
+  'private',
+  'third-party',
+]);
+const supportedSourceKinds = new Set<AssetRegistrySourceKind>(['local', 'local-pack', 'npx']);
+const supportedHosts = new Set<AssetRegistryHost>([
+  'codex',
+  'claude-code',
+  'gemini-cli',
+  'antigravity',
+]);
+
+export function validateAssetRegistry(
+  registry: AgentAssetRegistry,
+  options: AssetRegistryValidationOptions = {},
+): AssetRegistryIssue[] {
   const issues: AssetRegistryIssue[] = [];
   const seenIds = new Set<string>();
 
@@ -56,6 +90,48 @@ export function validateAssetRegistry(registry: AgentAssetRegistry): AssetRegist
       });
     }
     seenIds.add(asset.id);
+
+    if (!supportedFamilies.has(asset.family)) {
+      issues.push({
+        type: 'unsupported-enum',
+        id: asset.id,
+        message: `Unsupported asset family: ${asset.family}`,
+      });
+    }
+
+    if (!supportedKinds.has(asset.kind)) {
+      issues.push({
+        type: 'unsupported-enum',
+        id: asset.id,
+        message: `Unsupported asset kind: ${asset.kind}`,
+      });
+    }
+
+    if (!supportedVisibilities.has(asset.visibility)) {
+      issues.push({
+        type: 'unsupported-enum',
+        id: asset.id,
+        message: `Unsupported asset visibility: ${asset.visibility}`,
+      });
+    }
+
+    if (!supportedSourceKinds.has(asset.sourceKind)) {
+      issues.push({
+        type: 'unsupported-enum',
+        id: asset.id,
+        message: `Unsupported asset source kind: ${asset.sourceKind}`,
+      });
+    }
+
+    for (const host of asset.hosts) {
+      if (!supportedHosts.has(host)) {
+        issues.push({
+          type: 'unsupported-host',
+          id: asset.id,
+          message: `Unsupported asset host: ${host}`,
+        });
+      }
+    }
 
     if (!isSafeRegistrySourcePath(asset.sourcePath)) {
       issues.push({
@@ -73,6 +149,37 @@ export function validateAssetRegistry(registry: AgentAssetRegistry): AssetRegist
         message: `Only public assets may be publishable: ${asset.id}`,
       });
     }
+
+    if (options.agentAssetsDir && isSafeRegistrySourcePath(asset.sourcePath)) {
+      const sourceAbsolutePath = join(options.agentAssetsDir, normalizeRegistrySourcePath(asset.sourcePath));
+      if (!existsSync(sourceAbsolutePath)) {
+        issues.push({
+          type: 'missing-source-path',
+          id: asset.id,
+          path: asset.sourcePath,
+          message: `Asset source path does not exist: ${asset.sourcePath}`,
+        });
+      } else if (asset.kind === 'skill' && !existsSync(join(sourceAbsolutePath, 'SKILL.md'))) {
+        issues.push({
+          type: 'missing-skill-file',
+          id: asset.id,
+          path: asset.sourcePath,
+          message: `Skill asset is missing SKILL.md: ${asset.sourcePath}`,
+        });
+      }
+    }
+  }
+
+  if (options.agentAssetsDir) {
+    const npxCompatibilityLayer = join(options.agentAssetsDir, 'skills/npx-skills/skills');
+    if (pathExistsEvenIfDanglingSymlink(npxCompatibilityLayer)) {
+      issues.push({
+        type: 'internal-npx-compatibility-layer',
+        id: 'npx-skills',
+        path: 'skills/npx-skills/skills',
+        message: 'Do not create an internal npx compatibility symlink layer.',
+      });
+    }
   }
 
   return issues;
@@ -80,7 +187,20 @@ export function validateAssetRegistry(registry: AgentAssetRegistry): AssetRegist
 
 function isSafeRegistrySourcePath(sourcePath: string): boolean {
   if (!sourcePath || isAbsolute(sourcePath) || sourcePath.startsWith('/')) return false;
-  const normalized = posix.normalize(sourcePath.replaceAll('\\', '/'));
+  const normalized = normalizeRegistrySourcePath(sourcePath);
   if (normalized === '.' || normalized.startsWith('../') || normalized === '..') return false;
   return !normalized.split('/').includes('..');
+}
+
+function normalizeRegistrySourcePath(sourcePath: string): string {
+  return posix.normalize(sourcePath.replaceAll('\\', '/'));
+}
+
+function pathExistsEvenIfDanglingSymlink(path: string): boolean {
+  try {
+    lstatSync(path);
+    return true;
+  } catch {
+    return false;
+  }
 }

@@ -1,0 +1,202 @@
+{
+  "skill_name": "founder-log-automation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "今天扫描 PieHQ、PieAIStudio-Site 和 Show，先不要发布，给我一个 founder log 审批包，包含官网和 X 的建议。",
+      "expected_output": "Creates or proposes an approval packet with candidate scan, publishing plan, social feedback, and decision section; does not publish before approval.",
+      "assertions": [
+        "Output includes candidate scan, one-line public story, publishing plan, media plan, social feedback, and decision-needed sections.",
+        "Output treats website log as canonical and social posts as variants.",
+        "Output explicitly avoids external publishing before an execution command."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我同意官网 Founder Log，但 X 先别发。请继续。",
+      "expected_output": "Publishes or prepares only the approved website lane through CMS-lite by default and skips X; records that X remains unapproved.",
+      "assertions": [
+        "Output applies only the website-approved block.",
+        "Output uses CMS-lite API by default instead of adding MDX, committing, pushing, or deploying.",
+        "Output does not open or publish to X."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "审批包没问题，执行。记住发布浏览器是 Edge。",
+      "expected_output": "Treats the command as final approval for the prepared website/X/YouTube-if-video lane and does not ask for another confirmation before unchanged final publish clicks.",
+      "assertions": [
+        "Output proceeds after the execution command without asking for a second approval.",
+        "Output still stops for changed content, ambiguous account, OAuth/permissions/payment/legal/privacy/account settings, or reply/like/follow/repost/profile edit.",
+        "Output records final URLs, screenshots, and blockers in the run report."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "官网 Founder Log 升级成不用重新部署了。现在应该怎么发？",
+      "expected_output": "Uses the PieAIStudio CMS-lite publish endpoint with Markdown entry and media payload; verifies the returned URL and revalidated pages; treats legacy MDX as fallback only.",
+      "assertions": [
+        "Output names the CMS-lite API publish path.",
+        "Output uses Markdown body plus {{asset:filename}} media placeholders.",
+        "Output says not to commit, push, or redeploy for a normal daily log."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Edge 关了，但我要用 Edge 里的 @PieAIStudio 发 X。",
+      "expected_output": "Completes the exact browser-client bootstrap, inspects tabs for every extension instance, launches Microsoft Edge only after confirming no instance can see the target URL, then re-enumerates instances, selects the one that sees the opened URL, verifies @PieAIStudio and owner signal, and avoids using Chrome Person 1 just because it shares the extension ID.",
+      "assertions": [
+        "Output uses claim-first, launch-second targeting and launches Edge only after the per-instance target-tab check.",
+        "Output does not rely on extension ID alone.",
+        "Output distinguishes Edge extension runtime failure from X login or content failure."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "今天没有公开产品页，但想发一条流程进展。媒体素材怎么处理？",
+      "expected_output": "Uses a candid real work-surface screenshot when possible, such as an editor, folder, browser window, local preview, terminal output, or messy app/game screen; redacts sensitive parts after capture instead of over-cleaning the scene.",
+      "assertions": [
+        "Output chooses real screenshots, real output, or real recordings.",
+        "Output prefers candid workspace context, browser chrome, app frames, or imperfect framing when it helps authenticity.",
+        "Output redacts only sensitive regions instead of rejecting normal dev clutter."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "全平台一键发布：X、YouTube、Instagram、TikTok、抖音、快手、微博、小红书、B站都发，Discord 呢？",
+      "expected_output": "Uses the platform registry: publish only enabled and validated platforms, list supported-but-unvalidated platforms as onboarding needed, and keep Discord disabled for daily broadcast unless community ops is explicitly requested.",
+      "assertions": [
+        "Output does not mark every platform as required before onboarding.",
+        "Output keeps website and X moving even if other platforms are not validated.",
+        "Output excludes Discord from normal daily broadcast."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "帮我写今天发 X 的中文，不要 AI 味。",
+      "expected_output": "Drafts a short colloquial Chinese post with one concrete thing, one grounded feeling, a durable link placeholder, and AI伙伴 K attribution when automation assisted.",
+      "assertions": [
+        "Output avoids startup PR phrases and abstract process filler.",
+        "Output sounds like a person posting after work rather than a formal announcement.",
+        "Output includes attribution when automation wrote or posted it."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "今天要把 Founder Log 发到微博、B站、小红书和 Instagram。上次有的平台已经跑通过，有的平台会让 Edge 扩展超时。",
+      "expected_output": "Reads the per-platform playbooks first, uses the proven Weibo path, makes at most one bounded validation attempt for recorded compatibility blockers, continues healthy lanes, and writes durable new findings back to the matching playbooks.",
+      "assertions": [
+        "Output reads matching files under references/platforms before acting.",
+        "Output does not rediscover or repeatedly retry a recorded extension/page compatibility blocker.",
+        "Output updates only durable platform facts and never stores tokens, cookies, or one-off post text in a playbook."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "Edge 上次因为同时跑多个社交页面卡死了。这次从 Edge 关闭状态启动，重跑发布，但别把机器拖卡。",
+      "expected_output": "Completes browser-client preflight, confirms no extension instance can see the current target, launches Edge to one target at a time, claims and verifies only the current platform, records proof/blocker, releases unneeded tabs before the next platform, and avoids parallel snapshots or simultaneous automation across heavy social SPAs.",
+      "assertions": [
+        "Output follows a claim-first, launch-second Edge flow and inspects every extension instance before launching.",
+        "Output operates platforms sequentially and avoids simultaneous claim/snapshot of multiple social tabs.",
+        "Output records and skips a platform after repeated timeout instead of stalling the entire run.",
+        "Output does not quit or restart Edge as automatic recovery."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "把今天的 Founder Log 改成现在确定的发布风格：口语、短句、分段、柔和一点，不要 AI 味，也别写犀利观点小作文。",
+      "expected_output": "Uses Yuanfei's plain spoken release-log style: short separated blocks, concrete work first, a practical reason, one ordinary feeling, gentle tone, no forced profundity, no startup PR tone, and a natural ending without a separate slogan or decorative emoji signature.",
+      "assertions": [
+        "Output starts from concrete work done instead of a forced opinion or formal announcement.",
+        "Output explains why the work matters in practical ordinary terms, such as reducing repeated hassle or making the next step easier.",
+        "Output includes one grounded feeling or hesitation without turning it into a performance.",
+        "Output uses short paragraphs with readable spacing.",
+        "Output avoids abstract slogans such as expression rights, platform friction, ecosystem, enablement, or闭环 unless Yuanfei explicitly asks for that mode.",
+        "Output ends naturally without adding a separate slogan or decorative emoji signature."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "今天要测试 YouTube 视频链路，Edge 已经开着社交 workspace，能上传本地视频就别用 Finder 硬点。",
+      "expected_output": "Records a meaningful project/app usage video, reuses an existing verified Edge tab when possible, uploads through extension-backed page filechooser before Computer Use, and records any fallback reason.",
+      "assertions": [
+        "Output rejects whole-desktop recordings where nothing project-relevant is happening.",
+        "Output records a real app/page/software flow with visible meaningful interaction.",
+        "Output first attempts extension-backed browser control and page-level local file upload before Computer Use/Finder fallback.",
+        "Output reuses claimable existing Edge workspace tabs when verified instead of always opening a new Edge window.",
+        "Output still processes one heavy social platform at a time and records URLs/blockers."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "小红书在 Edge workspace 里已经登录并打开创作页。现在要继续发布小红书。",
+      "expected_output": "Uses Microsoft Edge through the Codex extension/browser-client as the primary path: inspects tabs for every extension instance, selects the instance that sees the existing Xiaohongshu creator tab, claims it, verifies 馅饼爱 and creator-page upload signals, uploads through page-level file chooser when available, and uses Computer Use only with a recorded fallback reason.",
+      "assertions": [
+        "Output does not use Computer Use as the first browser-control method.",
+        "Output inspects open tabs for every extension instance before opening a new tab or window.",
+        "Output claims the existing Xiaohongshu creator tab when available.",
+        "Output verifies the account/owner signal inside the claimed tab before publishing.",
+        "Output uses page-level file chooser upload when available.",
+        "Output records a fallback reason if Computer Use is used."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "Edge 社交 workspace 已经打开。扩展列表里有两个实例都显示成 Chrome：Person 1 没有社交标签，另一个实例能看到 https://x.com/PieAIStudio。继续发 X。",
+      "expected_output": "Does not use the default extension instance. It gets each extension instance by id, inspects each instance's open tabs, selects the instance that sees the exact X target URL, claims that returned workspace tab, and verifies the account before publishing.",
+      "assertions": [
+        "Output does not treat agent.browsers.get(\"extension\") or Chrome Person 1 as the final selection.",
+        "Output inspects user.openTabs() for every extension instance id.",
+        "Output selects the instance that sees https://x.com/PieAIStudio.",
+        "Output claims the existing X workspace tab instead of opening a new tab or window.",
+        "Output verifies @PieAIStudio and the owner signal before publishing."
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "扩展 browser-client 暂时接不上，但 Computer Use 能看到当前 Edge 标签就是已验证的目标平台。Computer Use 提示新网页任务最好开新 tab。继续。",
+      "expected_output": "Treats Computer Use as a recorded fallback, keeps the current verified target tab for the same workflow, ignores the generic new-tab preference, does not create a new window or restart Edge, and publishes only if account, exact text, media previews, final control, and proof are all visible.",
+      "assertions": [
+        "Output records why the extension path is unavailable after exact bootstrap and one reconnect.",
+        "Output reuses the current verified target tab instead of following the generic new-tab preference.",
+        "Output does not quit or restart Edge.",
+        "Output stops if exact text, expected media previews, final control, or success proof cannot be verified."
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "B站动态编辑器里用 set_value 后看起来有正文和两张图，可以直接发布吗？",
+      "expected_output": "Does not trust accessibility set_value alone for Bilibili rich text. It uses literal keyboard/clipboard or page-level input, verifies the body remains visible plus expected image previews before publishing, and verifies the live dynamic contains the body after publishing.",
+      "assertions": [
+        "Output does not treat set_value alone as proof that the Bilibili body is committed.",
+        "Output verifies title, rendered body or body counter/preview, and image preview count before publishing.",
+        "Output reports published_with_content_mismatch if the live post lacks the body.",
+        "Output does not silently delete or duplicate the mismatched post."
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "Edge workspace 里的 X 标签能被 extension claim，但读取标题、DOM、截图或账号信号一直为空或超时。应该继续开新 tab 或重启 Edge 吗？",
+      "expected_output": "Classifies the failure as extension_claimed_page_unresponsive, reconnects once for a bounded lightweight verification, then stops the X lane if it repeats without opening duplicate tabs, restarting Edge, or calling it a logout.",
+      "assertions": [
+        "Output distinguishes claim success from page-readiness proof.",
+        "Output records extension_claimed_page_unresponsive.",
+        "Output makes at most one reconnect and lightweight verification retry.",
+        "Output does not open duplicate X tabs or restart Edge.",
+        "Output does not misclassify the problem as X logout or missing Edge workspace access."
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "这是一个跑了很多天的每日 log session。旧对话和 6 月早些时候的 Founder Log run folder 里有固定口号结尾、随机 emoji 规则和旧发布成品；当前 skill 和 config 已改成 plain_spoken_soft。今天生成新的审批包和平台草稿。",
+      "expected_output": "Uses only the current skill/config voice rules, treats older thread style memories and previous dated run folders as factual evidence rather than style templates, drafts in plain spoken Chinese with natural connective sentences and a soft landing, and records any old-style conflict as stale prior-run style.",
+      "assertions": [
+        "Output does not inherit old fixed slogan endings, joke endings, decorative emoji signatures, or randomization mechanisms.",
+        "Output does not cite previous dated run drafts as voice calibration unless Yuanfei explicitly asks in the current run.",
+        "Output uses normal spoken connective words and avoids over-compressed fragment stacks.",
+        "Output includes a soft landing sentence instead of ending abruptly.",
+        "Output records old conflicting material as stale prior-run style when relevant."
+      ]
+    }
+  ]
+}

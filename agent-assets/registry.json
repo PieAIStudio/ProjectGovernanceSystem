@@ -1,4 +1,1417 @@
 {
   "schemaVersion": 1,
-  "assets": []
+  "assets": [
+    {
+      "id": "pie-skills/beginner-friendly-docs",
+      "title": "教学文档写作技能",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/beginner-friendly-docs",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/chapter-doctor",
+      "title": "章节医生（Chapter Doctor）",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/chapter-doctor",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/comm-coach",
+      "title": "沟通教练 Communication Coach",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/comm-coach",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/directed-development",
+      "title": "Directed Development",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/directed-development",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/doc-cross-validator",
+      "title": "文档交叉验证技能",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/doc-cross-validator",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/experience-capture",
+      "title": "Experience Capture",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/experience-capture",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/founder-log-automation",
+      "title": "Founder Log Automation",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/founder-log-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/goalcascade",
+      "title": "GoalCascade Skill",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/goalcascade",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/knowledge-node",
+      "title": "knowledge-node",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/knowledge-node",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/mermaid-diagrams",
+      "title": "Mermaid Diagrams",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/mermaid-diagrams",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/my-skills-manager",
+      "title": "My Skills Manager",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/my-skills-manager",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/novel-chapter-orchestrator",
+      "title": "Novel Chapter Orchestrator",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/novel-chapter-orchestrator",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/pieai-publish",
+      "title": "多平台社交媒体发布器（简化版）",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/pieai-publish",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/plot-beats",
+      "title": "情节点拆解员",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/plot-beats",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/prose-lint",
+      "title": "Prose-Lint：中文小说去AI味润色",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/prose-lint",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/prose-signature",
+      "title": "Prose-Signature：中文小说人味注入",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/prose-signature",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/publish-gate",
+      "title": "发布门禁（Publish Gate）",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/publish-gate",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/reader-experience-map",
+      "title": "读者体验图谱(reader-experience-map)",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/reader-experience-map",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/screenwalk",
+      "title": "ScreenWalk Skill",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/screenwalk",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
+      "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "dokobot/deep-research",
+      "title": "Deep Research — Iterative Web Research with Source Tracking",
+      "family": "dokobot",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local-pack",
+      "sourcePath": "skills/dokobot/deep-research",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "dokobot",
+        "web-research"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills/dokobot",
+      "notes": "Imported from the local Dokobot skill pack. Kept as a separate source family because the pack may share support files."
+    },
+    {
+      "id": "dokobot/dokobot",
+      "title": "Dokobot — Read Web Pages with a Real Browser",
+      "family": "dokobot",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local-pack",
+      "sourcePath": "skills/dokobot/dokobot",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "dokobot",
+        "web-research"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills/dokobot",
+      "notes": "Imported from the local Dokobot skill pack. Kept as a separate source family because the pack may share support files."
+    },
+    {
+      "id": "dokobot/web-search",
+      "title": "Web Search — Free Local Search via ReadPage",
+      "family": "dokobot",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local-pack",
+      "sourcePath": "skills/dokobot/web-search",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "dokobot",
+        "web-research"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills/dokobot",
+      "notes": "Imported from the local Dokobot skill pack. Kept as a separate source family because the pack may share support files."
+    },
+    {
+      "id": "dokobot/web-summarization",
+      "title": "Web Summarization — Structured Summaries with Key Points",
+      "family": "dokobot",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local-pack",
+      "sourcePath": "skills/dokobot/web-summarization",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "dokobot",
+        "web-research"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills/dokobot",
+      "notes": "Imported from the local Dokobot skill pack. Kept as a separate source family because the pack may share support files."
+    },
+    {
+      "id": "dokobot/web-translation",
+      "title": "Web Translation — Translate Pages with Structure Preserved",
+      "family": "dokobot",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local-pack",
+      "sourcePath": "skills/dokobot/web-translation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "dokobot",
+        "web-research"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectSkills/dokobot",
+      "notes": "Imported from the local Dokobot skill pack. Kept as a separate source family because the pack may share support files."
+    },
+    {
+      "id": "npx-skills/agent-browser",
+      "title": "agent-browser",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/agent-browser",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:vercel-labs/agent-browser",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/agent-browser/SKILL.md hash=228f87d57035100d9dc6efcfc05aafd4b6e3962adacaa04b8217ab2fadb15dc8"
+    },
+    {
+      "id": "npx-skills/agent-device",
+      "title": "agent-device",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/agent-device",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:callstackincubator/agent-device",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/agent-device/SKILL.md hash=a09ff3456969a416fb35de14484a933e70df307bc11ba77bf3b0a9ea2f723c07"
+    },
+    {
+      "id": "npx-skills/algorithmic-art",
+      "title": "Algorithmic Art",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/algorithmic-art",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/algorithmic-art/SKILL.md hash=b2ca295de7f9c86c444f1fa21239e22e0eb7013ced1c652169b9402cc96ff744"
+    },
+    {
+      "id": "npx-skills/android-device-automation",
+      "title": "Android Device Automation",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/android-device-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/android-automation/SKILL.md hash=f45dfc4d9249ade88d7c6569322f9dab4412e2ad3316012486b1172b59691b2a"
+    },
+    {
+      "id": "npx-skills/brand-guidelines",
+      "title": "Anthropic Brand Styling",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/brand-guidelines",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/brand-guidelines/SKILL.md hash=e48840db6ea772ceecdb68b4e50f8cc77e2534b7580aeaf4a6fe6ee7bd845d7d"
+    },
+    {
+      "id": "npx-skills/browser-automation",
+      "title": "Browser Automation",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/browser-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/browser/SKILL.md hash=8a84df0c92be72e0c583ce24616527d1240767351b7d4c90def33d371b86b3f3"
+    },
+    {
+      "id": "npx-skills/canvas-design",
+      "title": "Canvas Design",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/canvas-design",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/canvas-design/SKILL.md hash=3fa7ea60170023ad8268bf9fd734ea75dd404279a2ef8ddf5abaa1102ad8e5f4"
+    },
+    {
+      "id": "npx-skills/claude-api",
+      "title": "Building LLM-Powered Applications with Claude",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/claude-api",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/claude-api/SKILL.md hash=3d1c50b50f7640b225dcd9b3b29a3983406b342c22e9f0ed4cb65a92451b7bf2"
+    },
+    {
+      "id": "npx-skills/computer-automation",
+      "title": "Desktop Computer Automation",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/computer-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/computer-automation/SKILL.md hash=e6605b869d5e350b7ce8d0207aff247bb2d4daed63a4dcecf3c0385975346290"
+    },
+    {
+      "id": "npx-skills/defuddle",
+      "title": "Defuddle",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/defuddle",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:kepano/obsidian-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/defuddle/SKILL.md hash=0ed68bc3e818ba0e6b8d192357ea3daaf552a3893f8854e7fd43c06831f91323"
+    },
+    {
+      "id": "npx-skills/doc-coauthoring",
+      "title": "Doc Co-Authoring Workflow",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/doc-coauthoring",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/doc-coauthoring/SKILL.md hash=b964e4c3ffe13f66f76dd7919073e60c7aec622cd8a8363bb36323188100cf8e"
+    },
+    {
+      "id": "npx-skills/docx",
+      "title": "DOCX creation, editing, and analysis",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/docx",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/docx/SKILL.md hash=6962db07127ee540a56e4677f65576d0727668a1d67f7da8bc978f10791c2bfe"
+    },
+    {
+      "id": "npx-skills/dogfood",
+      "title": "Dogfood",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/dogfood",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:callstackincubator/agent-device",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/dogfood/SKILL.md hash=7c14b806787e7793e7b0846c310f66430ffca06bd16c5848c29f09f2fd9dbe65"
+    },
+    {
+      "id": "npx-skills/frontend-design",
+      "title": "Frontend Design",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/frontend-design",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/frontend-design/SKILL.md hash=063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    {
+      "id": "npx-skills/generate2dmap",
+      "title": "Generate2dmap",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/generate2dmap",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:0x0funky/agent-sprite-forge",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/generate2dmap/SKILL.md hash=0f171e59ffb27b362d5db87c3670709a89027f39dda3767048994b3d2438db8c"
+    },
+    {
+      "id": "npx-skills/generate2dsprite",
+      "title": "Generate2dsprite",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/generate2dsprite",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:0x0funky/agent-sprite-forge",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/generate2dsprite/SKILL.md hash=2aa6d5f629d27a40b64257ef5ea07da7969337438d25f8e395434d216410b7e7"
+    },
+    {
+      "id": "npx-skills/harmonyos-device-automation",
+      "title": "HarmonyOS Device Automation",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/harmonyos-device-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/harmony-automation/SKILL.md hash=20227074a11b45c7909d3af5e12214d27543eac773e708bd7d49a23f60fb8d72"
+    },
+    {
+      "id": "npx-skills/impeccable",
+      "title": "Impeccable",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/impeccable",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:pbakaus/impeccable",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skill/SKILL.md hash=34e59a34b9705187e87039faa5d9585aebe0056ef657f761b905afef276a3362"
+    },
+    {
+      "id": "npx-skills/internal-comms",
+      "title": "Internal Comms",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/internal-comms",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/internal-comms/SKILL.md hash=0bdc8867452b7ab9ef6167f6b0db2025ce5fb03773d3f85efcef2dfeb9d4976d"
+    },
+    {
+      "id": "npx-skills/ios-device-automation",
+      "title": "iOS Device Automation",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/ios-device-automation",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/ios-automation/SKILL.md hash=dfa1c89080174d176a08818630daa32750aa8426ddcb5ab85ce8cd9a15df8aad"
+    },
+    {
+      "id": "npx-skills/json-canvas",
+      "title": "JSON Canvas Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/json-canvas",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:kepano/obsidian-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/json-canvas/SKILL.md hash=56cbac74a93e4fba97f4d44bccfdeaae89e545b223f47df392c7705e01e6c543"
+    },
+    {
+      "id": "npx-skills/mcp-builder",
+      "title": "MCP Server Development Guide",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/mcp-builder",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/mcp-builder/SKILL.md hash=826e46adf81e1372282e205c34e1a2ee876e72148007726e4a2512599d2fef7b"
+    },
+    {
+      "id": "npx-skills/obsidian-bases",
+      "title": "Obsidian Bases Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/obsidian-bases",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:kepano/obsidian-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/obsidian-bases/SKILL.md hash=ed0a53502693e56c67575a9958daca9a3a1ac7ba483367f400b4cad9488bfb3c"
+    },
+    {
+      "id": "npx-skills/obsidian-cli",
+      "title": "Obsidian CLI",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/obsidian-cli",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:kepano/obsidian-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/obsidian-cli/SKILL.md hash=f46ae626875f7e47c410c2ee93896c4526024ebe127719e8fb430261b5677edc"
+    },
+    {
+      "id": "npx-skills/obsidian-markdown",
+      "title": "Obsidian Flavored Markdown Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/obsidian-markdown",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:kepano/obsidian-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/obsidian-markdown/SKILL.md hash=cacc9058a35ad3fd4985b4c31121bff8202f1337c39808c1326ded6a19a7915f"
+    },
+    {
+      "id": "npx-skills/pdf",
+      "title": "PDF Processing Guide",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/pdf",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/pdf/SKILL.md hash=cfbc539377088ca7e44a813b30c306327385bbd973cd7a721e1743f60837dd62"
+    },
+    {
+      "id": "npx-skills/pptx",
+      "title": "PPTX Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/pptx",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/pptx/SKILL.md hash=6b8b859d26f93aa059c9870d1ab76b44ab69e3d6757ce4a03cc94cb760888073"
+    },
+    {
+      "id": "npx-skills/skill-creator",
+      "title": "Skill Creator",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/skill-creator",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/skill-creator/SKILL.md hash=5ea13a6d9f0d4bb694405d79acd00cadec0d21bb138c4dd10fcf3c500cb835c2"
+    },
+    {
+      "id": "npx-skills/slack-gif-creator",
+      "title": "Slack GIF Creator",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/slack-gif-creator",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/slack-gif-creator/SKILL.md hash=fab4fcfcaed371071069d61a3ab94dff15d10d36403ff269d147ea986cd98083"
+    },
+    {
+      "id": "npx-skills/sprite-sheet-pipeline",
+      "title": "Sprite Sheet Pipeline Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/sprite-sheet-pipeline",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:LayrKits/Sprite-Pipeline",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/sprite-sheet-pipeline/SKILL.md hash=d4672cba2c7b913a545f7fad141d7c06f0d992d1e8ef5282830f03e69bdd0e28"
+    },
+    {
+      "id": "npx-skills/startup-pressure-test",
+      "title": "Startup Pressure Test",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/startup-pressure-test",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:Kappaemme-git/codex-startup-pressure-test-skill",
+      "notes": "Mirrored from npx skills lock entry. skillPath=startup-pressure-test/SKILL.md hash=6e07a2bcdc81af7db125104f42839813c5afa1e0ceb9a8bbdff7ac4156055f0f"
+    },
+    {
+      "id": "npx-skills/supabase",
+      "title": "Supabase",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/supabase",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:supabase/agent-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/supabase/SKILL.md hash=1bb189e255c0e91161f14c618dce0eccf68174ceb963664cef7761b2f90cb466"
+    },
+    {
+      "id": "npx-skills/supabase-postgres-best-practices",
+      "title": "Supabase Postgres Best Practices",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/supabase-postgres-best-practices",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:supabase/agent-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/supabase-postgres-best-practices/SKILL.md hash=292c93e5a86e2429204bc37abe26b3c9023c4760eb02418462887f2082f118ce"
+    },
+    {
+      "id": "npx-skills/template-skill",
+      "title": "Insert instructions below",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/template-skill",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=template/SKILL.md hash=38c88f722b574a922311d334a70c2008a2a5b896f06eaa75516d716e5725b26f"
+    },
+    {
+      "id": "npx-skills/theme-factory",
+      "title": "Theme Factory Skill",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/theme-factory",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/theme-factory/SKILL.md hash=598ddfa9784ae2a8c55be5dbb047b98564d875dea6f4669168a87ae1ea1a4ed3"
+    },
+    {
+      "id": "npx-skills/ui-ux-pro-max",
+      "title": "UI/UX Pro Max - Design Intelligence",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/ui-ux-pro-max",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:nextlevelbuilder/ui-ux-pro-max-skill",
+      "notes": "Mirrored from npx skills lock entry. skillPath=.claude/skills/ui-ux-pro-max/SKILL.md hash=0a413bf988d06481f69bb81df2070741c3ba12dd9f1be2706d57f259c905992d"
+    },
+    {
+      "id": "npx-skills/vitest-midscene-e2e",
+      "title": "Vitest Midscene E2E",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/vitest-midscene-e2e",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:web-infra-dev/midscene-skills",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/vitest-midscene-e2e/SKILL.md hash=7f0f394621b4df765b772a6e20e352aeba2d31ff7712cfd35f914bb471d52f71"
+    },
+    {
+      "id": "npx-skills/web-artifacts-builder",
+      "title": "Web Artifacts Builder",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/web-artifacts-builder",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/web-artifacts-builder/SKILL.md hash=d52d422ead3fa26859a6af129609841a8536b230a2d649f86e61771d063e05e2"
+    },
+    {
+      "id": "npx-skills/xlsx",
+      "title": "Requirements for Outputs",
+      "family": "npx-skills",
+      "kind": "skill",
+      "visibility": "third-party",
+      "sourceKind": "npx",
+      "sourcePath": "skills/npx-skills/.agents/skills/xlsx",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "npx-skills",
+        "third-party"
+      ],
+      "publishable": false,
+      "origin": "github:anthropics/skills#main",
+      "notes": "Mirrored from npx skills lock entry. skillPath=skills/xlsx/SKILL.md hash=efd0c8011cf0677d8075cf93867ecec804f9a8754a777e1d2fdb46197e9c247f"
+    },
+    {
+      "id": "pie-rules/ai-human-friendly-refactor-methodology",
+      "title": "AI/Human-Friendly Refactor Methodology",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/ai-human-friendly-refactor-methodology.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectRules or OneDrive/MyGlobalRules",
+      "notes": "Imported from Yuanfei-maintained local rules. These can later be promoted into project profiles or converted into skills."
+    },
+    {
+      "id": "pie-rules/ai-in-the-loop",
+      "title": "AI-in-the-Loop",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/ai-in-the-loop.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectRules or OneDrive/MyGlobalRules",
+      "notes": "Imported from Yuanfei-maintained local rules. These can later be promoted into project profiles or converted into skills."
+    },
+    {
+      "id": "pie-rules/clean-image-generation-rules",
+      "title": "Clean Image Generation Rules",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/clean-image-generation-rules.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectRules or OneDrive/MyGlobalRules",
+      "notes": "Imported from Yuanfei-maintained local rules. These can later be promoted into project profiles or converted into skills."
+    },
+    {
+      "id": "pie-rules/rule-evolution-methodology",
+      "title": "Rule Evolution Methodology(规则进化方法论)",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/rule-evolution-methodology.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectRules or OneDrive/MyGlobalRules",
+      "notes": "Imported from Yuanfei-maintained local rules. These can later be promoted into project profiles or converted into skills."
+    },
+    {
+      "id": "pie-rules/visual-communication",
+      "title": "Visual Communication Rule",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/visual-communication.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectRules or OneDrive/MyGlobalRules",
+      "notes": "Imported from Yuanfei-maintained local rules. These can later be promoted into project profiles or converted into skills."
+    },
+    {
+      "id": "pie-commands/code-simplifier",
+      "title": "ROLE: Code Simplification Specialist",
+      "family": "pie-commands",
+      "kind": "command",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "commands/pie-commands/code-simplifier.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "command",
+        "pie-commands"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectCommands or OneDrive/MyGlobalCommands",
+      "notes": "Imported from Yuanfei-maintained local commands. These can later be converted into skills or host command adapters."
+    },
+    {
+      "id": "pie-commands/comm-coach",
+      "title": "沟通教练 Communication Coach",
+      "family": "pie-commands",
+      "kind": "command",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "commands/pie-commands/comm-coach.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "command",
+        "pie-commands"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectCommands or OneDrive/MyGlobalCommands",
+      "notes": "Imported from Yuanfei-maintained local commands. These can later be converted into skills or host command adapters."
+    },
+    {
+      "id": "pie-commands/frag-coach",
+      "title": "知识碎片教练 Knowledge Fragment Coach",
+      "family": "pie-commands",
+      "kind": "command",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "commands/pie-commands/frag-coach.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "command",
+        "pie-commands"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectCommands or OneDrive/MyGlobalCommands",
+      "notes": "Imported from Yuanfei-maintained local commands. These can later be converted into skills or host command adapters."
+    },
+    {
+      "id": "pie-commands/generate-handover",
+      "title": "Generate Handover",
+      "family": "pie-commands",
+      "kind": "command",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "commands/pie-commands/generate-handover.md",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "command",
+        "pie-commands"
+      ],
+      "publishable": false,
+      "origin": "OneDrive/MyProjectCommands or OneDrive/MyGlobalCommands",
+      "notes": "Imported from Yuanfei-maintained local commands. These can later be converted into skills or host command adapters."
+    }
+  ]
 }

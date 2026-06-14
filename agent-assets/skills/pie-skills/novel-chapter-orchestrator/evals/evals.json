@@ -1,0 +1,62 @@
+{
+  "skill_name": "novel-chapter-orchestrator",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "chapter-1-rewrite",
+      "prompt": "请把《钢怪》V4 第1章当作历史章节重写样本来跑完整编排闭环。Gemini 负责重写与回修，主控只列问题单和判卷；门禁通过后，Claude 必须按 round3 minimal 的极简路线放开改写，再由主控专门挑“变啰嗦了”和“比喻无聊”这两类问题继续回传，直到润色版真的更好，或者明确拒收 Claude 版本。",
+      "expected_output": "输出一版更自然、更像活人现场说话的第1章重写稿，并留下完整编排工件，能够证明主控没有直接下场写文，Claude 的参与发生在 gate pass 之后，并且主控确实对啰嗦和无聊比喻做了二次筛查。",
+      "files": [
+        "../../../steel-monster-v4/03_manuscript/第1章-背锅测试.md",
+        "../../../steel-monster-v4/02_knowledge_base/03_style_reference_pack.md",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第1章-背锅测试/gate_result.json",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第1章-背锅测试/quality_report.md",
+        "../../../Docs/References/庆余年-节选.md",
+        "../../../Docs/References/谁说人类节节败退-节选.md"
+      ],
+      "expectations": [
+        "The rewrite run records draft, gate, and polish loops in run_manifest.json",
+        "Claude is only used for the polish loop after the gate loop passes",
+        "The polish loop includes controller feedback about verbosity, boring metaphors, or removing added headings before the final version is accepted"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "chapter-2-rewrite",
+      "prompt": "请把《钢怪》V4 第2章当作历史章节重写样本来跑完整编排闭环。Gemini 负责重写与回修，主控只列问题单和判卷；门禁通过后，Claude 必须按 round3 minimal 的极简路线放开改写，再由主控专门挑“变啰嗦了”和“比喻无聊”这两类问题继续回传，直到润色版真的更好，或者明确拒收 Claude 版本。",
+      "expected_output": "输出一版更自然、更像活人现场说话的第2章重写稿，并留下完整编排工件，能够证明主控没有直接下场写文，Claude 的参与发生在 gate pass 之后，并且主控确实对啰嗦和无聊比喻做了二次筛查。",
+      "files": [
+        "../../../steel-monster-v4/03_manuscript/第2章-车场阴影.md",
+        "../../../steel-monster-v4/02_knowledge_base/03_style_reference_pack.md",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第2章-车场阴影/gate_result.json",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第2章-车场阴影/quality_report.md",
+        "../../../Docs/References/庆余年-节选.md",
+        "../../../Docs/References/谁说人类节节败退-节选.md"
+      ],
+      "expectations": [
+        "The rewrite run records draft, gate, and polish loops in run_manifest.json",
+        "Claude is only used for the polish loop after the gate loop passes",
+        "The polish loop includes controller feedback about verbosity, boring metaphors, or removing added headings before the final version is accepted"
+      ]
+    },
+    {
+      "id": 3,
+      "eval_name": "chapter-3-rewrite",
+      "prompt": "请把《钢怪》V4 第3章当作历史章节重写样本来跑完整编排闭环。Gemini 负责重写与回修，主控只列问题单和判卷；门禁通过后，Claude 必须按 round3 minimal 的极简路线放开改写，再由主控专门挑“变啰嗦了”和“比喻无聊”这两类问题继续回传，直到润色版真的更好，或者明确拒收 Claude 版本。",
+      "expected_output": "输出一版更自然、更像活人现场说话的第3章重写稿，并留下完整编排工件，能够证明主控没有直接下场写文，Claude 的参与发生在 gate pass 之后，并且主控确实对啰嗦和无聊比喻做了二次筛查。",
+      "files": [
+        "../../../steel-monster-v4/03_manuscript/第3章-卖车风波.md",
+        "../../../steel-monster-v4/02_knowledge_base/03_style_reference_pack.md",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第3章-卖车风波/gate_result.json",
+        "../../../steel-monster-v4/04_editing/gate_artifacts/第3章-卖车风波/quality_report.md",
+        "../../../Docs/References/庆余年-节选.md",
+        "../../../Docs/References/谁说人类节节败退-节选.md"
+      ],
+      "expectations": [
+        "The rewrite run records draft, gate, and polish loops in run_manifest.json",
+        "Claude is only used for the polish loop after the gate loop passes",
+        "The polish loop includes controller feedback about verbosity, boring metaphors, or removing added headings before the final version is accepted"
+      ]
+    }
+  ]
+}

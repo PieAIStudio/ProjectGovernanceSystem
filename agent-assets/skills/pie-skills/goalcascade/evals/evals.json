@@ -1,0 +1,47 @@
+{
+  "skill_name": "goalcascade",
+  "evals": [
+    {
+      "id": "gc-supa-commercial-doctrine",
+      "prompt": "Use $goalcascade for Non-Heroes, a 4-player PvE Boss Race game. The owner says the game should make money, grow PieIP influence, and express The Swimmer’s Guide to the AI Tsunami, but monetization must not feel disgusting. The next 60 days are about a commercial vertical slice. Should the new-player flow prioritize game-feel polish, doctrine messaging, or monetization prompts?",
+      "expected_output": "Should create a project adapter rather than treating The Swimmer’s Guide to the AI Tsunami as a universal default; should connect doctrine, game-feel, commercial boundary, target/non-target users, and free/paid tradeoffs into constraints that can reject concrete UI/onboarding choices.",
+      "files": []
+    },
+    {
+      "id": "gc-ordinary-saas-no-pie",
+      "prompt": "Use $goalcascade for a small invoicing SaaS with no Pie affiliation. The founder is deciding whether to add AI invoice drafting or improve boring reliability first. The current quarter goal is paid retention among freelancers.",
+      "expected_output": "Should not mention Pie, The Swimmer’s Guide to the AI Tsunami, FB, or any project-specific doctrine unless supplied. Should build a generic doctrine/mission adapter around trust, paid retention, target users, non-target users, and concrete rejected options.",
+      "files": []
+    },
+    {
+      "id": "gc-incomplete-input",
+      "prompt": "Use $goalcascade. I have a product idea but I only know it should be cool and AI-native. I do not know who it is for or what the current time window is.",
+      "expected_output": "Should ask for only the missing essentials or infer a clearly labeled minimal frame; should not fabricate a grand strategy; should mark the cascade as draft or rootless if adapter inputs remain missing.",
+      "files": []
+    },
+    {
+      "id": "gc-ai-native-cost-boundary",
+      "prompt": "Use $goalcascade for an AI-native product with meaningful API cost. The founder wants free users to experience the magic but worries about budget. Exact numbers are unavailable; only rough provider price assumptions exist.",
+      "expected_output": "Should read the Economy reference, include rough but honest unit cost, free-tier ceiling, monetization premise, transparency boundary, confidence level, and downstream constraints. Should avoid blocking on perfect numbers.",
+      "files": []
+    },
+    {
+      "id": "gc-doctrine-conflict",
+      "prompt": "Use $goalcascade for a learning app whose stated mission is beginner empowerment. The team proposes hiding key limits until after users invest an hour, because conversion may improve. Decide whether this is acceptable for the next release.",
+      "expected_output": "Should surface the conflict between mission and conversion tactic, name the forbidden move, and propose a transparent alternative instead of optimizing conversion in isolation.",
+      "files": []
+    },
+    {
+      "id": "gc-negative-concrete-screen",
+      "prompt": "A user provides three battle screenshots and asks what is visually blocking the current turn. They do not ask about product direction, target user, monetization, or doctrine.",
+      "expected_output": "Should not run a full GoalCascade. Should recommend screenwalk because the request is grounded in concrete screens and visual/game-flow evidence.",
+      "files": []
+    },
+    {
+      "id": "gc-owner-brief-links-evidence",
+      "prompt": "Use $goalcascade after ScreenWalk and Experience Capture produced SW-004 and EC-009. The conflict is whether to push monetization prompts earlier or keep the first playable minute clean. The owner wants a decision brief before approving fixes.",
+      "expected_output": "Should create or update an owner-facing decision brief that links the tradeoff to SW-004 and EC-009, separates safe fix scope from owner-taste/strategy decisions, and does not authorize repair without owner-selected issue IDs.",
+      "files": []
+    }
+  ]
+}

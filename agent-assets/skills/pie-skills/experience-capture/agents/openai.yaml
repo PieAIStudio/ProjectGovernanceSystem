@@ -1,0 +1,4 @@
+interface:
+  display_name: "Experience Capture"
+  short_description: "Turn clips into timestamped UX packets and owner briefs"
+  default_prompt: "Use $experience-capture in review-only mode to capture short app or game clips, review dynamic UX, normalize timestamped evidence packets, and produce an owner-review-brief before any repair."

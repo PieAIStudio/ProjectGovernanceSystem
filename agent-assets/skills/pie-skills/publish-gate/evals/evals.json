@@ -1,0 +1,77 @@
+{
+  "skill_name": "publish-gate",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "帮我检查一下第1章能不能发。情节点在 /Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md 里面第1章的部分，正文在 /Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第1章-背锅测试.md",
+      "expected_output": "一份结构化的发布门禁报告，包含 S1-S5 结构对齐检查和 H1-H3 卫生线检查，最后给出 PUBLISH/REJECT/AUTO-FIX 判定。不包含任何文风评价或润色建议。",
+      "files": [
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md",
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第1章-背锅测试.md"
+      ],
+      "assertions": [
+        {"id": "A1", "text": "Output contains '发布门禁报告' header", "type": "contains", "target": "发布门禁报告"},
+        {"id": "A2", "text": "Output contains '结构对齐' section", "type": "contains", "target": "结构对齐"},
+        {"id": "A3", "text": "Output contains '卫生线' section", "type": "contains", "target": "卫生线"},
+        {"id": "A4", "text": "Output contains '判定' section", "type": "contains", "target": "判定"},
+        {"id": "A5", "text": "Output contains a binary decision (PUBLISH/REJECT/AUTO-FIX)", "type": "regex", "target": "(PUBLISH|REJECT|AUTO-FIX)"},
+        {"id": "A6", "text": "No style/rhetoric feedback (文风/修辞/语感/比喻可以/建议改成)", "type": "not_contains_any", "target": ["文风", "修辞", "语感", "比喻可以", "建议改成", "换成.*会更", "润色"]},
+        {"id": "A7", "text": "No scoring (X分/X星/评级/rating)", "type": "not_contains_any", "target": ["分$", "星$", "评级", "/10", "/100", "rating"]},
+        {"id": "A8", "text": "No encouragement (亮点/写得不错/优点/写得好)", "type": "not_contains_any", "target": ["亮点", "写得不错", "优点", "写得好", "写得很"]},
+        {"id": "A9", "text": "No revision nudges (再看看/再想想/值得推敲/可以更好)", "type": "not_contains_any", "target": ["再看看", "再想想", "值得推敲", "可以更好", "再斟酌"]},
+        {"id": "A10", "text": "All S1-S5 structural items present", "type": "contains_all", "target": ["S1", "S2", "S3", "S4", "S5"]},
+        {"id": "A11", "text": "All H1-H3 sanitation items present", "type": "contains_all", "target": ["H1", "H2", "H3"]},
+        {"id": "A12", "text": "Contains word count info", "type": "regex", "target": "\\d+.*字"}
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "第2章过门禁。情节点：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md 正文：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第2章-车场阴影.md",
+      "expected_output": "一份发布门禁报告，格式与 eval-1 一致。使用不同触发语（过门禁）但产出相同格式。",
+      "files": [
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md",
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第2章-车场阴影.md"
+      ],
+      "assertions": [
+        {"id": "A1", "text": "Output contains '发布门禁报告' header", "type": "contains", "target": "发布门禁报告"},
+        {"id": "A2", "text": "Output contains '结构对齐' section", "type": "contains", "target": "结构对齐"},
+        {"id": "A3", "text": "Output contains '卫生线' section", "type": "contains", "target": "卫生线"},
+        {"id": "A4", "text": "Output contains '判定' section", "type": "contains", "target": "判定"},
+        {"id": "A5", "text": "Output contains a binary decision (PUBLISH/REJECT/AUTO-FIX)", "type": "regex", "target": "(PUBLISH|REJECT|AUTO-FIX)"},
+        {"id": "A6", "text": "No style/rhetoric feedback", "type": "not_contains_any", "target": ["文风", "修辞", "语感", "比喻可以", "建议改成", "润色"]},
+        {"id": "A7", "text": "No scoring", "type": "not_contains_any", "target": ["评级", "/10", "/100", "rating"]},
+        {"id": "A8", "text": "No encouragement", "type": "not_contains_any", "target": ["亮点", "写得不错", "优点", "写得好", "写得很"]},
+        {"id": "A9", "text": "No revision nudges", "type": "not_contains_any", "target": ["再看看", "再想想", "值得推敲", "可以更好", "再斟酌"]},
+        {"id": "A10", "text": "All S1-S5 structural items present", "type": "contains_all", "target": ["S1", "S2", "S3", "S4", "S5"]},
+        {"id": "A11", "text": "All H1-H3 sanitation items present", "type": "contains_all", "target": ["H1", "H2", "H3"]},
+        {"id": "A12", "text": "Contains word count info", "type": "regex", "target": "\\d+.*字"}
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "批量审一下第5章和第6章。情节点都在 /Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md，正文分别在 /Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第5章-试车翻脸.md 和 /Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第6章-立交桥下.md",
+      "expected_output": "两份独立的发布门禁报告（用 --- 分隔），最后附带一个批量汇总表。不包含任何文风评价。",
+      "files": [
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/01_analysis/plot-beats-01-10.md",
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第5章-试车翻脸.md",
+        "/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第6章-立交桥下.md"
+      ],
+      "assertions": [
+        {"id": "A1", "text": "Output contains '发布门禁报告' header", "type": "contains", "target": "发布门禁报告"},
+        {"id": "A2", "text": "Output contains '结构对齐' section", "type": "contains", "target": "结构对齐"},
+        {"id": "A3", "text": "Output contains '卫生线' section", "type": "contains", "target": "卫生线"},
+        {"id": "A4", "text": "Output contains '判定' section", "type": "contains", "target": "判定"},
+        {"id": "A5", "text": "Output contains a binary decision (PUBLISH/REJECT/AUTO-FIX)", "type": "regex", "target": "(PUBLISH|REJECT|AUTO-FIX)"},
+        {"id": "A6", "text": "No style/rhetoric feedback", "type": "not_contains_any", "target": ["文风", "修辞", "语感", "比喻可以", "建议改成", "润色"]},
+        {"id": "A7", "text": "No scoring", "type": "not_contains_any", "target": ["评级", "/10", "/100", "rating"]},
+        {"id": "A8", "text": "No encouragement", "type": "not_contains_any", "target": ["亮点", "写得不错", "优点", "写得好", "写得很"]},
+        {"id": "A9", "text": "No revision nudges", "type": "not_contains_any", "target": ["再看看", "再想想", "值得推敲", "可以更好", "再斟酌"]},
+        {"id": "A10", "text": "All S1-S5 structural items present", "type": "contains_all", "target": ["S1", "S2", "S3", "S4", "S5"]},
+        {"id": "A11", "text": "All H1-H3 sanitation items present", "type": "contains_all", "target": ["H1", "H2", "H3"]},
+        {"id": "A12", "text": "Contains word count info", "type": "regex", "target": "\\d+.*字"},
+        {"id": "A13", "text": "Has batch summary table (批量汇总)", "type": "contains", "target": "批量汇总"},
+        {"id": "A14", "text": "Has separator between reports (---)", "type": "contains", "target": "---"}
+      ]
+    }
+  ]
+}

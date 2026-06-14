@@ -1,0 +1,4 @@
+interface:
+  display_name: "GoalCascade"
+  short_description: "Clarify product direction, tradeoffs, and owner decisions"
+  default_prompt: "Use $goalcascade in review-only mode to clarify product direction and tradeoffs, link decisions to evidence issue IDs when available, and prepare owner-facing decision guidance before implementation."

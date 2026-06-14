@@ -1,0 +1,19 @@
+{
+  "skill_name": "prose-signature",
+  "evals": [
+    {
+      "id": 1,
+      "name": "ch1-signature-injection",
+      "prompt": "请把下面这章小说（已经被 prose-lint 清理过）跑一遍 prose-signature 技能，注入人味签名。技能位置：/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/prose-signature/SKILL.md。voice-profile.md 位置：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/voice-profile.md。章节文件：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第1章-背锅测试.md。按技能里的『输出格式』章节输出完整的签名注入报告和修改后全文。",
+      "expected_output": "一份签名注入报告 + 修改后的第1章全文。报告包含 Voice Profile 状态、叙述层 N1-N8 扫描表、对白层 D1-D6 扫描表、自审发现、注入摘要。修改后正文字数不少于原文字数（只加不删）。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "name": "ch2-signature-injection",
+      "prompt": "请把下面这章小说（已经被 prose-lint 清理过）跑一遍 prose-signature 技能，注入人味签名。技能位置：/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/prose-signature/SKILL.md。voice-profile.md 位置：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/voice-profile.md。章节文件：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第2章-车场阴影.md。按技能里的『输出格式』章节输出完整的签名注入报告和修改后全文。",
+      "expected_output": "一份签名注入报告 + 修改后的第2章全文。本章对白密集（陈大军/陈仙/罗春梅/陈小军/老陈/刘婆婆），D2 声音区分是本章重点检验项。",
+      "files": []
+    }
+  ]
+}

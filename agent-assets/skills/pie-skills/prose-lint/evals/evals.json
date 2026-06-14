@@ -1,0 +1,23 @@
+{
+  "skill_name": "prose-lint",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请对以下章节执行 prose-lint 润色，去除AI味，输出润色报告和修改后全文。章节文件：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第1章-背锅测试.md",
+      "expected_output": "润色报告（含规则命中表）+ 修改后的完整章节正文，去除AI高频词、修复比喻、口语化、章末改为钩子",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "请对以下章节执行 prose-lint 润色，去除AI味，输出润色报告和修改后全文。章节文件：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第2章-车场阴影.md",
+      "expected_output": "润色报告（含规则命中表）+ 修改后的完整章节正文，对话口语化、环境描写后置、章末钩子",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "请对以下章节执行 prose-lint 润色，去除AI味，输出润色报告和修改后全文。章节文件：/Users/yuanfei/PieAI/_NovelFrameworks/novel-creator-skill/steel-monster-v4/03_manuscript/第5章-试车翻脸.md",
+      "expected_output": "润色报告（含规则命中表）+ 修改后的完整章节正文，包含方言元素、段落长度变化、无AI套话",
+      "files": []
+    }
+  ]
+}

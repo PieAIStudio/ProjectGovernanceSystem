@@ -1,0 +1,9 @@
+{
+  "passed": false,
+  "warnings": [],
+  "failures": [
+    "quality_report 显示未通过",
+    "章末缺少具体钩子",
+    "对话冲突不足，重复解释过多"
+  ]
+}
