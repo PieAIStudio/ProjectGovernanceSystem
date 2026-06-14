@@ -2,8 +2,8 @@
 id: SPEC-0003
 title: Project Lens And Agent Asset Manager
 type: spec
-status: draft
-canonical: false
+status: completed
+canonical: true
 owner: ai-assisted
 created: 2026-06-15
 last_reviewed: 2026-06-15

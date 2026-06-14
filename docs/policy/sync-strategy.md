@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-13
+last_reviewed: 2026-06-15
 domain: adoption
 tags:
   - sync
@@ -55,6 +55,15 @@ starter/profile asset source and `@pieai/doc-gov` as the validator source. Use
 This does not update files yet. It verifies that the target project structurally
 matches the selected profile before a human or AI sync task edits anything.
 
+Project evidence and agent-asset recommendation are also read-only at this
+stage:
+
+```bash
+pro-gov assets discover --target .
+pro-gov assets recommend --target .
+pro-gov lens inspect --target .
+```
+
 The future write mode should update core/starter files while preserving local
 profile sections:
 
@@ -99,6 +108,32 @@ Beginner version: `doc-gov` is the inspection machine. `pro-gov` is the setup
 kit and parts catalog. The first `pro-gov` release still keeps write behavior
 off by default, because overwriting another project's router or policies without
 a review is too risky.
+
+## Local Agent Asset Registry
+
+`agent-assets/` is the local upstream registry for Yuanfei's skills, Dokobot
+skills, npx-installed skills, rules, commands, bundles, and ProjectLens skills.
+It is intentionally part of the full Project Governance System checkout, not
+the public npm tarball.
+
+This keeps two concerns separate:
+
+| Surface | Contains |
+| --- | --- |
+| Public `@pieai/pro-gov` package | starter/profile/adoption assets, read-only discovery, ProjectLens evidence commands |
+| Full PGS checkout | private and third-party skill bodies plus explicit asset plan/apply/check commands |
+
+Use managed asset writes only through reviewable plans:
+
+```bash
+pro-gov assets plan --target /path/to/project --bundle base-governance --host codex --out /tmp/pro-gov-asset-plan.json
+pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
+pro-gov assets check --target /path/to/project
+```
+
+Do not run `npx skills` inside every target project. Maintain the native npx
+root in `agent-assets/skills/npx-skills/` through `pro-gov assets npx ... --plan`
+and then review the generated diff before changing the real registry.
 
 ## Checkout Path Boundary
 

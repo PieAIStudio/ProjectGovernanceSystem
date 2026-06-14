@@ -14,5 +14,18 @@ Directory names follow source families:
 Publication and sharing are controlled by `registry.json`, not by directory
 names. Private and third-party assets are not published to npm by default.
 
+Downstream installation is plan-gated:
+
+```bash
+pro-gov assets discover --target /path/to/project --json
+pro-gov assets recommend --target /path/to/project --json
+pro-gov assets plan --target /path/to/project --bundle <bundle-id> --host codex --out /tmp/pro-gov-asset-plan.json
+pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
+pro-gov assets check --target /path/to/project --json
+```
+
+The plan creates managed symlinks and `.pro-gov/assets.lock.json`. It must not
+overwrite unmanaged project files.
+
 Do not delete the original OneDrive sources during migration. OneDrive remains
 a backup until the user manually removes it.
