@@ -376,16 +376,30 @@ Execution record:
 
 ## Task 9: ProjectLens Absorption
 
-- [ ] Copy only reusable ProjectLens skills and protocol into PGS.
-- [ ] Do not copy `audits/show/**` or `audits/non-heroes/**`.
-- [ ] Add ProjectLens skills to the public or private asset layer based on
-  review; default to public if they are generic and clean.
-- [ ] Add `packages/pro-gov/src/lens/` with read-only inspection helpers.
-- [ ] Add `pro-gov lens inspect --target <path> --format text|json`.
+- [x] Copy only reusable ProjectLens skills and protocol into PGS.
+- [x] Do not copy `audits/show/**` or `audits/non-heroes/**`.
+- [x] Add ProjectLens skills to the private asset layer.
+- [x] Add `agent-assets/bundles/project-lens.json`.
+- [x] Add `packages/pro-gov/src/lens/` with read-only inspection helpers.
+- [x] Add `pro-gov lens scan --target <path> --json`.
+- [ ] Add `pro-gov lens inspect --target <path> --format text|json` if scan
+  is not enough after user testing.
 - [ ] Add `pro-gov lens report --target <path> --out <path>`.
-- [ ] Test lens commands against temp projects and one read-only local target.
+- [x] Test lens commands against temp projects.
+- [ ] Test lens commands against one read-only local target.
 - [ ] Add a retirement checklist documenting when the old ProjectLens root can
   be deleted.
+
+Execution record:
+
+- Imported `project-architecture-lens` and `truth-surface-audit` into
+  `agent-assets/skills/pie-skills/`.
+- Imported the reusable audit protocol into
+  `docs/reference/project-lens/project-audit-protocol-v0.1.md`.
+- Rewrote copied skill references to use the new PGS protocol path.
+- Did not migrate historical Show or Non-Heroes audit evidence.
+- Added `pro-gov lens scan`, which returns local read-only evidence for AI audit
+  work instead of pretending to generate a full expert report by itself.
 
 ## Task 10: Package Boundary And Docs
 
@@ -457,8 +471,8 @@ git diff --check
 - [ ] Private and third-party assets live in PGS and are excluded from npm.
 - [ ] `npx-skills` is managed as a native `npx skills` root inside PGS, with no
   internal compatibility symlink layer.
-- [ ] ProjectLens reusable capability works from PGS.
-- [ ] Historical ProjectLens audits are not migrated.
+- [x] ProjectLens reusable capability works from PGS.
+- [x] Historical ProjectLens audits are not migrated.
 - [ ] `pro-gov assets` can list, discover, recommend, plan, apply, and check.
 - [ ] `pro-gov lens` can inspect and report.
 - [ ] All tests and governance checks pass.

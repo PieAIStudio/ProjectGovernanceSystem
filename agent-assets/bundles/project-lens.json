@@ -1,0 +1,9 @@
+{
+  "id": "project-lens",
+  "title": "Project Lens",
+  "description": "Read-only project architecture and truth-surface audit lenses.",
+  "assets": [
+    "pie-skills/project-architecture-lens",
+    "pie-skills/truth-surface-audit"
+  ]
+}

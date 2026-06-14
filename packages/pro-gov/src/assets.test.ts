@@ -45,7 +45,7 @@ test('assets list --json prints the agent asset registry', () => {
 
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
-  assert.equal(parsed.count, 72);
+  assert.equal(parsed.count, 74);
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/screenwalk'));
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/agent-browser'));
 });
@@ -116,6 +116,26 @@ test('assets plan --json creates a dry-run plan without writing target files', (
   assert.ok(parsed.actions.some((action: { targetPath: string }) => action.targetPath === '.pro-gov/assets.lock.json'));
   assert.equal(existsSync(join(targetDir, '.agents')), false);
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
+});
+
+test('lens scan --json returns a local evidence packet', () => {
+  const targetDir = createTempTargetDir();
+  writeFileSync(join(targetDir, 'package.json'), JSON.stringify({ scripts: { test: 'node --test' } }));
+  writeFileSync(join(targetDir, 'AGENTS.md'), '# Agents\n');
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'scan', '--target', targetDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(result.stdout);
+  assert.deepEqual(parsed.aiEntryFiles, ['AGENTS.md']);
+  assert.deepEqual(parsed.packageJson.scripts, ['test']);
 });
 
 function createTempTargetDir(): string {

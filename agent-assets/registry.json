@@ -268,6 +268,26 @@
       "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
     },
     {
+      "id": "pie-skills/project-architecture-lens",
+      "title": "Project Architecture Lens",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/project-architecture-lens",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills",
+        "project-lens"
+      ],
+      "publishable": false,
+      "origin": "ProjectLens/skills",
+      "notes": "Imported from ProjectLens during PGS absorption. Old raw audit evidence was intentionally not migrated."
+    },
+    {
       "id": "pie-skills/prose-lint",
       "title": "Prose-Lint：中文小说去AI味润色",
       "family": "pie-skills",
@@ -361,6 +381,26 @@
       "publishable": false,
       "origin": "OneDrive/MyProjectSkills or OneDrive/MyGlobalSkills",
       "notes": "Imported from Yuanfei-maintained local skills. OneDrive remains backup until manual cleanup."
+    },
+    {
+      "id": "pie-skills/truth-surface-audit",
+      "title": "Truth Surface Audit",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "private",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/truth-surface-audit",
+      "hosts": [
+        "codex"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills",
+        "project-lens"
+      ],
+      "publishable": false,
+      "origin": "ProjectLens/skills",
+      "notes": "Imported from ProjectLens during PGS absorption. Old raw audit evidence was intentionally not migrated."
     },
     {
       "id": "dokobot/deep-research",
