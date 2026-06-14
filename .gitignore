@@ -5,4 +5,5 @@ dist/
 coverage/
 tmp/
 temp/
+.worktrees/
 packages/pro-gov/assets/
