@@ -70,26 +70,45 @@ audience that wants Lens without the rest of Pro-Gov.
 ### 2. Make PGS The Canonical Home For Agent Assets
 
 Move the current OneDrive-based skills, rules, commands, and third-party skill
-cache into this repository, but keep visibility explicit:
+cache into this repository. Directory names should follow the asset's source
+family, because that is how the user actually reasons about them. Visibility
+and publishability belong in the registry, not in the top-level directory name.
 
 ```text
 agent-assets/
   README.md
   registry.json
   bundles/
-  public/
-  private/
-  third-party/
+  skills/
+    pie-skills/
+    dokobot/
+    npx-skills/
+      skills-lock.json
+      .agents/
+        skills/
+  rules/
+    pie-rules/
+  commands/
+    pie-commands/
 ```
 
 OneDrive remains untouched during migration and becomes a backup until the user
 manually deletes it. After acceptance, the PGS checkout is the canonical source.
 
-### 3. Use Public, Private, And Third-Party Visibility
+The `npx-skills` directory is a special case: it must stay a native
+`npx skills` project root. Future third-party skill additions and updates must
+run from that directory so the tool writes the correct `skills-lock.json` and
+`.agents/skills/<skill-name>/` files.
+
+Do not create a second human-friendly compatibility symlink layer inside
+`agent-assets/skills/npx-skills`. Internal symlink mirrors would add another
+truth surface and make later debugging harder.
+
+### 3. Use Source Family Plus Registry Visibility
 
 Every asset must be classified before it can be installed:
 
-| Visibility | Meaning | Published to npm by default |
+| Registry field | Meaning | Published to npm by default |
 | --- | --- | --- |
 | `public` | Reusable assets intended for other projects and users | yes, after review |
 | `private` | Yuanfei-specific skills, rules, and commands | no |
@@ -99,6 +118,16 @@ Third-party skills may be mirrored into PGS so OneDrive is no longer canonical,
 but their source metadata, original lock data, and content hashes must be kept.
 They cannot be promoted into a public package without a separate license,
 security, and usefulness review.
+
+Use these source families:
+
+| Family | Path | Meaning |
+| --- | --- | --- |
+| `pie-skills` | `agent-assets/skills/pie-skills/` | Yuanfei-authored or AI-coauthored skills. |
+| `dokobot` | `agent-assets/skills/dokobot/` | The local Dokobot skill pack, preserved as a pack when skills share support files. |
+| `npx-skills` | `agent-assets/skills/npx-skills/` | The native `npx skills` managed root. |
+| `pie-rules` | `agent-assets/rules/pie-rules/` | Yuanfei-authored rules before promotion or conversion. |
+| `pie-commands` | `agent-assets/commands/pie-commands/` | Yuanfei-authored commands before skill conversion. |
 
 ### 4. Keep AI Advisory, Keep Writes Deterministic
 
@@ -159,23 +188,30 @@ default.
    original OneDrive copies.
 3. Preserve source metadata for npx-installed third-party skills, including the
    existing `skills-lock.json` data.
-4. Add read-only asset commands before write-mode commands:
+4. Preserve `agent-assets/skills/npx-skills` as a native `npx skills` work root
+   with `skills-lock.json` and `.agents/skills/`.
+5. Do not create internal compatibility symlinks inside
+   `agent-assets/skills/npx-skills`.
+6. Add read-only asset commands before write-mode commands:
    - `pro-gov assets list`
    - `pro-gov assets check`
    - `pro-gov assets discover`
    - `pro-gov assets recommend`
    - `pro-gov assets plan`
-5. Add write mode only as explicit plan application:
+7. Add write mode only as explicit plan application:
    - `pro-gov assets apply --plan <file>`
-6. Do not overwrite unmanaged project files or symlinks.
-7. Detect dangling links, duplicate asset IDs, missing `SKILL.md`, unsupported
+8. Do not overwrite unmanaged project files or symlinks.
+9. Detect dangling links, duplicate asset IDs, missing `SKILL.md`, unsupported
    host targets, and package-publish leaks.
-8. Add ProjectLens reusable skills and protocol into PGS and expose
+10. Add ProjectLens reusable skills and protocol into PGS and expose
    `pro-gov lens` commands.
-9. Exclude private and third-party assets from npm tarballs unless a future spec
+11. Exclude private and third-party assets from npm tarballs unless a future spec
    explicitly promotes them.
-10. Keep the old ProjectLens repository intact until the user confirms the new
+12. Keep the old ProjectLens repository intact until the user confirms the new
     system is usable.
+13. Add a safe wrapper workflow for third-party skill maintenance so updates can
+    be tried in a temporary copy, reviewed as a diff, and applied only after
+    approval.
 
 ## Non Goals
 
@@ -199,6 +235,8 @@ pro-gov assets discover --target <path> --json
 pro-gov assets recommend --target <path> --json
 pro-gov assets plan --target <path> --bundle <id> --host <host> --out <file>
 pro-gov assets apply --plan <file>
+pro-gov assets npx add <source> [--skill <name>]
+pro-gov assets npx update [--skill <name>] --plan
 ```
 
 `recommend` should be deterministic and explainable. Rich AI reasoning can
@@ -213,6 +251,8 @@ layer on top of its JSON output in Codex, Claude Code, or Antigravity.
 - Existing managed links can be updated only when the lockfile proves ownership.
 - `check` must be able to run before and after apply.
 - `pack --dry-run` must prove private and third-party bodies are not included.
+- Third-party updates must first run against a temporary copy of
+  `agent-assets/skills/npx-skills` and produce a reviewable diff.
 
 ## Acceptance
 
@@ -223,6 +263,8 @@ layer on top of its JSON output in Codex, Claude Code, or Antigravity.
 - ProjectLens reusable capabilities are available from PGS without carrying old
   audit evidence.
 - OneDrive assets are copied into `agent-assets/` and classified.
+- `npx-skills` remains updatable through its native work root structure without
+  adding internal compatibility symlink mirrors.
 - Asset commands can inventory, recommend, plan, apply, and verify target
   project mounts.
 - Tests cover registry parsing, bundle selection, host adapters, conflict
@@ -231,5 +273,3 @@ layer on top of its JSON output in Codex, Claude Code, or Antigravity.
   bodies.
 - The old `ProjectLens` root is ready for user-approved deletion, but is not
   deleted by this implementation.
-
-## Acceptance

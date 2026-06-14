@@ -76,14 +76,17 @@ Out of scope:
 - Create `agent-assets/README.md` for asset storage rules.
 - Create `agent-assets/registry.json` for all asset metadata.
 - Create `agent-assets/bundles/*.json` for project-type bundles.
-- Create `agent-assets/public/skills/` for curated public skills.
-- Create `agent-assets/private/skills/` for Yuanfei-authored or coauthored
+- Create `agent-assets/skills/pie-skills/` for Yuanfei-authored or coauthored
   skills.
-- Create `agent-assets/private/rules/` for private rule documents.
-- Create `agent-assets/private/commands/` for private command documents before
-  conversion.
-- Create `agent-assets/third-party/skills/` for mirrored npx-installed skills.
-- Create `agent-assets/third-party/skills-lock.json` from the current npx lock.
+- Create `agent-assets/skills/dokobot/` for the local Dokobot skill pack.
+- Create `agent-assets/skills/npx-skills/` as a native `npx skills` work root.
+- Create `agent-assets/skills/npx-skills/.agents/skills/` for mirrored
+  npx-installed skills.
+- Create `agent-assets/skills/npx-skills/skills-lock.json` from the current npx
+  lock.
+- Create `agent-assets/rules/pie-rules/` for private rule documents.
+- Create `agent-assets/commands/pie-commands/` for private command documents
+  before conversion.
 - Create `packages/pro-gov/src/asset-registry/*` for registry parsing,
   validation, bundle lookup, and content hashing.
 - Create `packages/pro-gov/src/asset-targets/*` for target-project discovery,
@@ -133,10 +136,18 @@ Expected: all pass before feature work begins.
 
 - [x] Create `SPEC-0003` with the public/private/third-party asset model.
 - [x] Create this implementation plan as `PLAN-0003`.
-- [ ] Run `pnpm doc-gov check`.
-- [ ] Run `pnpm doc-gov scan --check`.
-- [ ] Commit the spec and plan after governance checks pass.
-- [ ] Ask the user to approve the written plan before implementation begins.
+- [x] Run `pnpm doc-gov check`.
+- [x] Run `pnpm doc-gov scan --check`.
+- [x] Commit the initial spec and plan after governance checks pass.
+- [x] Ask the user to approve the written plan before implementation begins.
+- [x] Incorporate the follow-up directory decision:
+  - use `agent-assets/skills/pie-skills/`;
+  - use `agent-assets/skills/dokobot/`;
+  - keep `agent-assets/skills/npx-skills/` as a native `npx skills` work root
+    with `skills-lock.json` and `.agents/skills/`;
+  - do not create an internal human-facing compatibility symlink layer.
+- [ ] Run governance checks after this plan update.
+- [ ] Commit the follow-up plan/spec update.
 
 ## Task 2: Asset Inventory Snapshot
 
@@ -144,6 +155,8 @@ Expected: all pass before feature work begins.
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyGlobalSkills`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/_npx_skills/.agents/skills`
+  - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/_npx_skills/skills-lock.json`
+  - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectSkills/dokobot`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyGlobalRules`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectRules`
   - `/Users/yuanfei/Library/CloudStorage/OneDrive-Personal/MyProjectCommands`
@@ -152,6 +165,10 @@ Expected: all pass before feature work begins.
   output.
 - [ ] Produce an inventory report with counts, missing `SKILL.md` files,
   dangling symlinks, duplicate names, and likely command-to-skill candidates.
+- [ ] Classify source families as `pie-skills`, `dokobot`, `npx-skills`,
+  `pie-rules`, or `pie-commands`.
+- [ ] Report npx lock entries whose skill directory is missing and skill
+  directories missing from the lock.
 - [ ] Do not modify the OneDrive sources.
 
 ## Task 3: Agent Asset Storage Skeleton
@@ -160,6 +177,9 @@ Expected: all pass before feature work begins.
   visibility, promotion, and npm exclusion.
 - [ ] Add empty `.gitkeep` files for the new storage directories.
 - [ ] Add `agent-assets/registry.json` with schema version and empty asset list.
+- [ ] Add `agent-assets/skills/npx-skills/README.md` explaining that this
+  directory is a native `npx skills` root and must not have an internal
+  compatibility symlink mirror.
 - [ ] Add seed bundles:
   - `agent-assets/bundles/base-governance.json`
   - `agent-assets/bundles/frontend-app.json`
@@ -168,15 +188,19 @@ Expected: all pass before feature work begins.
 - [ ] Add tests that fail when registry IDs duplicate, paths escape
   `agent-assets/`, or private assets are marked publishable.
 
-## Task 4: Import Private And Third-Party Assets
+## Task 4: Import Source-Family Assets
 
-- [ ] Copy Yuanfei-authored skills into `agent-assets/private/skills/`.
-- [ ] Copy private rules into `agent-assets/private/rules/`.
-- [ ] Copy private commands into `agent-assets/private/commands/`.
+- [ ] Copy Yuanfei-authored skills into `agent-assets/skills/pie-skills/`.
+- [ ] Copy Dokobot into `agent-assets/skills/dokobot/`, preserving shared
+  support files.
+- [ ] Copy private rules into `agent-assets/rules/pie-rules/`.
+- [ ] Copy private commands into `agent-assets/commands/pie-commands/`.
 - [ ] Mirror npx-installed third-party skills into
-  `agent-assets/third-party/skills/`.
+  `agent-assets/skills/npx-skills/.agents/skills/`.
 - [ ] Copy the current npx `skills-lock.json` into
-  `agent-assets/third-party/skills-lock.json`.
+  `agent-assets/skills/npx-skills/skills-lock.json`.
+- [ ] Do not create `agent-assets/skills/npx-skills/skills/<skill-name>`
+  compatibility symlinks.
 - [ ] Preserve original names first; rename only when a collision would make
   host discovery ambiguous.
 - [ ] Register every imported asset in `agent-assets/registry.json` with:
@@ -204,6 +228,24 @@ Expected: all pass before feature work begins.
 - [ ] Add content hashing for lockfile entries.
 - [ ] Add `pro-gov assets list --json`.
 - [ ] Keep the original plain `pro-gov assets list` behavior compatible.
+- [ ] Add registry checks that reject internal compatibility symlinks under
+  `agent-assets/skills/npx-skills/skills/`.
+
+## Task 5A: Npx Skills Maintenance Wrapper
+
+- [ ] Add a wrapper module for third-party npx skills maintenance.
+- [ ] Add `pro-gov assets npx add <source> [--skill <name>] --plan`.
+- [ ] Add `pro-gov assets npx update [--skill <name>] --plan`.
+- [ ] Implement these commands by copying
+  `agent-assets/skills/npx-skills/` to a temp directory first.
+- [ ] Run `npx --yes skills add ...` or
+  `npx --yes skills update -p -y` only inside the temp copy.
+- [ ] Produce a reviewable JSON plan and textual diff summary.
+- [ ] Do not apply changes to the real `npx-skills` root without a separate
+  explicit apply step.
+- [ ] Test that `--help` never triggers an update.
+- [ ] Test that the wrapper refuses to run if the npx work root lacks
+  `skills-lock.json` or `.agents/skills/`.
 
 ## Task 6: Target Discovery And Recommendation
 
@@ -319,6 +361,8 @@ git diff --check
   bodies.
 - [ ] Verify OneDrive sources still exist.
 - [ ] Verify old ProjectLens root still exists.
+- [ ] Verify `agent-assets/skills/npx-skills` remains a native npx root and has
+  no internal compatibility symlink mirror.
 - [ ] Move this plan to `docs/plans/completed/` only after implementation is
   complete.
 - [ ] Prepare a final user report listing:
@@ -335,6 +379,8 @@ git diff --check
 - [ ] OneDrive is no longer the canonical source after import, but remains
   untouched as backup.
 - [ ] Private and third-party assets live in PGS and are excluded from npm.
+- [ ] `npx-skills` is managed as a native `npx skills` root inside PGS, with no
+  internal compatibility symlink layer.
 - [ ] ProjectLens reusable capability works from PGS.
 - [ ] Historical ProjectLens audits are not migrated.
 - [ ] `pro-gov assets` can list, discover, recommend, plan, apply, and check.
