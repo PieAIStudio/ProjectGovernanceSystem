@@ -2,5 +2,11 @@
   "id": "base-governance",
   "title": "Base Governance",
   "description": "Core Project Governance System skills, rules, and checks for governed projects.",
-  "assets": []
+  "assets": [
+    "pie-skills/doc-cross-validator",
+    "pie-skills/publish-gate",
+    "pie-rules/ai-in-the-loop",
+    "pie-rules/rule-evolution-methodology",
+    "pie-commands/generate-handover"
+  ]
 }

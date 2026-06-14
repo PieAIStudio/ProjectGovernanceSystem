@@ -2,5 +2,12 @@
   "id": "novel-writing",
   "title": "Novel Writing",
   "description": "Agent assets for fiction, story systems, and writing workflows.",
-  "assets": []
+  "assets": [
+    "pie-skills/chapter-doctor",
+    "pie-skills/novel-chapter-orchestrator",
+    "pie-skills/plot-beats",
+    "pie-skills/prose-lint",
+    "pie-skills/prose-signature",
+    "pie-skills/reader-experience-map"
+  ]
 }

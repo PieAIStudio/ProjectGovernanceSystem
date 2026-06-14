@@ -39,7 +39,7 @@
     "build": "node scripts/copy-assets.mjs && node node_modules/esbuild/bin/esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
     "prepack": "pnpm build",
     "pretest": "pnpm --filter @pieai/doc-gov build && pnpm build",
-    "test": "tsx --test src/**/*.test.ts",
+    "test": "tsx --test src/*.test.ts src/**/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {

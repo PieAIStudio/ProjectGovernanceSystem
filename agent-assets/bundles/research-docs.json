@@ -2,5 +2,12 @@
   "id": "research-docs",
   "title": "Research Docs",
   "description": "Agent assets for research, evidence gathering, synthesis, and documentation-heavy projects.",
-  "assets": []
+  "assets": [
+    "pie-skills/knowledge-node",
+    "pie-skills/mermaid-diagrams",
+    "dokobot/deep-research",
+    "dokobot/web-search",
+    "dokobot/web-summarization",
+    "dokobot/web-translation"
+  ]
 }
