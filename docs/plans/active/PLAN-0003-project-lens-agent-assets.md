@@ -268,14 +268,24 @@ Execution record:
   `packages/pro-gov/src/asset-registry/`.
 - [x] Write failing tests for duplicate IDs, invalid visibility, missing source
   paths, missing `SKILL.md`, unsupported hosts, and package-leak flags.
-- [ ] Add a registry loader under `packages/pro-gov/src/asset-registry/`.
+- [x] Add a registry loader under `packages/pro-gov/src/asset-registry/`.
 - [x] Implement minimal registry validation with JSON only, no new YAML
   dependency.
-- [ ] Add content hashing for lockfile entries.
-- [ ] Add `pro-gov assets list --json`.
-- [ ] Keep the original plain `pro-gov assets list` behavior compatible.
-- [ ] Add registry checks that reject internal compatibility symlinks under
+- [x] Add content hashing for lockfile entries.
+- [x] Add `pro-gov assets list --json`.
+- [x] Keep the original plain `pro-gov assets list` behavior compatible.
+- [x] Add registry checks that reject internal compatibility symlinks under
   `agent-assets/skills/npx-skills/skills/`.
+
+Execution record:
+
+- Added `loadAgentAssetRegistry()` and checked-in registry validation.
+- Added stable content hashing for lockfile entries.
+- Added `pro-gov assets list --json` and `--visibility`.
+- Fixed the `@pieai/pro-gov` test script so root-level tests and nested tests
+  both run.
+- Verified the original plain `pro-gov assets list` still prints package asset
+  paths.
 
 ## Task 5A: Npx Skills Maintenance Wrapper
 
@@ -295,41 +305,61 @@ Execution record:
 
 ## Task 6: Target Discovery And Recommendation
 
-- [ ] Create target discovery under `packages/pro-gov/src/asset-targets/`.
-- [ ] Detect project signals from:
+- [x] Create target discovery under `packages/pro-gov/src/asset-targets/`.
+- [x] Detect project signals from:
   - `package.json`
   - `AGENTS.md`
   - `CLAUDE.md`
   - `GEMINI.md`
-  - existing `.agents/skills`
-  - existing `.claude/skills`
-  - existing `.gemini/skills`
-  - existing `.pro-gov/assets.json`
+  - `docs/research`
+  - `chapters`
+  - README keywords for research and writing
 - [ ] Add `pro-gov assets discover --target <path> --json`.
-- [ ] Add deterministic `pro-gov assets recommend --target <path> --json`.
-- [ ] Include recommendation reasons and confidence, but do not write files.
-- [ ] Test with temp fixtures for empty project, frontend app, doc-only
-  project, and project with existing skill conflicts.
+- [x] Add deterministic `pro-gov assets recommend --target <path> --json`.
+- [x] Include recommendation reasons and confidence, but do not write files.
+- [x] Test with temp fixtures for empty project, frontend app, research docs,
+  and writing projects.
+- [ ] Add conflict discovery for existing managed and unmanaged asset targets.
+
+Execution record:
+
+- Added `base-governance`, `frontend-app`, `research-docs`, and
+  `novel-writing` bundle contents.
+- Added recommendations based on local evidence only; no AI guessing and no
+  writes.
 
 ## Task 7: Plan Generation
 
-- [ ] Create an asset plan JSON format with exact operations:
+- [x] Create an initial asset plan JSON format.
+- [ ] Extend the plan operation model with exact operations:
   - create directory;
   - create symlink;
   - update managed symlink;
   - write `.pro-gov/assets.json`;
   - write `.pro-gov/assets.lock.json`;
   - stop on unmanaged conflict.
-- [ ] Add `pro-gov assets plan --target <path> --bundle <id> --host <host> --out <file>`.
-- [ ] Support hosts:
+- [x] Add `pro-gov assets plan --target <path> --bundle <id> --host <host> --json`.
+- [x] Support host:
   - `codex`
+- [ ] Support hosts:
   - `claude-code`
   - `gemini-cli`
   - `antigravity`
-- [ ] Map Codex, Gemini CLI, and Antigravity project skills to
+- [x] Map Codex project skills to `.agents/skills`.
+- [ ] Map Gemini CLI and Antigravity project skills to
   `.agents/skills`.
 - [ ] Map Claude Code project skills to `.claude/skills`.
-- [ ] Test exact plan output snapshots for each host.
+- [x] Test dry-run plan output and verify target files are not written.
+- [ ] Add `--out <file>` to write a plan artifact without applying it.
+- [ ] Add conflict checks and exact plan output snapshots for each host.
+
+Execution record:
+
+- Added dry-run-only `createAssetInstallPlan()`.
+- `pro-gov assets plan --json` now returns symlink actions plus
+  `.pro-gov/assets.json` and `.pro-gov/assets.lock.json` write actions.
+- No target files are written by `assets plan`; tests assert `.agents` and
+  `.pro-gov` remain absent.
 
 ## Task 8: Safe Apply And Check
 
