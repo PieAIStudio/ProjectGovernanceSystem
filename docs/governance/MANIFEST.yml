@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-14T17:07:18.917Z
+generated_at: 2026-06-14T17:50:19.717Z
 generator_version: doc-gov@0.3.3
-docs_count: 21
+docs_count: 22
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -130,6 +130,13 @@ docs:
     canonical: true
     last_reviewed: 2026-06-04
     pinned: false
+  - id: SPEC-PROJECT-AUDIT-PROTOCOL-V0-1
+    path: docs/reference/project-lens/project-audit-protocol-v0.1.md
+    type: reference
+    status: stable
+    canonical: true
+    last_reviewed: 2026-06-09
+    pinned: true
   - id: SPEC-0001
     path: docs/specs/active/SPEC-0001-cross-host-doc-gov-hooks.md
     type: spec

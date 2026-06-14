@@ -1,12 +1,14 @@
 import { runAssets } from './commands/assets';
 import { runDoctor } from './commands/doctor';
 import { runInit } from './commands/init';
+import { runLens } from './commands/lens';
 import { runSync } from './commands/sync';
 
 const COMMANDS = [
   'assets list [--json] [--visibility public|private|third-party|all]',
   'assets recommend [--target <path>] [--json]',
   'assets plan --bundle <bundle-id> [--target <path>] [--json]',
+  'lens scan [--target <path>] [--json]',
   'init --profile <engineering-runtime|doc-only> --dry-run',
   'sync --check',
   'doctor',
@@ -19,6 +21,8 @@ if (!command || command === '--help' || command === '-h') {
   process.exitCode = command ? 0 : 1;
 } else if (command === 'assets') {
   process.exitCode = runAssets(process.argv.slice(3));
+} else if (command === 'lens') {
+  process.exitCode = runLens(process.argv.slice(3));
 } else if (command === 'init') {
   process.exitCode = runInit(process.argv.slice(3));
 } else if (command === 'sync') {
