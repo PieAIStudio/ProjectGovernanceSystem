@@ -6,12 +6,15 @@ import { runSync } from './commands/sync';
 
 const COMMANDS = [
   'assets list [--json] [--visibility public|private|third-party|all]',
+  'assets discover [--target <path>] [--json]',
   'assets recommend [--target <path>] [--json]',
   'assets plan --bundle <bundle-id> [--target <path>] [--json]',
   'assets apply --plan <path>',
   'assets check [--target <path>] [--json]',
   'assets npx add|update ... --plan',
   'lens scan [--target <path>] [--json]',
+  'lens inspect [--target <path>] [--format text|json]',
+  'lens report --target <path> --out <path>',
   'init --profile <engineering-runtime|doc-only> --dry-run',
   'sync --check',
   'doctor',

@@ -8,7 +8,7 @@ import { applyAssetInstallPlan } from '../asset-targets/apply';
 import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
 import type { AssetInstallPlan } from '../asset-targets/install-plan';
-import { recommendBundlesForTarget } from '../asset-targets/recommend';
+import { discoverTargetSignals, recommendBundlesForTarget } from '../asset-targets/recommend';
 import type {
   AgentAssetRegistryEntry,
   AssetRegistryHost,
@@ -24,6 +24,9 @@ export function runAssets(args: string[]): number {
   }
   if (subcommand === 'recommend') {
     return runAssetsRecommend(rest);
+  }
+  if (subcommand === 'discover') {
+    return runAssetsDiscover(rest);
   }
   if (subcommand === 'plan') {
     return runAssetsPlan(rest);
@@ -158,6 +161,28 @@ function runAssetsRecommend(args: string[]): number {
         `${recommendation.bundleId}\t${recommendation.confidence}\t${recommendation.reasons.join('; ')}`,
       );
     }
+  }
+  return 0;
+}
+
+function runAssetsDiscover(args: string[]): number {
+  const options = parseTargetJsonOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+
+  const signals = discoverTargetSignals(options.value.targetDir);
+  if (options.value.json) {
+    console.log(JSON.stringify(signals, null, 2));
+  } else {
+    console.log(`target: ${signals.targetDir}`);
+    console.log(`package-json: ${signals.hasPackageJson ? 'yes' : 'no'}`);
+    console.log(`agent-entry: ${signals.hasAgentEntry ? 'yes' : 'no'}`);
+    console.log(`frontend: ${signals.frontendSignals.join(', ') || 'none'}`);
+    console.log(`research: ${signals.researchSignals.join(', ') || 'none'}`);
+    console.log(`writing: ${signals.writingSignals.join(', ') || 'none'}`);
   }
   return 0;
 }
@@ -305,7 +330,7 @@ function parseTargetJsonOptions(args: string[]): TargetJsonParseResult {
     } else if (arg === '--json') {
       options.json = true;
     } else {
-      return { ok: false, error: `Unknown assets recommend option: ${arg}` };
+      return { ok: false, error: `Unknown assets target option: ${arg}` };
     }
   }
 
@@ -474,6 +499,7 @@ function isHost(value: string | undefined): value is AssetRegistryHost {
 function printUsage(): void {
   console.error('Usage:');
   console.error('  pro-gov assets list [--registry] [--json] [--visibility public|private|third-party|all]');
+  console.error('  pro-gov assets discover [--target <path>] [--json]');
   console.error('  pro-gov assets recommend [--target <path>] [--json]');
   console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--out <path>] [--json]');
   console.error('  pro-gov assets apply --plan <path>');

@@ -1,5 +1,13 @@
 import assert from 'node:assert/strict';
-import { existsSync, mkdirSync, readFileSync, readlinkSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  readlinkSync,
+  rmSync,
+  symlinkSync,
+  writeFileSync,
+} from 'node:fs';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
@@ -74,6 +82,26 @@ test('checkInstalledAssets reports clean install, hash drift, and dangling symli
   rmSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true, force: true });
   const dangling = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
   assert.ok(dangling.issues.some((issue) => issue.type === 'dangling-symlink'));
+});
+
+test('checkInstalledAssets reports managed skill targets in unsupported host folders', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  applyAssetInstallPlan(createPlan(agentAssetsDir, targetDir));
+  mkdirSync(join(targetDir, '.claude/skills'), { recursive: true });
+  symlinkSync(
+    join(agentAssetsDir, 'skills/pie-skills/example'),
+    join(targetDir, '.claude/skills/example'),
+  );
+
+  const lockfilePath = join(targetDir, '.pro-gov/assets.lock.json');
+  const lockfile = JSON.parse(readFileSync(lockfilePath, 'utf8')) as {
+    assets: Array<{ targetPath: string }>;
+  };
+  lockfile.assets[0].targetPath = '.claude/skills/example';
+  writeFileSync(lockfilePath, `${JSON.stringify(lockfile, null, 2)}\n`);
+
+  const result = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
+  assert.ok(result.issues.some((issue) => issue.type === 'unsupported-host-folder'));
 });
 
 function createPlan(agentAssetsDir: string, targetDir: string) {

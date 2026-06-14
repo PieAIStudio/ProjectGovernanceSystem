@@ -79,48 +79,64 @@ test('createAssetInstallPlan creates a dry install plan without writing target f
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
 });
 
-test('createAssetInstallPlan maps supported hosts to the right skill directories', () => {
+test('createAssetInstallPlan maps supported hosts to exact skill directories', () => {
   const { agentAssetsDir, targetDir } = createFixture();
 
-  const claudePlan = createAssetInstallPlan({
-    targetDir,
-    agentAssetsDir,
-    registry,
-    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
-    bundleIds: ['base-governance'],
-    host: 'claude-code',
-  });
-  const geminiPlan = createAssetInstallPlan({
-    targetDir,
-    agentAssetsDir,
-    registry,
-    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
-    bundleIds: ['base-governance'],
-    host: 'gemini-cli',
-  });
-  const antigravityPlan = createAssetInstallPlan({
-    targetDir,
-    agentAssetsDir,
-    registry,
-    bundles: [{ id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] }],
-    bundleIds: ['base-governance'],
-    host: 'antigravity',
-  });
+  const bundle = [
+    { id: 'base-governance', title: 'Base Governance', description: 'Base', assets: ['pie-skills/example'] },
+  ];
 
-  assert.ok(
-    claudePlan.actions.some(
-      (action) => action.type === 'symlink' && action.targetPath === '.claude/skills/example',
+  assert.deepEqual(
+    skillTargetPaths(
+      createAssetInstallPlan({
+        targetDir,
+        agentAssetsDir,
+        registry,
+        bundles: bundle,
+        bundleIds: ['base-governance'],
+        host: 'codex',
+      }),
     ),
+    ['.agents/skills/example'],
   );
-  assert.ok(
-    geminiPlan.actions.some(
-      (action) => action.type === 'symlink' && action.targetPath === '.agents/skills/example',
+  assert.deepEqual(
+    skillTargetPaths(
+      createAssetInstallPlan({
+        targetDir,
+        agentAssetsDir,
+        registry,
+        bundles: bundle,
+        bundleIds: ['base-governance'],
+        host: 'claude-code',
+      }),
     ),
+    ['.claude/skills/example'],
   );
-  assert.ok(
-    antigravityPlan.actions.some(
-      (action) => action.type === 'symlink' && action.targetPath === '.agents/skills/example',
+  assert.deepEqual(
+    skillTargetPaths(
+      createAssetInstallPlan({
+        targetDir,
+        agentAssetsDir,
+        registry,
+        bundles: bundle,
+        bundleIds: ['base-governance'],
+        host: 'gemini-cli',
+      }),
     ),
+    ['.agents/skills/example'],
+  );
+  assert.deepEqual(
+    skillTargetPaths(
+      createAssetInstallPlan({
+        targetDir,
+        agentAssetsDir,
+        registry,
+        bundles: bundle,
+        bundleIds: ['base-governance'],
+        host: 'antigravity',
+      }),
+    ),
+    ['.agents/skills/example'],
   );
 });
 
@@ -221,4 +237,11 @@ function createFixture(): { agentAssetsDir: string; targetDir: string } {
   writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/SKILL.md'), '# Example\n');
   writeFileSync(join(agentAssetsDir, 'rules/pie-rules/example-rule.md'), '# Rule\n');
   return { agentAssetsDir, targetDir };
+}
+
+function skillTargetPaths(plan: ReturnType<typeof createAssetInstallPlan>): string[] {
+  return plan.actions
+    .filter((action) => action.type === 'symlink' || action.type === 'update-symlink')
+    .map((action) => action.targetPath)
+    .sort();
 }
