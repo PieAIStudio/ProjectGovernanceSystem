@@ -218,20 +218,20 @@ Result on 2026-06-15:
 
 ## Task 4: Import Source-Family Assets
 
-- [ ] Copy Yuanfei-authored skills into `agent-assets/skills/pie-skills/`.
-- [ ] Copy Dokobot into `agent-assets/skills/dokobot/`, preserving shared
+- [x] Copy Yuanfei-authored skills into `agent-assets/skills/pie-skills/`.
+- [x] Copy Dokobot into `agent-assets/skills/dokobot/`, preserving shared
   support files.
-- [ ] Copy private rules into `agent-assets/rules/pie-rules/`.
-- [ ] Copy private commands into `agent-assets/commands/pie-commands/`.
-- [ ] Mirror npx-installed third-party skills into
+- [x] Copy private rules into `agent-assets/rules/pie-rules/`.
+- [x] Copy private commands into `agent-assets/commands/pie-commands/`.
+- [x] Mirror npx-installed third-party skills into
   `agent-assets/skills/npx-skills/.agents/skills/`.
-- [ ] Copy the current npx `skills-lock.json` into
+- [x] Copy the current npx `skills-lock.json` into
   `agent-assets/skills/npx-skills/skills-lock.json`.
-- [ ] Do not create `agent-assets/skills/npx-skills/skills/<skill-name>`
+- [x] Do not create `agent-assets/skills/npx-skills/skills/<skill-name>`
   compatibility symlinks.
-- [ ] Preserve original names first; rename only when a collision would make
+- [x] Preserve original names first; rename only when a collision would make
   host discovery ambiguous.
-- [ ] Register every imported asset in `agent-assets/registry.json` with:
+- [x] Register every imported asset in `agent-assets/registry.json` with:
   - `id`
   - `title`
   - `visibility`
@@ -242,16 +242,34 @@ Result on 2026-06-15:
   - `publishable`
   - `origin`
   - `notes`
-- [ ] Run the inventory report again and compare source count to imported
+- [x] Run the inventory report again and compare source count to imported
   count.
+
+Execution record:
+
+- Imported 72 assets into `agent-assets/`:
+  - 19 `pie-skills`
+  - 5 `dokobot`
+  - 39 `npx-skills`
+  - 5 `pie-rules`
+  - 4 `pie-commands`
+- Preserved the native npx root shape:
+  `agent-assets/skills/npx-skills/skills-lock.json` plus
+  `agent-assets/skills/npx-skills/.agents/skills/`.
+- Verified `agent-assets/skills/npx-skills/skills` does not exist.
+- Excluded `.DS_Store`, `.git`, `node_modules`, source workspaces without root
+  `SKILL.md`, and the Superpowers plugin body.
+- Marked imported assets as `private` or `third-party` with
+  `publishable:false`.
 
 ## Task 5: Registry Runtime
 
-- [ ] Create registry types and loader under
+- [x] Create registry types under
   `packages/pro-gov/src/asset-registry/`.
-- [ ] Write failing tests for duplicate IDs, invalid visibility, missing source
+- [x] Write failing tests for duplicate IDs, invalid visibility, missing source
   paths, missing `SKILL.md`, unsupported hosts, and package-leak flags.
-- [ ] Implement minimal registry parsing with JSON only, no new YAML
+- [ ] Add a registry loader under `packages/pro-gov/src/asset-registry/`.
+- [x] Implement minimal registry validation with JSON only, no new YAML
   dependency.
 - [ ] Add content hashing for lockfile entries.
 - [ ] Add `pro-gov assets list --json`.

@@ -1,0 +1,3 @@
+# Agent assets mirror personal and third-party source material. Preserve source
+# bytes instead of rewriting whitespace, especially for npx skills with hashes.
+agent-assets/** -whitespace
