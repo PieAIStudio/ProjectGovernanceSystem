@@ -191,20 +191,30 @@ Issues found:
 
 ## Task 3: Agent Asset Storage Skeleton
 
-- [ ] Add `agent-assets/README.md` explaining canonical source rules,
+- [x] Add `agent-assets/README.md` explaining canonical source rules,
   visibility, promotion, and npm exclusion.
-- [ ] Add empty `.gitkeep` files for the new storage directories.
-- [ ] Add `agent-assets/registry.json` with schema version and empty asset list.
-- [ ] Add `agent-assets/skills/npx-skills/README.md` explaining that this
+- [x] Add empty `.gitkeep` files for the new storage directories.
+- [x] Add `agent-assets/registry.json` with schema version and empty asset list.
+- [x] Add `agent-assets/skills/npx-skills/README.md` explaining that this
   directory is a native `npx skills` root and must not have an internal
   compatibility symlink mirror.
-- [ ] Add seed bundles:
+- [x] Add seed bundles:
   - `agent-assets/bundles/base-governance.json`
   - `agent-assets/bundles/frontend-app.json`
   - `agent-assets/bundles/novel-writing.json`
   - `agent-assets/bundles/research-docs.json`
-- [ ] Add tests that fail when registry IDs duplicate, paths escape
+- [x] Add tests that fail when registry IDs duplicate, paths escape
   `agent-assets/`, or private assets are marked publishable.
+
+Result on 2026-06-15:
+
+- Created source-family directories under `agent-assets/`.
+- Created `agent-assets/skills/npx-skills` as a native npx root with
+  `skills-lock.json` and `.agents/skills/`.
+- Verified `agent-assets/skills/npx-skills/skills` does not exist, so there is
+  no internal compatibility symlink layer.
+- Added registry validation tests for duplicate IDs, unsafe source paths,
+  publishable private/third-party assets, and the checked-in registry.
 
 ## Task 4: Import Source-Family Assets
 
