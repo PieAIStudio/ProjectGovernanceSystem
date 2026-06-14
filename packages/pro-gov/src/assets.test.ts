@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -116,6 +116,92 @@ test('assets plan --json creates a dry-run plan without writing target files', (
   assert.ok(parsed.actions.some((action: { targetPath: string }) => action.targetPath === '.pro-gov/assets.lock.json'));
   assert.equal(existsSync(join(targetDir, '.agents')), false);
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
+});
+
+test('assets plan --out writes a plan artifact for a non-Codex host without applying it', () => {
+  const targetDir = createTempTargetDir();
+  const outPath = join(targetDir, 'asset-plan.json');
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'assets',
+      'plan',
+      '--target',
+      targetDir,
+      '--bundle',
+      'project-lens',
+      '--host',
+      'claude-code',
+      '--out',
+      outPath,
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(readFileSync(outPath, 'utf8'));
+  assert.equal(parsed.host, 'claude-code');
+  assert.ok(
+    parsed.actions.some(
+      (action: { type: string; targetPath: string }) =>
+        action.type === 'symlink' && action.targetPath === '.claude/skills/project-architecture-lens',
+    ),
+  );
+  assert.equal(existsSync(join(targetDir, '.claude')), false);
+  assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
+});
+
+test('assets apply and check complete a managed install flow', () => {
+  const targetDir = createTempTargetDir();
+  const outPath = join(targetDir, 'asset-plan.json');
+
+  const planResult = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'assets',
+      'plan',
+      '--target',
+      targetDir,
+      '--bundle',
+      'project-lens',
+      '--out',
+      outPath,
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(planResult.status, 0);
+
+  const applyResult = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'assets', 'apply', '--plan', outPath],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(applyResult.status, 0);
+  assert.equal(existsSync(join(targetDir, '.agents/skills/project-architecture-lens')), true);
+
+  const checkResult = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'assets', 'check', '--target', targetDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(checkResult.status, 0);
+  const parsed = JSON.parse(checkResult.stdout);
+  assert.deepEqual(parsed.issues, []);
 });
 
 test('lens scan --json returns a local evidence packet', () => {

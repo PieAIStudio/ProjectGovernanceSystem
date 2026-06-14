@@ -8,6 +8,8 @@ const COMMANDS = [
   'assets list [--json] [--visibility public|private|third-party|all]',
   'assets recommend [--target <path>] [--json]',
   'assets plan --bundle <bundle-id> [--target <path>] [--json]',
+  'assets apply --plan <path>',
+  'assets check [--target <path>] [--json]',
   'lens scan [--target <path>] [--json]',
   'init --profile <engineering-runtime|doc-only> --dry-run',
   'sync --check',
