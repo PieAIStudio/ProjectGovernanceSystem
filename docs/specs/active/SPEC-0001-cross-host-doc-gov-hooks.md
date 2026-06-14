@@ -122,9 +122,8 @@ Two public cross-host projects provide useful implementation lessons:
   ownership as first-class features instead of assuming users will hand-edit
   host config files correctly.
 
-The local reference implementation in
-`/Users/yuanfei/PieAI/_NovelFrameworks/story-creator` confirms the right broad
-shape:
+The local reference implementation in `/Users/yuanfei/PieAI/Anvil` confirms the
+right broad shape:
 
 ```text
 three host configs -> one shared command -> host-specific output rendering
@@ -134,8 +133,8 @@ It also exposes failure cases that this spec must avoid.
 
 ## Reference Implementation Findings
 
-The `story-creator` hook implementation is architecturally useful, but it is not
-yet a sufficiently strong guardrail. Confirmed issues:
+The Anvil hook implementation is architecturally useful, but it is not yet a
+sufficiently strong guardrail. Confirmed issues:
 
 1. `PostToolUse` and `Stop` are configured, but the shared evaluator only applies
    policy for `PreToolUse`; other events return allow decisions.

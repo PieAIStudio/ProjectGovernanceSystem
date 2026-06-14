@@ -128,13 +128,13 @@ Use this table before trying to understand the whole repository.
 | `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
 | `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
 | `profiles/` | Optional adoption profiles by project type | engineering-runtime, doc-only |
-| `examples/` | Representative implementation notes | Non-Heroes, PieFlow, PieIP |
+| `examples/` | Representative implementation notes | Non-Heroes |
 
 ## What Does Not Belong Here
 
 - Non-Heroes product/runtime truth.
-- PieFlow v4 product rules.
-- PieIP character, script, or asset canon.
+- Downstream product roadmaps and runtime rules.
+- Downstream character, script, prompt, or asset canon.
 - Product prompts, generated media notes, source assets, or project-package workbench files.
 - Copies of external shared AI work rules. Target projects may link those inside
   their docs/policy/shared-rules folder, but this repo does not keep their

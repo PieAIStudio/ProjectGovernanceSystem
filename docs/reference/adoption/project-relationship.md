@@ -32,8 +32,8 @@ The central repo owns the **engine**. Each project owns its **local product cont
 | --- | --- |
 | Status lifecycle, document types, SSOT, agents routing, CLI checks, templates | Project Governance System upstream repository |
 | Non-Heroes product plans, runtime canon, product rules | Non-Heroes |
-| PieFlow product truth, connector rules, browser lanes | PieFlow |
-| PieIP character/script/asset governance | PieIP |
+| TuringPact product truth, game runtime, commercial Gates | TuringPact |
+| ProjectLens audit evidence and observer workflow | ProjectLens |
 | Current downstream adoption list and health snapshot | `docs/reference/adoption/downstream-project-registry.md` |
 
 ## Naming And Checkout Paths
@@ -62,10 +62,10 @@ Not yet automatically.
 Known downstream projects are listed in
 `docs/reference/adoption/downstream-project-registry.md`.
 
-Originally Non-Heroes, PieFlow, and PieIP had local working copies because the
-system was born inside active projects. This central repo is now the upstream
-source, and downstream projects should use `@pieai/doc-gov`, `@pieai/pro-gov`,
-and their selected profile instead of keeping private CLI or starter copies.
+Early downstream projects had local working copies because the system was born
+inside active projects. This central repo is now the upstream source, and
+downstream projects should use `@pieai/doc-gov`, `@pieai/pro-gov`, and their
+selected profile instead of keeping private CLI or starter copies.
 
 ## Why Not Auto-Symlink Everything?
 
@@ -79,7 +79,8 @@ The old `governance/` folder mixed both kinds. The clearer split is:
 - `docs/governance/` contains doc-system rules, SSOT, agents-routing, document types, templates, and manifest.
 - `docs/policy/` contains project-local AI development policy, lane wording, proof commands, and truth hierarchy.
 
-Symlinking or copying the whole policy layer would be wrong because Non-Heroes and PieFlow need different local lane profiles. The safe rule:
+Symlinking or copying the whole policy layer would be wrong because different
+projects need different local lane profiles. The safe rule:
 
 - shared rules may be symlinked
 - doc-gov core should become the installed validator package
@@ -104,7 +105,7 @@ Example:
 - The generic fix is a `completed` lifecycle state.
 - Therefore `completed` belongs in this repo's doc-gov core.
 
-## How PieFlow And PieIP Upgrade
+## How Downstream Projects Upgrade
 
 Use an explicit migration task:
 

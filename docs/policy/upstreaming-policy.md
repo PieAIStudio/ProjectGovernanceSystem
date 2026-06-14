@@ -66,8 +66,8 @@ Keep it in the project when the rule is about that project's product, stack, run
 Examples:
 
 - Non-Heroes product/runtime canon
-- PieFlow connector/write-back path safety
-- PieIP ModernFreaks production pipeline
+- TuringPact gameplay and commercial Gate truth
+- ProjectLens audit evidence boundaries
 
 ## Rule
 
