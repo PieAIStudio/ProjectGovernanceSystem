@@ -10,6 +10,7 @@ const COMMANDS = [
   'assets plan --bundle <bundle-id> [--target <path>] [--json]',
   'assets apply --plan <path>',
   'assets check [--target <path>] [--json]',
+  'assets npx add|update ... --plan',
   'lens scan [--target <path>] [--json]',
   'init --profile <engineering-runtime|doc-only> --dry-run',
   'sync --check',

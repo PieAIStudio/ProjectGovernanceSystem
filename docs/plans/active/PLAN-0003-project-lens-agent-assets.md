@@ -289,19 +289,30 @@ Execution record:
 
 ## Task 5A: Npx Skills Maintenance Wrapper
 
-- [ ] Add a wrapper module for third-party npx skills maintenance.
-- [ ] Add `pro-gov assets npx add <source> [--skill <name>] --plan`.
-- [ ] Add `pro-gov assets npx update [--skill <name>] --plan`.
-- [ ] Implement these commands by copying
+- [x] Add a wrapper module for third-party npx skills maintenance.
+- [x] Add `pro-gov assets npx add <source> [--skill <name>] --plan`.
+- [x] Add `pro-gov assets npx update [--skill <name>] --plan`.
+- [x] Implement these commands by copying
   `agent-assets/skills/npx-skills/` to a temp directory first.
-- [ ] Run `npx --yes skills add ...` or
+- [x] Run `npx --yes skills add ...` or
   `npx --yes skills update -p -y` only inside the temp copy.
-- [ ] Produce a reviewable JSON plan and textual diff summary.
-- [ ] Do not apply changes to the real `npx-skills` root without a separate
+- [x] Produce a reviewable JSON plan and textual diff summary.
+- [x] Do not apply changes to the real `npx-skills` root without a separate
   explicit apply step.
-- [ ] Test that `--help` never triggers an update.
-- [ ] Test that the wrapper refuses to run if the npx work root lacks
+- [x] Test that `--help` never triggers an update.
+- [x] Test that the wrapper refuses to run if the npx work root lacks
   `skills-lock.json` or `.agents/skills/`.
+
+Execution record:
+
+- Added `createNpxSkillsMaintenancePlan()`.
+- The wrapper validates the native root, copies it to a temp directory, runs
+  `npx skills` only in the temp copy, compares before/after snapshots, and
+  returns a JSON plan with added/modified/deleted paths plus summary counts.
+- `pro-gov assets npx add ... --plan` and
+  `pro-gov assets npx update ... --plan` print reviewable plans and do not
+  mutate the real `agent-assets/skills/npx-skills` root.
+- Tests use a fake runner and verify the real root is unchanged.
 
 ## Task 6: Target Discovery And Recommendation
 

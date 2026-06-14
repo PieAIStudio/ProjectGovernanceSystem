@@ -204,6 +204,28 @@ test('assets apply and check complete a managed install flow', () => {
   assert.deepEqual(parsed.issues, []);
 });
 
+test('assets npx update --help does not touch or validate the npx root', () => {
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'assets',
+      'npx',
+      'update',
+      '--help',
+      '--root',
+      '/definitely/missing/npx-root',
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /pro-gov assets npx/);
+});
+
 test('lens scan --json returns a local evidence packet', () => {
   const targetDir = createTempTargetDir();
   writeFileSync(join(targetDir, 'package.json'), JSON.stringify({ scripts: { test: 'node --test' } }));

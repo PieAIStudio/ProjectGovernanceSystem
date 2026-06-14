@@ -2,6 +2,7 @@ import { listAssets } from '../assets';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { loadAgentAssetBundles } from '../asset-bundles/bundles';
+import { createNpxSkillsMaintenancePlan } from '../asset-npx/maintenance';
 import { loadAgentAssetRegistry } from '../asset-registry/loader';
 import { applyAssetInstallPlan } from '../asset-targets/apply';
 import { checkInstalledAssets } from '../asset-targets/check';
@@ -33,9 +34,46 @@ export function runAssets(args: string[]): number {
   if (subcommand === 'check') {
     return runAssetsCheck(rest);
   }
+  if (subcommand === 'npx') {
+    return runAssetsNpx(rest);
+  }
 
   printUsage();
   return 1;
+}
+
+function runAssetsNpx(args: string[]): number {
+  const [operation, ...rest] = args;
+  if (!operation || operation === '--help' || operation === '-h' || rest.includes('--help')) {
+    printNpxUsage();
+    return 0;
+  }
+  if (operation !== 'add' && operation !== 'update') {
+    printNpxUsage();
+    return 1;
+  }
+
+  const options = parseNpxOptions(operation, rest);
+  if (!options.ok) {
+    console.error(options.error);
+    printNpxUsage();
+    return 1;
+  }
+
+  try {
+    const loaded = loadAgentAssetRegistry();
+    const plan = createNpxSkillsMaintenancePlan({
+      operation,
+      npxRoot: options.value.npxRoot ?? `${loaded.agentAssetsDir}/skills/npx-skills`,
+      source: options.value.source,
+      skill: options.value.skill,
+    });
+    console.log(JSON.stringify(plan, null, 2));
+    return 0;
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error));
+    return 1;
+  }
 }
 
 function runAssetsApply(args: string[]): number {
@@ -211,6 +249,16 @@ type ApplyParseResult =
   | { ok: true; value: ApplyOptions }
   | { ok: false; error: string };
 
+interface NpxOptions {
+  npxRoot?: string;
+  source?: string;
+  skill?: string;
+}
+
+type NpxParseResult =
+  | { ok: true; value: NpxOptions }
+  | { ok: false; error: string };
+
 function parseListOptions(args: string[]): ParseResult {
   const options: AssetListOptions = {
     json: false,
@@ -332,6 +380,44 @@ function parseApplyOptions(args: string[]): ApplyParseResult {
   return { ok: true, value: { planPath } };
 }
 
+function parseNpxOptions(operation: 'add' | 'update', args: string[]): NpxParseResult {
+  const options: NpxOptions = {};
+  const positional: string[] = [];
+  let hasPlan = false;
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === '--plan') {
+      hasPlan = true;
+    } else if (arg === '--root') {
+      const npxRoot = args[index + 1];
+      if (!npxRoot) return { ok: false, error: 'Expected --root <path>' };
+      options.npxRoot = npxRoot;
+      index += 1;
+    } else if (arg === '--skill') {
+      const skill = args[index + 1];
+      if (!skill) return { ok: false, error: 'Expected --skill <name>' };
+      options.skill = skill;
+      index += 1;
+    } else if (arg.startsWith('-')) {
+      return { ok: false, error: `Unknown assets npx option: ${arg}` };
+    } else {
+      positional.push(arg);
+    }
+  }
+
+  if (!hasPlan) return { ok: false, error: 'Expected --plan. Direct npx writes are not supported.' };
+  if (operation === 'add') {
+    const [source] = positional;
+    if (!source) return { ok: false, error: 'Expected pro-gov assets npx add <source> --plan' };
+    options.source = source;
+  } else if (positional.length > 0) {
+    return { ok: false, error: `Unexpected assets npx update argument: ${positional[0]}` };
+  }
+
+  return { ok: true, value: options };
+}
+
 function listRegistryAssets(options: AssetListOptions): number {
   const loaded = loadAgentAssetRegistry();
   if (loaded.issues.length > 0) {
@@ -392,4 +478,13 @@ function printUsage(): void {
   console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--out <path>] [--json]');
   console.error('  pro-gov assets apply --plan <path>');
   console.error('  pro-gov assets check [--target <path>] [--json]');
+  console.error('  pro-gov assets npx add <source> [--skill <name>] --plan [--root <path>]');
+  console.error('  pro-gov assets npx update [--skill <name>] --plan [--root <path>]');
+}
+
+function printNpxUsage(): void {
+  console.log('Usage: pro-gov assets npx add <source> [--skill <name>] --plan [--root <path>]');
+  console.log('Usage: pro-gov assets npx update [--skill <name>] --plan [--root <path>]');
+  console.log('');
+  console.log('Runs npx skills only in a temporary copy and prints a reviewable plan.');
 }
