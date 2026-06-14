@@ -11,7 +11,8 @@ export type AssetCheckIssueType =
   | 'dangling-symlink'
   | 'missing-source'
   | 'hash-drift'
-  | 'unknown-asset';
+  | 'unknown-asset'
+  | 'unsupported-host-folder';
 
 export interface AssetCheckIssue {
   type: AssetCheckIssueType;
@@ -26,6 +27,7 @@ export interface AssetCheckResult {
 }
 
 interface AssetLockfile {
+  host?: string;
   assets?: AssetLockEntry[];
 }
 
@@ -71,6 +73,11 @@ export function checkInstalledAssets(options: {
         message: `Lockfile references unknown asset: ${entry.id}`,
       });
       continue;
+    }
+
+    const hostFolderIssue = checkHostFolder(lockfile.host, asset.kind, entry.targetPath, entry.id);
+    if (hostFolderIssue) {
+      issues.push(hostFolderIssue);
     }
 
     if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) {
@@ -126,6 +133,44 @@ export function checkInstalledAssets(options: {
   }
 
   return { targetDir: options.targetDir, issues };
+}
+
+function checkHostFolder(
+  host: string | undefined,
+  kind: string,
+  targetPath: string,
+  id: string,
+): AssetCheckIssue | undefined {
+  if (kind !== 'skill') return undefined;
+
+  const expectedPrefix = expectedSkillTargetPrefix(host);
+  if (!expectedPrefix) {
+    return {
+      type: 'unsupported-host-folder',
+      id,
+      targetPath,
+      message: `Lockfile host is unsupported for managed skill target: ${host ?? 'missing'}`,
+    };
+  }
+
+  if (!targetPath.startsWith(expectedPrefix)) {
+    return {
+      type: 'unsupported-host-folder',
+      id,
+      targetPath,
+      message: `Managed skill target ${targetPath} does not match host ${host}; expected ${expectedPrefix}`,
+    };
+  }
+
+  return undefined;
+}
+
+function expectedSkillTargetPrefix(host: string | undefined): string | undefined {
+  if (host === 'claude-code') return '.claude/skills/';
+  if (host === 'codex' || host === 'gemini-cli' || host === 'antigravity') {
+    return '.agents/skills/';
+  }
+  return undefined;
 }
 
 function pathExistsEvenIfDanglingSymlink(path: string): boolean {

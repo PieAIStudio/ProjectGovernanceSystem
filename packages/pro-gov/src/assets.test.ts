@@ -89,6 +89,29 @@ test('assets recommend --json recommends bundles from target signals', () => {
   );
 });
 
+test('assets discover --json returns local target signals', () => {
+  const targetDir = createTempTargetDir();
+  mkdirSync(join(targetDir, 'docs/research'), { recursive: true });
+  writeFileSync(join(targetDir, 'AGENTS.md'), '# Agents\n');
+  writeFileSync(join(targetDir, 'README.md'), '# Research Notes\n');
+  writeFileSync(join(targetDir, 'package.json'), JSON.stringify({ devDependencies: { vite: '^7.0.0' } }));
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'assets', 'discover', '--target', targetDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.hasAgentEntry, true);
+  assert.deepEqual(parsed.frontendSignals, ['vite']);
+  assert.ok(parsed.researchSignals.includes('docs/research'));
+});
+
 test('assets plan --json creates a dry-run plan without writing target files', () => {
   const targetDir = createTempTargetDir();
 
@@ -244,6 +267,53 @@ test('lens scan --json returns a local evidence packet', () => {
   const parsed = JSON.parse(result.stdout);
   assert.deepEqual(parsed.aiEntryFiles, ['AGENTS.md']);
   assert.deepEqual(parsed.packageJson.scripts, ['test']);
+});
+
+test('lens inspect --format json returns the same local evidence shape', () => {
+  const targetDir = createTempTargetDir();
+  writeFileSync(join(targetDir, 'CLAUDE.md'), '# Claude\n');
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'inspect', '--target', targetDir, '--format', 'json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(result.stdout);
+  assert.deepEqual(parsed.aiEntryFiles, ['CLAUDE.md']);
+});
+
+test('lens report writes a markdown evidence report', () => {
+  const targetDir = createTempTargetDir();
+  const reportPath = join(targetDir, 'reports/lens.md');
+  writeFileSync(join(targetDir, 'GEMINI.md'), '# Gemini\n');
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'lens',
+      'report',
+      '--target',
+      targetDir,
+      '--out',
+      reportPath,
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const markdown = readFileSync(reportPath, 'utf8');
+  assert.match(markdown, /# Project Lens Evidence Report/);
+  assert.match(markdown, /GEMINI\.md/);
+  assert.match(markdown, /## Review Notes/);
 });
 
 function createTempTargetDir(): string {
