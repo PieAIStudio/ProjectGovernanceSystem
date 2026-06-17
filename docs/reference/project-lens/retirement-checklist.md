@@ -42,5 +42,5 @@ Use this before deleting `/Users/yuanfei/PieAI/ProjectLens`.
 Delete only the old `/Users/yuanfei/PieAI/ProjectLens` root after the user has
 tested the new PGS commands and explicitly approves deletion.
 
-Do not delete OneDrive skill/rule/command backups as part of ProjectLens
-retirement.
+Do not delete timestamped OneDrive skill/rule/command archives as part of
+ProjectLens retirement.
