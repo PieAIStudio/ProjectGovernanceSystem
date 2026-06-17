@@ -56,7 +56,8 @@ test('assets list --json prints the agent asset registry', () => {
 
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
-  assert.equal(parsed.count, 74);
+  assert.equal(parsed.count, 75);
+  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/novel-creator'));
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/screenwalk'));
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/agent-browser'));
 });
