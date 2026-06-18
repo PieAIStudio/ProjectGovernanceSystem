@@ -50,7 +50,7 @@ explicit owner input.
 
 Read the target project's startup and truth files first:
 
-- `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, or equivalent AI entry files
+- `AGENTS.md`, `CLAUDE.md`, `.gemini/settings.json`, legacy `GEMINI.md`, or equivalent AI entry/config files
 - root `README.md`
 - package/config files
 - docs/governance or docs/policy, if present

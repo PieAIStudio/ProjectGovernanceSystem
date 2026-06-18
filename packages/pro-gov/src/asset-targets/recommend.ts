@@ -28,6 +28,8 @@ const frontendPackages = new Set([
   'vue',
 ]);
 
+const agentEntryCandidates = ['AGENTS.md', 'CLAUDE.md', '.gemini/settings.json', 'GEMINI.md'] as const;
+
 export function discoverTargetSignals(targetDir: string): TargetSignals {
   const packageJson = readJson(join(targetDir, 'package.json')) as
     | { dependencies?: Record<string, string>; devDependencies?: Record<string, string> }
@@ -37,9 +39,7 @@ export function discoverTargetSignals(targetDir: string): TargetSignals {
     : [];
 
   const frontendSignals = dependencyNames.filter((name) => frontendPackages.has(name)).sort();
-  const hasAgentEntry = ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md'].some((file) =>
-    existsSync(join(targetDir, file)),
-  );
+  const hasAgentEntry = agentEntryCandidates.some((file) => existsSync(join(targetDir, file)));
   const researchSignals = [
     existsSync(join(targetDir, 'docs/research')) ? 'docs/research' : '',
     existsSync(join(targetDir, 'research')) ? 'research' : '',

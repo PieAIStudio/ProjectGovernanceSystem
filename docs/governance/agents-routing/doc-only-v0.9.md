@@ -79,5 +79,6 @@ unless the project explicitly opts them into doc-gov.
 ## External Workflow Boundary
 
 This route runs before external workflow systems such as Superpowers or GStack.
-Host-specific files such as `CLAUDE.md` or `GEMINI.md` may adapt the route for a
-specific AI client, but they must not replace the project `AGENTS.md` route.
+Host-specific adapters such as `CLAUDE.md` or `.gemini/settings.json` may adapt
+the route for a specific AI client, but they must not replace the project
+`AGENTS.md` route.

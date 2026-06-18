@@ -6,10 +6,10 @@ pre-commit:
   parallel: false
   commands:
     01-doc-gov-router-check:
-      glob: "{AGENTS.md,CLAUDE.md,GEMINI.md,README.md,docs/**/*.{md,yml,yaml},starter/**/*.{md,yml,yaml},integrations/**/*.md,profiles/**/*.{md,yml,yaml},packages/doc-gov/src/**/*.ts}"
+      glob: "{AGENTS.md,CLAUDE.md,README.md,.gemini/settings.json,docs/**/*.{md,yml,yaml},starter/**/*.{md,yml,yaml},starter/.gemini/settings.json,integrations/**/*.md,profiles/**/*.{md,yml,yaml},packages/doc-gov/src/**/*.ts}"
       run: pnpm doc-gov router-check
     02-doc-gov-check:
-      glob: "{docs/**/*.md,docs/governance/**/*.{md,yml,yaml},docs/policy/**/*.md,AGENTS.md,CLAUDE.md,GEMINI.md,README.md,packages/doc-gov/src/**/*.ts}"
+      glob: "{docs/**/*.md,docs/governance/**/*.{md,yml,yaml},docs/policy/**/*.md,AGENTS.md,CLAUDE.md,.gemini/settings.json,README.md,packages/doc-gov/src/**/*.ts}"
       run: pnpm doc-gov check && pnpm doc-gov scan --check && pnpm doc-gov links && pnpm doc-gov audit
 
 commit-msg:

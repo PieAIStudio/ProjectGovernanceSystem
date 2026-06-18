@@ -14,6 +14,7 @@ test('asset inventory includes reusable project-governance assets', () => {
   const paths = listAssets().map((asset) => asset.path);
 
   assert.ok(paths.includes('starter/AGENTS.template.md'));
+  assert.ok(paths.includes('starter/.gemini/settings.json'));
   assert.ok(paths.includes('starter/lefthook.template.yml'));
   assert.ok(paths.includes('profiles/engineering-runtime/profile.md'));
   assert.ok(paths.includes('profiles/doc-only/profile.md'));
@@ -122,6 +123,28 @@ test('assets discover --json returns local target signals', () => {
   assert.equal(parsed.hasAgentEntry, true);
   assert.deepEqual(parsed.frontendSignals, ['vite']);
   assert.ok(parsed.researchSignals.includes('docs/research'));
+});
+
+test('assets discover treats Gemini CLI AGENTS config as an agent adapter', () => {
+  const targetDir = createTempTargetDir();
+  mkdirSync(join(targetDir, '.gemini'), { recursive: true });
+  writeFileSync(
+    join(targetDir, '.gemini/settings.json'),
+    `${JSON.stringify({ context: { fileName: ['AGENTS.md'] } }, null, 2)}\n`,
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'assets', 'discover', '--target', targetDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.hasAgentEntry, true);
 });
 
 test('assets plan --json creates a dry-run plan without writing target files', () => {
@@ -278,12 +301,15 @@ test('lens scan --json returns a local evidence packet', () => {
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
   assert.deepEqual(parsed.aiEntryFiles, ['AGENTS.md']);
+  assert.deepEqual(parsed.aiConfigFiles, []);
   assert.deepEqual(parsed.packageJson.scripts, ['test']);
 });
 
 test('lens inspect --format json returns the same local evidence shape', () => {
   const targetDir = createTempTargetDir();
   writeFileSync(join(targetDir, 'CLAUDE.md'), '# Claude\n');
+  mkdirSync(join(targetDir, '.gemini'), { recursive: true });
+  writeFileSync(join(targetDir, '.gemini/settings.json'), '{"context":{"fileName":["AGENTS.md"]}}\n');
 
   const result = spawnSync(
     process.execPath,
@@ -297,6 +323,7 @@ test('lens inspect --format json returns the same local evidence shape', () => {
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
   assert.deepEqual(parsed.aiEntryFiles, ['CLAUDE.md']);
+  assert.deepEqual(parsed.aiConfigFiles, ['.gemini/settings.json']);
 });
 
 test('lens report writes a markdown evidence report', () => {
@@ -325,6 +352,7 @@ test('lens report writes a markdown evidence report', () => {
   const markdown = readFileSync(reportPath, 'utf8');
   assert.match(markdown, /# Project Lens Evidence Report/);
   assert.match(markdown, /GEMINI\.md/);
+  assert.match(markdown, /AI Config Adapters/);
   assert.match(markdown, /## Review Notes/);
 });
 

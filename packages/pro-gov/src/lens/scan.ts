@@ -9,6 +9,7 @@ export interface ProjectLensScanOptions {
 export interface ProjectLensScanReport {
   targetDir: string;
   aiEntryFiles: string[];
+  aiConfigFiles: string[];
   packageJson?: {
     scripts: string[];
     dependencies: string[];
@@ -54,6 +55,7 @@ export function scanProjectLensTarget(
     aiEntryFiles: ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md'].filter((file) =>
       existsSync(join(targetDir, file)),
     ),
+    aiConfigFiles: ['.gemini/settings.json'].filter((file) => existsSync(join(targetDir, file))),
     packageJson,
     docs: {
       hasDocsDirectory: existsSync(join(targetDir, 'docs')),

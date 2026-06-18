@@ -5,7 +5,7 @@ on:
     paths:
       - "AGENTS.md"
       - "CLAUDE.md"
-      - "GEMINI.md"
+      - ".gemini/settings.json"
       - "README.md"
       - "docs/**"
       - "lefthook.yml"
@@ -18,7 +18,7 @@ on:
     paths:
       - "AGENTS.md"
       - "CLAUDE.md"
-      - "GEMINI.md"
+      - ".gemini/settings.json"
       - "README.md"
       - "docs/**"
       - "lefthook.yml"

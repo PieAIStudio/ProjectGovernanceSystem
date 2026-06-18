@@ -4,6 +4,7 @@ export function formatProjectLensInspection(report: ProjectLensScanReport): stri
   return [
     `target: ${report.targetDir}`,
     `ai-entry-files: ${formatList(report.aiEntryFiles)}`,
+    `ai-config-files: ${formatList(report.aiConfigFiles)}`,
     `package-scripts: ${formatList(report.packageJson?.scripts ?? [])}`,
     `dependencies: ${formatList(report.packageJson?.dependencies ?? [])}`,
     `dev-dependencies: ${formatList(report.packageJson?.devDependencies ?? [])}`,
@@ -28,6 +29,10 @@ export function renderProjectLensMarkdownReport(report: ProjectLensScanReport): 
     '## AI Entry Files',
     '',
     bulletList(report.aiEntryFiles),
+    '',
+    '## AI Config Adapters',
+    '',
+    bulletList(report.aiConfigFiles),
     '',
     '## Package',
     '',
