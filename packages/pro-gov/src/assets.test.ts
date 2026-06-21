@@ -9,6 +9,9 @@ import test from 'node:test';
 import { listAssets } from './assets';
 
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+const agentAssetRegistry = JSON.parse(
+  readFileSync(join(packageRoot, '..', '..', 'agent-assets', 'registry.json'), 'utf8'),
+) as { assets: Array<{ id: string; visibility: string }> };
 
 test('asset inventory includes reusable project-governance assets', () => {
   const paths = listAssets().map((asset) => asset.path);
@@ -57,10 +60,11 @@ test('assets list --json prints the agent asset registry', () => {
 
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
-  assert.equal(parsed.count, 75);
+  assert.equal(parsed.count, agentAssetRegistry.assets.length);
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/novel-creator'));
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/screenwalk'));
   assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/agent-browser'));
+  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/yao-meta-skill'));
 });
 
 test('assets list --visibility filters registry assets', () => {
@@ -75,7 +79,10 @@ test('assets list --visibility filters registry assets', () => {
 
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
-  assert.equal(parsed.count, 39);
+  assert.equal(
+    parsed.count,
+    agentAssetRegistry.assets.filter((asset) => asset.visibility === 'third-party').length,
+  );
   assert.ok(
     parsed.assets.every((asset: { visibility: string }) => asset.visibility === 'third-party'),
   );

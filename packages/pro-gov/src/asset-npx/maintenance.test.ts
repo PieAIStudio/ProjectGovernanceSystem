@@ -69,6 +69,24 @@ test('createNpxSkillsMaintenancePlan creates add commands with source and skill 
   assert.equal(existsSync(join(npxRoot, '.agents/skills/new-skill')), false);
 });
 
+test('createNpxSkillsMaintenancePlan rejects partial update failures reported with exit code zero', () => {
+  const npxRoot = createNpxRoot();
+
+  assert.throws(
+    () =>
+      createNpxSkillsMaintenancePlan({
+        operation: 'update',
+        npxRoot,
+        runner: () => ({
+          status: 0,
+          stdout: 'Updated 3 skill(s)\n\u001B[31mFailed to update 2 skill(s)\u001B[0m\n',
+          stderr: '',
+        }),
+      }),
+    /reported a partial failure.*Failed to update 2 skill\(s\)/s,
+  );
+});
+
 function createNpxRoot(): string {
   const npxRoot = join(tmpdir(), `pro-gov-npx-${Date.now()}-${Math.random().toString(16).slice(2)}`);
   mkdirSync(join(npxRoot, '.agents/skills/example'), { recursive: true });

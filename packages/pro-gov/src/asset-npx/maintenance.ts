@@ -62,6 +62,9 @@ export function createNpxSkillsMaintenancePlan(
   if (result.status !== 0) {
     throw new Error(`npx skills ${options.operation} failed with exit code ${result.status}`);
   }
+  if (options.operation === 'update') {
+    assertNoReportedPartialUpdateFailure(result.stdout, result.stderr);
+  }
 
   const after = snapshotFiles(tempRoot);
   const changes = diffSnapshots(before, after);
@@ -79,6 +82,14 @@ export function createNpxSkillsMaintenancePlan(
     summary: summarizeChanges(changes),
     appliedToRealRoot: false,
   };
+}
+
+function assertNoReportedPartialUpdateFailure(stdout: string, stderr: string): void {
+  const output = `${stdout}\n${stderr}`.replace(/\u001B\[[0-?]*[ -/]*[@-~]/g, '');
+  const failure = output.match(/Failed to update\s+\d+\s+skill\(s\)/i);
+  if (failure) {
+    throw new Error(`npx skills update reported a partial failure: ${failure[0]}`);
+  }
 }
 
 function assertNativeNpxRoot(npxRoot: string): void {
