@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.3.4 - 2026-06-21
+
+- Rewrote the public introduction around the problem PGS solves, with
+  beginner-friendly examples and English, Simplified Chinese, Japanese,
+  Spanish, French, and German reading paths.
+- Added a governed recommendation and integration boundary for using
+  Superpowers and Ponytail without bundling either plugin or changing the
+  user's global Ponytail mode.
+- Added the new public integration and recommendation assets to the
+  `@pieai/pro-gov` distribution while keeping private and third-party agent
+  assets outside the package.
+- Fixed `doc-gov doctor` so it recognizes Lefthook installations from real Git
+  linked worktrees instead of assuming `.git` is always a directory.
+- Aligned `@pieai/doc-gov` and `@pieai/pro-gov` on the `0.3.4` release line.
+
 ## 0.3.3 - 2026-06-13
 
 - Added the `@pieai/pro-gov` project-level package with the `pro-gov` CLI for
