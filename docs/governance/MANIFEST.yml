@@ -1,6 +1,6 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-21T15:38:42.898Z
+generated_at: 2026-06-21T16:03:20.768Z
 generator_version: doc-gov@0.3.5
 docs_count: 26
 docs:
@@ -32,13 +32,6 @@ docs:
     canonical: true
     last_reviewed: 2026-05-09
     pinned: true
-  - id: PLAN-0004
-    path: docs/plans/active/PLAN-0004-public-positioning-ponytail-integration.md
-    type: plan
-    status: active
-    canonical: true
-    last_reviewed: 2026-06-21
-    pinned: false
   - id: PLAN-0001
     path: docs/plans/completed/PLAN-0001-pro-gov-project-package.md
     type: plan
@@ -59,6 +52,13 @@ docs:
     status: completed
     canonical: true
     last_reviewed: 2026-06-15
+    pinned: false
+  - id: PLAN-0004
+    path: docs/plans/completed/PLAN-0004-public-positioning-ponytail-integration.md
+    type: plan
+    status: completed
+    canonical: true
+    last_reviewed: 2026-06-21
     pinned: false
   - id: POLICY-DESIGN-PRINCIPLES
     path: docs/policy/design-principles.md
@@ -100,7 +100,7 @@ docs:
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-06-14
+    last_reviewed: 2026-06-21
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
@@ -165,13 +165,6 @@ docs:
     canonical: false
     last_reviewed: 2026-06-12
     pinned: false
-  - id: SPEC-0004
-    path: docs/specs/active/SPEC-0004-public-positioning-ponytail-integration.md
-    type: spec
-    status: active
-    canonical: true
-    last_reviewed: 2026-06-21
-    pinned: false
   - id: SPEC-0002
     path: docs/specs/completed/SPEC-0002-pro-gov-project-package.md
     type: spec
@@ -185,4 +178,11 @@ docs:
     status: completed
     canonical: true
     last_reviewed: 2026-06-15
+    pinned: false
+  - id: SPEC-0004
+    path: docs/specs/completed/SPEC-0004-public-positioning-ponytail-integration.md
+    type: spec
+    status: completed
+    canonical: true
+    last_reviewed: 2026-06-21
     pinned: false

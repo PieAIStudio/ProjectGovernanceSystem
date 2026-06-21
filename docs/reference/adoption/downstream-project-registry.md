@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-14
+last_reviewed: 2026-06-21
 domain: adoption
 tags:
   - downstream
@@ -47,21 +47,20 @@ downstream projects.
 
 ## Current Downstream Projects
 
-The current downstream set was checked on 2026-06-14.
+The current downstream set was checked on 2026-06-21.
 
 | Project | Local path | Profile | Installed doc-gov | Installed pro-gov | Health snapshot | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| Anvil | `/Users/yuanfei/PieAI/Anvil` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. Existing unrelated local writing work was preserved. |
-| Collapse | `/Users/yuanfei/PieAI/Collapse` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | Adopted the thin placeholder-phase runtime profile. `docs:check` and the production build pass. |
-| Non-Heroes | `/Users/yuanfei/PieAI/Non-Heroes` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. |
-| PieAIStudio-Site | `/Users/yuanfei/PieAI/PieAIStudio-Site` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. Existing unrelated local skill links were preserved. |
-| PieHQ | `/Users/yuanfei/PieAI/PieHQ` | `doc-only` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. |
-| Sea | `/Users/yuanfei/PieAI/Sea` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings across the large governed-doc set. |
-| Show | `/Users/yuanfei/PieAI/Show` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. |
-| SupaLuv | `/Users/yuanfei/PieAI/SupaLuv` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | Migrated from the vendored `doc-gov@0.2.0` copy. `docs:check` and `cloud:check` pass; unrelated local content work was preserved. |
-| YaZu | `/Users/yuanfei/PieAI/YaZu` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. |
-| TuringPact | `/Users/yuanfei/PieAI/TuringPact` | `engineering-runtime` | `0.3.3` | `0.3.3` | Healthy | Migrated the legacy `Docs/` system into current, completed, and archive layers. `docs:check` and `verify:web` pass. |
-| ProjectLens | `/Users/yuanfei/PieAI/ProjectLens` | `doc-only` | `0.3.3` | `0.3.3` | Healthy | `docs:check` passes with 0 warnings. ProjectLens is a project-level audit workspace, not a runtime product. |
+| Anvil | `/Users/yuanfei/PieAI/Anvil` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `787d37a`. `docs:check`, `typecheck`, `test`, and `lint` pass. Existing unrelated local writing work was preserved. |
+| Collapse | `/Users/yuanfei/PieAI/Collapse` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `2e220df`. `docs:check`, `test`, and `build` pass. |
+| Non-Heroes | `/Users/yuanfei/PieAI/Non-Heroes` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `f3b9b02`. `docs:check`, `typecheck`, `test`, and `build` pass after refreshing pnpm workspace links. |
+| PieAIStudio-Site | `/Users/yuanfei/PieAI/PieAIStudio-Site` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `5501c84`. `docs:check`, `typecheck`, `lint`, and `build` pass after clearing stale `.next` generated types. Existing unrelated local site docs were preserved. |
+| PieHQ | `/Users/yuanfei/PieAI/PieHQ` | `doc-only` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `0a58cd7`. `docs:check` passes with 0 warnings. Existing unrelated local FounderLogs and `.DS_Store` changes were preserved. |
+| Sea | `/Users/yuanfei/PieAI/Sea` | `engineering-runtime` | `0.3.5` | `0.3.5` | Governance healthy / project test warning | Synchronized at commit `0d95bd52b`. `docs:check` and `build:packages` pass. Full `test` still has unrelated business test failures in shell sidebar CSS expectations and workspace drawer mocks. Existing unrelated shared-rule deletion was preserved. |
+| Show | `/Users/yuanfei/PieAI/Show` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `c7eda40`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. Existing unrelated local MCP/shared-rule changes were preserved. |
+| SupaLuv | `/Users/yuanfei/PieAI/SupaLuv` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `23c5b0c`. `docs:check`, `typecheck`, `test`, and `build` pass. Existing unrelated local skill and vendored-tool cleanup work was preserved. |
+| YaZu | `/Users/yuanfei/PieAI/YaZu` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `9a40f1f`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
+| TuringPact | `/Users/yuanfei/PieAI/TuringPact` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `93bcf9c`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
 
 ## Representative Examples
 
@@ -83,3 +82,6 @@ the existing examples do not cover.
   because those projects were deleted.
 - GitNexus is intentionally absent. It has been removed from the central system
   and should not be reintroduced through downstream policy links.
+- ProjectLens is no longer tracked as a downstream repository because
+  `/Users/yuanfei/PieAI/ProjectLens` no longer exists locally. Its reusable
+  inspection capability now lives in this repository's `pro-gov lens` surface.

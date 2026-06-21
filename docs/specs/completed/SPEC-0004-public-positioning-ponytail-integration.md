@@ -2,7 +2,7 @@
 id: SPEC-0004
 title: Public Positioning And Ponytail Integration
 type: spec
-status: active
+status: completed
 canonical: true
 owner: ai-assisted
 created: 2026-06-21
@@ -74,8 +74,8 @@ README 是唯一原文，中文、日文、西班牙文、法文和德文是忠�
 -> 跑全部检查
 -> 推送 GitHub 并等待 CI
 -> 发布 npm 并做真实安装测试
+-> 同步下游项目并逐个验证
 -> 创建 GitHub Release
--> 交给另一个 session 同步下游项目
 ```
 
 后面的章节是这张“通俗地图”的完整施工要求。它们写得更精确，是为了让实施时不会
@@ -119,8 +119,7 @@ sources of product truth.
    beginner-friendly explanations.
 4. Publish five maintained translations from one canonical English source.
 5. Align the npm-facing `@pieai/pro-gov` README with the new public position.
-6. Validate, publish, and leave a short handoff prompt for a separate downstream
-   synchronization session.
+6. Validate, publish, and synchronize the known downstream projects directly.
 
 ## Decisions
 
@@ -287,8 +286,7 @@ excluded, as do operating-system metadata files such as `.DS_Store`,
 
 ### 9. Publish Only After Public Verification
 
-Release remains paused until implementation and verification are complete.
-The order is:
+The release sequence is:
 
 1. run local typecheck, tests, build, doc-gov checks, pro-gov doctor, translation
    parity, link checks, and both package dry-run packs;
@@ -303,14 +301,20 @@ The order is:
 7. create and verify GitHub release `v0.3.5`;
 8. confirm `main` is clean and synchronized.
 
-### 10. End With A Downstream Synchronization Handoff
+### 10. Synchronize Downstream Projects Directly
 
-The final response must include a short Chinese prompt for a separate session.
-That session should inspect the downstream registry, compare each project
-against the released central version, apply only relevant profile/integration
-changes, preserve project-local truth, run each project's checks, and report
-per-project results. It must not blindly copy every central file into every
-project.
+The implementation session synchronizes downstream projects directly instead of
+producing a handoff prompt. The rule is conservative: update the installed
+`@pieai/doc-gov` and `@pieai/pro-gov` versions, run project-appropriate checks,
+and preserve project-local truth. Do not blindly copy the central repository
+into downstream projects.
+
+On 2026-06-21, ten existing downstream projects were updated to `0.3.5` and
+pushed on their `main` branches: Anvil, Collapse, Non-Heroes,
+PieAIStudio-Site, PieHQ, Sea, Show, SupaLuv, YaZu, and TuringPact.
+`/Users/yuanfei/PieAI/ProjectLens` did not exist locally, so it was removed from
+the active downstream registry instead of being synchronized as a separate
+repository.
 
 ## Planned File Changes
 
@@ -336,8 +340,6 @@ project.
 - Do not make Ponytail a dependency of `@pieai/pro-gov`.
 - Do not promise a percentage reduction in code, tokens, time, or cost.
 - Do not publish private or third-party agent skill bodies.
-- Do not automatically modify downstream repositories in this implementation
-  session; produce a controlled handoff prompt instead.
 - Do not redesign doc-gov lifecycle/schema or add another project profile.
 
 ## Requirements

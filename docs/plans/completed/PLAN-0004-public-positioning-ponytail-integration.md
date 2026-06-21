@@ -2,7 +2,7 @@
 id: PLAN-0004
 title: Public Positioning And Ponytail Integration Implementation
 type: plan
-status: active
+status: completed
 canonical: true
 owner: ai-assisted
 created: 2026-06-21
@@ -262,31 +262,31 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 
 **Files:**
 
-- Modify: `docs/plans/active/PLAN-0004-public-positioning-ponytail-integration.md`
+- Move: `docs/plans/completed/PLAN-0004-public-positioning-ponytail-integration.md`
 - Modify: `docs/governance/MANIFEST.yml`
 
 - [x] **Step 12.1:** Mark completed plan checkboxes as evidence accumulates.
-- [ ] **Step 12.2:** Move the plan to `docs/plans/completed/`, set
+- [x] **Step 12.2:** Move the plan to `docs/plans/completed/`, set
   `status: completed`, and keep it canonical as proof history.
-- [ ] **Step 12.3:** Run `pnpm doc-gov scan` and the complete doc-gov suite.
-- [ ] **Step 12.4:** Review `git diff --stat`, `git diff --check`, and every
+- [x] **Step 12.3:** Run `pnpm doc-gov scan` and the complete doc-gov suite.
+- [x] **Step 12.4:** Review `git diff --stat`, `git diff --check`, and every
   changed file; do not stage unrelated user changes.
-- [ ] **Step 12.5:** Create focused commits with governance trailers when
+- [x] **Step 12.5:** Create focused commits with governance trailers when
   required.
 
 ## Task 13: Merge, Push, And Verify GitHub
 
 **Files:** Git history and release metadata.
 
-- [ ] **Step 13.1:** Use the finishing-branch workflow to merge the isolated
+- [x] **Step 13.1:** Use the finishing-branch workflow to merge the isolated
   worktree into local `main` without discarding user changes.
-- [ ] **Step 13.2:** Confirm local `main` contains the approved design, plan, and
+- [x] **Step 13.2:** Confirm local `main` contains the approved design, plan, and
   implementation commits and has no uncommitted changes.
-- [ ] **Step 13.3:** Push `main` to `origin`.
-- [ ] **Step 13.4:** Update the GitHub repository description with the same
+- [x] **Step 13.3:** Push `main` to `origin`.
+- [x] **Step 13.4:** Update the GitHub repository description with the same
   answer-first, beginner-readable public position as the README.
-- [ ] **Step 13.5:** Wait for the exact-head `docs-check` GitHub Actions run.
-- [ ] **Step 13.6:** Inspect failed logs if any step fails; do not publish until
+- [x] **Step 13.5:** Wait for the exact-head `docs-check` GitHub Actions run.
+- [x] **Step 13.6:** Inspect failed logs if any step fails; do not publish until
   the exact-head run concludes `success`.
 
 ## Task 14: Publish npm And GitHub Release
@@ -303,35 +303,54 @@ pnpm 10.26.0, GitHub Actions, npm registry.
   return `0.3.5`.
 - [x] **Step 14.5:** Install both `0.3.5` packages from the public registry in a
   clean temporary project and run CLI smoke checks.
-- [ ] **Step 14.6:** Create GitHub release `v0.3.5` at the verified final commit
+- [x] **Step 14.6:** Create GitHub release `v0.3.5` at the verified final commit
   with beginner-friendly release notes and package links.
-- [ ] **Step 14.7:** Verify the public release, tag target, npm dist-tag, exact
+- [x] **Step 14.7:** Verify the public release, tag target, npm dist-tag, exact
   GitHub head, and clean synchronized `main`.
 
 ## Task 15: Synchronize Downstream Projects
 
 **Files:** downstream project repositories listed in the adoption registry.
 
-- [ ] **Step 15.1:** Read the downstream registry and list each downstream
+- [x] **Step 15.1:** Read the downstream registry and list each downstream
   project, selected profile, package manager, and validation command.
-- [ ] **Step 15.2:** Apply only relevant `@pieai/doc-gov@0.3.5`,
+- [x] **Step 15.2:** Apply only relevant `@pieai/doc-gov@0.3.5`,
   `@pieai/pro-gov@0.3.5`, profile, integration, starter, and entry-file changes
   to each downstream project.
-- [ ] **Step 15.3:** Preserve project-local product truth and avoid blindly
+- [x] **Step 15.3:** Preserve project-local product truth and avoid blindly
   copying the central repository into downstream projects.
-- [ ] **Step 15.4:** Run each downstream project's appropriate checks and record
+- [x] **Step 15.4:** Run each downstream project's appropriate checks and record
   per-project results.
+
+### Downstream Sync Results
+
+| Project | Commit | Verification result |
+| --- | --- | --- |
+| Anvil | `787d37a` | `docs:check`, `typecheck`, `test`, and `lint` pass. Existing unrelated writing changes were preserved. |
+| Collapse | `2e220df` | `docs:check`, `test`, and `build` pass. |
+| Non-Heroes | `f3b9b02` | `docs:check`, `typecheck`, `test`, and `build` pass after refreshing pnpm workspace links. |
+| PieAIStudio-Site | `5501c84` | `docs:check`, `typecheck`, `lint`, and `build` pass after clearing stale `.next` generated types. Existing unrelated site docs were preserved. |
+| PieHQ | `0a58cd7` | `docs:check` passes. Existing unrelated FounderLogs and `.DS_Store` changes were preserved. |
+| Sea | `0d95bd52b` | `docs:check` and `build:packages` pass. Full `test` still has unrelated shell-sidebar and workspace-drawer failures outside this sync. Existing unrelated shared-rule deletion was preserved. |
+| Show | `c7eda40` | `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. Existing unrelated MCP/shared-rule changes were preserved. |
+| SupaLuv | `23c5b0c` | `docs:check`, `typecheck`, `test`, and `build` pass. Existing unrelated skill and vendored-tool cleanup work was preserved. |
+| YaZu | `9a40f1f` | `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
+| TuringPact | `93bcf9c` | `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
+
+`/Users/yuanfei/PieAI/ProjectLens` no longer exists locally, so it was removed
+from the active downstream registry instead of being synchronized as a separate
+downstream repository.
 
 ## Acceptance
 
-- [ ] SPEC-0004 requirements 1 through 16 each map to a completed task above.
-- [ ] Global Ponytail configuration remains `off`.
-- [ ] Six README languages pass parity and factual checks.
-- [ ] All local and GitHub checks pass from the final commit.
-- [ ] npm and GitHub publicly expose the verified `0.3.5` release.
-- [ ] Main is clean and synchronized.
-- [ ] Downstream projects listed in the registry are synchronized and verified.
+- [x] SPEC-0004 requirements 1 through 16 each map to a completed task above.
+- [x] Global Ponytail configuration remains `off`.
+- [x] Six README languages pass parity and factual checks.
+- [x] All local and GitHub checks pass from the final commit.
+- [x] npm and GitHub publicly expose the verified `0.3.5` release.
+- [x] Main is clean and synchronized.
+- [x] Downstream projects listed in the registry are synchronized and verified.
 
 ## Closeout
 
-When complete, move this plan to `docs/plans/completed/` and set `status: completed`.
+This plan is complete and has been moved to `docs/plans/completed/`.
