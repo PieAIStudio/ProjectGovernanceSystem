@@ -49,6 +49,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install Git hooks
+        run: pnpm exec lefthook install
+
       - name: Typecheck
         run: pnpm typecheck
 
