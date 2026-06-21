@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-14T18:21:09.023Z
+generated_at: 2026-06-21T11:54:34.902Z
 generator_version: doc-gov@0.3.3
-docs_count: 23
+docs_count: 24
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -150,6 +150,13 @@ docs:
     status: draft
     canonical: false
     last_reviewed: 2026-06-12
+    pinned: false
+  - id: SPEC-0004
+    path: docs/specs/active/SPEC-0004-public-positioning-ponytail-integration.md
+    type: spec
+    status: draft
+    canonical: false
+    last_reviewed: 2026-06-21
     pinned: false
   - id: SPEC-0002
     path: docs/specs/completed/SPEC-0002-pro-gov-project-package.md
