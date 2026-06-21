@@ -39,6 +39,7 @@ export function isValidProfile(profile: string): profile is 'engineering-runtime
 function listFiles(dir: string): string[] {
   const files: string[] = [];
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (isPlatformMetadata(entry.name)) continue;
     const absolutePath = join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...listFiles(absolutePath));
@@ -51,4 +52,8 @@ function listFiles(dir: string): string[] {
 
 function toUnixPath(path: string): string {
   return path.replaceAll('\\', '/');
+}
+
+function isPlatformMetadata(name: string): boolean {
+  return name === '.DS_Store' || name === 'Thumbs.db' || name.startsWith('._');
 }

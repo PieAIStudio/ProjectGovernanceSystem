@@ -1,5 +1,5 @@
 import { cpSync, rmSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { basename, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -25,7 +25,12 @@ for (const assetRoot of assetRoots) {
   cpSync(join(repoRoot, assetRoot), join(assetsRoot, assetRoot), {
     dereference: false,
     errorOnExist: false,
+    filter: (source) => !isPlatformMetadata(basename(source)),
     force: true,
     recursive: true,
   });
+}
+
+function isPlatformMetadata(name) {
+  return name === '.DS_Store' || name === 'Thumbs.db' || name.startsWith('._');
 }

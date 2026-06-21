@@ -11,6 +11,8 @@
 - Added the new public integration and recommendation assets to the
   `@pieai/pro-gov` distribution while keeping private and third-party agent
   assets outside the package.
+- Hardened the pro-gov asset build so macOS, Windows, and AppleDouble metadata
+  files cannot leak from a local checkout into the public npm tarball.
 - Fixed `doc-gov doctor` so it recognizes Lefthook installations from real Git
   linked worktrees instead of assuming `.git` is always a directory.
 - Aligned `@pieai/doc-gov` and `@pieai/pro-gov` on the `0.3.4` release line.

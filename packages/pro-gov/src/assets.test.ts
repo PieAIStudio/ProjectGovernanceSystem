@@ -29,11 +29,15 @@ test('package asset copy excludes private and third-party agent asset bodies', (
   const packageJson = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf8')) as {
     files: string[];
   };
+  const packagedPaths = listAssets().map((asset) => asset.path);
 
   assert.equal(packageJson.files.includes('agent-assets'), false);
   assert.equal(existsSync(join(packageRoot, 'assets/agent-assets')), false);
   assert.equal(existsSync(join(packageRoot, 'assets/skills')), false);
   assert.equal(existsSync(join(packageRoot, 'assets/docs/reference/adoption')), true);
+  assert.equal(packagedPaths.some((path) => path.endsWith('/.DS_Store')), false);
+  assert.equal(packagedPaths.some((path) => path.endsWith('/Thumbs.db')), false);
+  assert.equal(packagedPaths.some((path) => /\/\._[^/]+$/.test(path)), false);
 });
 
 test('assets list prints packaged asset paths', () => {

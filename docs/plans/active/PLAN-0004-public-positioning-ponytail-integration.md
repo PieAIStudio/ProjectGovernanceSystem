@@ -253,7 +253,7 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 - [x] **Step 11.6:** Run both package `pack --dry-run` commands.
 - [x] **Step 11.7:** Inspect both tarballs: versions `0.3.4`, pro-gov dependency
   `@pieai/doc-gov ^0.3.4`, Ponytail integration included, and private and
-  third-party agent bodies excluded.
+  third-party agent bodies plus operating-system metadata excluded.
 - [x] **Step 11.8:** Install both packed tarballs into a temporary project and
   run `doc-gov --help`, `pro-gov --help`, `pro-gov assets list`, and
   `pro-gov doctor`.

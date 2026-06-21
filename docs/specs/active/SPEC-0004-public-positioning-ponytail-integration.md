@@ -282,7 +282,8 @@ lookup falsely reported that Lefthook was missing. Because the `doc-gov`
 package body now changes, both `@pieai/doc-gov` and `@pieai/pro-gov` ship as
 `0.3.4`. The pro-gov tarball resolves its validator dependency to
 `@pieai/doc-gov ^0.3.4`. Private and third-party `agent-assets/` bodies remain
-excluded.
+excluded, as do operating-system metadata files such as `.DS_Store`,
+`Thumbs.db`, and AppleDouble `._*` files.
 
 ### 9. Publish Only After Public Verification
 
