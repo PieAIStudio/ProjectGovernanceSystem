@@ -88,8 +88,9 @@ jobs:
 
       - name: Publish @pieai/doc-gov
         if: steps.registry.outputs.doc_exists != 'true'
-        run: npm publish --provenance --access public --registry https://registry.npmjs.org/
-        working-directory: packages/doc-gov
+        run: |
+          pnpm --filter @pieai/doc-gov pack --out "$RUNNER_TEMP/doc-gov.tgz"
+          npm publish "$RUNNER_TEMP/doc-gov.tgz" --provenance --access public --registry https://registry.npmjs.org/
 
       - name: Verify @pieai/doc-gov
         run: |
@@ -108,8 +109,11 @@ jobs:
 
       - name: Publish @pieai/pro-gov
         if: steps.registry.outputs.pro_exists != 'true'
-        run: npm publish --provenance --access public --registry https://registry.npmjs.org/
-        working-directory: packages/pro-gov
+        run: |
+          pnpm --filter @pieai/pro-gov pack --out "$RUNNER_TEMP/pro-gov.tgz"
+          tar -xOf "$RUNNER_TEMP/pro-gov.tgz" package/package.json \
+            | node -e "let s=''; process.stdin.on('data', d => s += d); process.stdin.on('end', () => { const pkg = JSON.parse(s); const range = pkg.dependencies?.['@pieai/doc-gov']; if (!range || range.startsWith('workspace:')) { console.error('Invalid @pieai/doc-gov dependency range in packed package:', range); process.exit(1); } console.log('Packed @pieai/doc-gov dependency:', range); });"
+          npm publish "$RUNNER_TEMP/pro-gov.tgz" --provenance --access public --registry https://registry.npmjs.org/
 
       - name: Verify @pieai/pro-gov
         run: |

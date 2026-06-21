@@ -114,7 +114,9 @@ The workflow must keep:
 - a GitHub-hosted runner
 - npm CLI `11.5.1` or newer
 - package `repository` fields that match the public GitHub repository
-- `npm publish --provenance --access public`
+- `pnpm pack` before publish, so workspace dependencies are converted in the
+  tarball
+- `npm publish <tarball> --provenance --access public`
 
 ## After Release
 

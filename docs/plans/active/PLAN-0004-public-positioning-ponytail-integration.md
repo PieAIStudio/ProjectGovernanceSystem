@@ -29,7 +29,7 @@ related:
 > checkbox syntax for tracking.
 
 **Goal:** Give PGS a beginner-friendly public story, a safe Ponytail/Superpowers
-boundary, six synchronized README languages, and a verified `0.3.4` release.
+boundary, six synchronized README languages, and a verified `0.3.5` release.
 
 **Architecture:** Keep PGS, Superpowers, and Ponytail separate. English is the
 canonical public introduction; five root-level README translations mirror its
@@ -251,8 +251,8 @@ pnpm 10.26.0, GitHub Actions, npm registry.
   new integration/reference files appear under generated pro-gov assets.
 - [x] **Step 11.5:** Run `node packages/pro-gov/dist/cli.js doctor`.
 - [x] **Step 11.6:** Run both package `pack --dry-run` commands.
-- [x] **Step 11.7:** Inspect both tarballs: versions `0.3.4`, pro-gov dependency
-  `@pieai/doc-gov ^0.3.4`, Ponytail integration included, and private and
+- [x] **Step 11.7:** Inspect both tarballs: versions `0.3.5`, pro-gov dependency
+  `@pieai/doc-gov ^0.3.5`, Ponytail integration included, and private and
   third-party agent bodies plus operating-system metadata excluded.
 - [x] **Step 11.8:** Install both packed tarballs into a temporary project and
   run `doc-gov --help`, `pro-gov --help`, `pro-gov assets list`, and
@@ -293,17 +293,17 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 
 **Files:** public npm and GitHub release state.
 
-- [ ] **Step 14.1:** Confirm public npm still reports both packages at `0.3.3`
-  and neither package already has `0.3.4`.
+- [ ] **Step 14.1:** Confirm public npm still reports both packages below
+  `0.3.5` and neither package already has `0.3.5`.
 - [ ] **Step 14.2:** Configure npm Trusted Publisher for both packages when the
   package settings do not already trust `.github/workflows/npm-publish.yml`.
-- [ ] **Step 14.3:** Publish `@pieai/doc-gov@0.3.4` first, verify it, then
-  publish `@pieai/pro-gov@0.3.4` through the GitHub Actions publish workflow.
+- [ ] **Step 14.3:** Publish `@pieai/doc-gov@0.3.5` first, verify it, then
+  publish `@pieai/pro-gov@0.3.5` through the GitHub Actions publish workflow.
 - [ ] **Step 14.4:** Poll the official registry until both `npm view` commands
-  return `0.3.4`.
-- [ ] **Step 14.5:** Install both `0.3.4` packages from the public registry in a
+  return `0.3.5`.
+- [ ] **Step 14.5:** Install both `0.3.5` packages from the public registry in a
   clean temporary project and run CLI smoke checks.
-- [ ] **Step 14.6:** Create GitHub release `v0.3.4` at the verified final commit
+- [ ] **Step 14.6:** Create GitHub release `v0.3.5` at the verified final commit
   with beginner-friendly release notes and package links.
 - [ ] **Step 14.7:** Verify the public release, tag target, npm dist-tag, exact
   GitHub head, and clean synchronized `main`.
@@ -326,7 +326,7 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 - [ ] Global Ponytail configuration remains `off`.
 - [ ] Six README languages pass parity and factual checks.
 - [ ] All local and GitHub checks pass from the final commit.
-- [ ] npm and GitHub publicly expose the verified `0.3.4` release.
+- [ ] npm and GitHub publicly expose the verified `0.3.5` release.
 - [ ] Main is clean and synchronized.
 - [ ] Final response includes the downstream synchronization prompt.
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.5 - 2026-06-21
+
+- Fixed the public `@pieai/pro-gov` npm package so normal registry installs do
+  not see a `workspace:` dependency range.
+- Changed the trusted-publishing workflow to create npm tarballs with
+  `pnpm pack` before publishing them through `npm publish --provenance`, so
+  workspace dependencies are converted before release.
+- Added a package test that opens the packed `@pieai/pro-gov` tarball and
+  verifies its `@pieai/doc-gov` dependency is registry-installable.
+
 ## 0.3.4 - 2026-06-21
 
 - Rewrote the public introduction around the problem PGS solves, with

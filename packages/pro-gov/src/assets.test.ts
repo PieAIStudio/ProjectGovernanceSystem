@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -38,6 +38,32 @@ test('package asset copy excludes private and third-party agent asset bodies', (
   assert.equal(packagedPaths.some((path) => path.endsWith('/.DS_Store')), false);
   assert.equal(packagedPaths.some((path) => path.endsWith('/Thumbs.db')), false);
   assert.equal(packagedPaths.some((path) => /\/\._[^/]+$/.test(path)), false);
+});
+
+test('packed package dependencies use registry-installable ranges', () => {
+  const targetDir = mkdtempSync(join(tmpdir(), 'pro-gov-pack-'));
+  const tarballPath = join(targetDir, 'pro-gov.tgz');
+
+  try {
+    const pack = spawnSync('pnpm', ['pack', '--out', tarballPath], {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    });
+    assert.equal(pack.status, 0, pack.stderr || pack.stdout);
+
+    const extract = spawnSync('tar', ['-xOf', tarballPath, 'package/package.json'], {
+      encoding: 'utf8',
+    });
+    assert.equal(extract.status, 0, extract.stderr || extract.stdout);
+
+    const packageJson = JSON.parse(extract.stdout) as { dependencies?: Record<string, string> };
+    const docGovRange = packageJson.dependencies?.['@pieai/doc-gov'];
+
+    assert.equal(docGovRange?.startsWith('workspace:'), false);
+    assert.match(docGovRange ?? '', /^\^\d+\.\d+\.\d+$/);
+  } finally {
+    rmSync(targetDir, { recursive: true, force: true });
+  }
 });
 
 test('assets list prints packaged asset paths', () => {

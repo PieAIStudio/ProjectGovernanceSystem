@@ -280,8 +280,8 @@ Implementation uncovered and fixed a real `doc-gov doctor` bug: linked Git
 worktrees store `.git` as a pointer file, so the old hard-coded `.git/hooks`
 lookup falsely reported that Lefthook was missing. Because the `doc-gov`
 package body now changes, both `@pieai/doc-gov` and `@pieai/pro-gov` ship as
-`0.3.4`. The pro-gov tarball resolves its validator dependency to
-`@pieai/doc-gov ^0.3.4`. Private and third-party `agent-assets/` bodies remain
+`0.3.5`. The pro-gov tarball resolves its validator dependency to
+`@pieai/doc-gov ^0.3.5`. Private and third-party `agent-assets/` bodies remain
 excluded, as do operating-system metadata files such as `.DS_Store`,
 `Thumbs.db`, and AppleDouble `._*` files.
 
@@ -296,11 +296,11 @@ The order is:
 3. wait for GitHub Actions success;
 4. configure npm Trusted Publisher for the GitHub Actions `npm-publish.yml`
    workflow when the package settings do not already trust it;
-5. publish `@pieai/doc-gov@0.3.4` and `@pieai/pro-gov@0.3.4` through the
+5. publish `@pieai/doc-gov@0.3.5` and `@pieai/pro-gov@0.3.5` through the
    manual GitHub Actions publish workflow;
 6. verify the public npm registry and install both packages in a temporary
    project;
-7. create and verify GitHub release `v0.3.4`;
+7. create and verify GitHub release `v0.3.5`;
 8. confirm `main` is clean and synchronized.
 
 ### 10. End With A Downstream Synchronization Handoff
@@ -379,7 +379,7 @@ project.
   resolves `@pieai/doc-gov` to the published dependency range, and excludes
   private/third-party assets.
 - Local checks and GitHub Actions pass from the final commit.
-- npm publicly resolves both packages at `0.3.4`, and a temporary project can
+- npm publicly resolves both packages at `0.3.5`, and a temporary project can
   run both CLIs.
-- GitHub publishes `v0.3.4` only after npm verification.
+- GitHub publishes `v0.3.5` only after npm verification.
 - The final report includes the requested concise downstream sync prompt.
