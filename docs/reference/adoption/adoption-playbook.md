@@ -22,6 +22,11 @@ related:
 
 Use this when a project wants to migrate into the Project Governance System.
 
+Before choosing external AI workflow tools, read
+`docs/reference/adoption/recommended-agent-tooling.md`. It explains which PGS
+packages are required, when Superpowers is recommended, and why Ponytail should
+remain globally `off` until it is tested in an isolated task.
+
 ## The Short Version
 
 1. Pick one profile.
@@ -171,6 +176,10 @@ Add:
 - canon/provenance/archive rules in `docs/policy/best-practice-for-this-project.md`
 
 Do not add Superpowers TDD or Directed Development by default.
+
+Ponytail is also optional. If it is installed, keep its global mode `off` and
+activate it only for a bounded task or review after reading
+`integrations/ponytail.md`.
 
 ## Step 6: Create Current Work
 

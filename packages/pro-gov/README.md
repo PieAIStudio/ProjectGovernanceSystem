@@ -1,23 +1,31 @@
 # @pieai/pro-gov
 
-Project-level distribution kit for Project Governance System.
+`@pieai/pro-gov` is the project-level setup kit for
+[Project Governance System](https://github.com/PieAIStudio/ProjectGovernanceSystem).
+It helps AI-assisted projects stay understandable after many plans, documents,
+tools, and AI sessions have accumulated.
 
-`@pieai/doc-gov` remains the validator package. `@pieai/pro-gov` ships reusable
-project-governance assets and a conservative project-level CLI. It is the
-package that answers:
+Think of Project Governance System as a librarian, traffic desk, and inspection
+station:
 
-- what starter/profile material this project needs;
-- what agent-facing skills, rules, or commands are recommended;
-- what symlinks would be installed before anything is written;
-- what ProjectLens-style local evidence is available for review.
+- `pro-gov` shows which reusable project-governance parts are present or missing;
+- `@pieai/doc-gov` checks documents, routing, links, hooks, and CI;
+- Superpowers may provide the engineering process;
+- Ponytail may provide an optional simplicity review.
+
+The current `pro-gov` release is conservative by design. Public init and sync
+commands inspect and compare; they do not silently overwrite another project's
+router or local truth.
 
 ## Install
+
+Requires Node.js `22.12.0` or newer.
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
 ```
 
-Add scripts in the target project:
+Optional project scripts:
 
 ```json
 {
@@ -28,9 +36,7 @@ Add scripts in the target project:
 }
 ```
 
-## Commands
-
-Public package-safe commands:
+## Public Commands
 
 ```bash
 pro-gov assets list
@@ -44,7 +50,23 @@ pro-gov sync --check
 pro-gov doctor
 ```
 
-Full upstream-checkout commands, for Yuanfei's private `agent-assets/` registry:
+What these commands do:
+
+| Command group | Purpose | Writes project files? |
+| --- | --- | --- |
+| `assets list` | Shows packaged assets and public registry metadata. | No |
+| `assets discover` | Detects local project signals. | No |
+| `assets recommend` | Suggests relevant asset bundles with reasons. | No |
+| `lens inspect` | Produces ProjectLens-style local evidence. | No |
+| `lens report` | Writes the requested report file. | Only the explicit output |
+| `init --dry-run` | Shows starter/profile files that would be needed. | No |
+| `sync --check` | Compares local starter files with packaged assets. | No |
+| `doctor` | Checks required packaged assets and whether `doc-gov` is available. | No |
+
+## Full Checkout Commands
+
+A full Project Governance System checkout may also manage Yuanfei's local
+agent-asset registry through reviewed plans:
 
 ```bash
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
@@ -53,26 +75,38 @@ pro-gov assets check --target .
 pro-gov assets npx update --plan
 ```
 
-`init` and `sync` remain read-only. Agent asset writes are intentionally a
-separate reviewed flow: generate a plan, inspect it, then apply that plan
-explicitly. `lens` commands are read-only and produce evidence, not judgement.
+The plan is the safety gate. `apply` may update managed targets described by the
+plan; it must not overwrite an unrelated unmanaged file.
 
-The public npm package does not include private or third-party skill bodies.
-Those live only in a full Project Governance System checkout unless promoted in
-a future release.
+These checkout-only workflows depend on the upstream `agent-assets/` registry.
+The public npm package intentionally excludes private and mirrored third-party
+skill bodies.
 
 ## Package Boundary
 
-- `pro-gov` lists and compares starter/profile/integration assets.
-- `pro-gov assets discover|recommend|plan|apply|check` manages local
-  agent-facing assets through explicit plans and managed symlinks.
-- `pro-gov lens inspect|report` absorbs the reusable ProjectLens inspection
-  capability as a read-only evidence surface.
-- `doc-gov` validates governed Markdown, router integrity, manifest freshness,
-  links, local hooks, and CI wiring.
-- Project-local product truth stays in the target project.
-- Private and third-party skill bodies live in the upstream PGS checkout under
-  `agent-assets/`. They are excluded from the public npm package unless a future
-  promotion explicitly marks them publishable.
-- `init` and `sync` write-mode install or upgrade behavior is intentionally not
-  enabled in this release.
+- `pro-gov` distributes starter, profile, integration, and adoption assets.
+- `pro-gov assets discover|recommend` provides read-only project evidence and
+  deterministic recommendations.
+- `pro-gov assets plan|apply|check` manages local assets only from an explicit,
+  reviewable plan in a full upstream checkout.
+- `pro-gov lens inspect|report` provides read-only inspection and an explicit
+  report output.
+- `doc-gov` remains the document, router, manifest, link, hook, CI, and migration
+  validator.
+- Product truth stays in the target project.
+- Write-mode `pro-gov init --apply` is not enabled in this release.
+- Superpowers and Ponytail are external tools, not bundled runtime dependencies.
+
+## Recommended Companion Tools
+
+Superpowers is recommended for engineering/runtime projects that need
+brainstorming, plans, TDD, debugging, verification, and worktree discipline.
+
+Ponytail can be installed as an optional complexity adviser. Keep its global mode
+`off`; test `lite` in one isolated task before considering a stronger mode.
+Ponytail must not remove requested scope, tests, safety, accessibility, or proof.
+
+Read the
+[full project introduction](https://github.com/PieAIStudio/ProjectGovernanceSystem#readme)
+for beginner examples, profiles, adoption guidance, and exact integration
+boundaries.

@@ -24,6 +24,7 @@ profiles.
    - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
    - `docs/governance/agents-routing/doc-only-v0.9.md`
    - `integrations/superpowers.md`
+   - `integrations/ponytail.md`
    - `integrations/directed-development.md`
    - `profiles/engineering-runtime/`
    - `profiles/doc-only/`

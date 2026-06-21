@@ -25,19 +25,20 @@ System as a public project page.
 
 ## Public Positioning
 
-Project Governance System is an AI-native governance layer for projects that
-work with AI agents over time.
+Project Governance System keeps long-running AI-assisted projects understandable
+and governable.
 
 Beginner-friendly description:
 
-> Git remembers code history. AGENTS.md tells an AI how to enter a project.
-> Superpowers gives engineering workflows. Project Governance System is the
-> librarian and traffic desk: it decides where durable AI-created documents
-> belong, which ones are current truth, which route a task should take, and
-> when old documents should retire.
+> AI can create plans, specifications, rules, and reports faster than people can
+> organize them. Project Governance System is the librarian, traffic desk, and
+> inspection machine: it keeps current truth easy to find, sends each task down
+> the right route, and checks that important project evidence is still connected.
 
 ## What To Emphasize
 
+- It reduces the cognitive load of returning to an AI-assisted project after
+  days, weeks, or many different AI sessions.
 - It keeps AI-generated specs, plans, decisions, references, and routing rules
   from becoming unmanaged clutter.
 - It separates central governance rules from project-local truth.
@@ -46,13 +47,18 @@ Beginner-friendly description:
   checks, router integrity, health checks, and read-only migration checks.
 - It provides `pro-gov` commands for packaged starter/profile assets,
   read-only init planning, read-only sync checks, and package health checks.
-- It is designed to work with external workflow systems instead of replacing
-  them.
+- It includes ProjectLens-style read-only inspection and a governed local agent
+  asset registry without publishing private or third-party skill bodies.
+- It works with external workflow systems instead of replacing them:
+  Superpowers owns engineering process, while Ponytail may act as an optional
+  complexity adviser with global mode `off`.
 
 ## Do Not Overclaim
 
 - Do not say it replaces Git.
 - Do not say it replaces Superpowers.
+- Do not say it requires or automatically enables Ponytail.
+- Do not promise a fixed percentage reduction in code, tokens, time, or cost.
 - Do not say it automatically migrates every project.
 - Do not imply product prompts, generated media, or runtime assets must move
   under `docs/**`.
@@ -70,11 +76,13 @@ Use the central repo's README.md, packages/doc-gov/README.md,
 packages/pro-gov/README.md, docs/reference/adoption/public-release-checklist.md,
 and docs/reference/adoption/site-publication-brief.md as source material.
 
-Position it for normal readers as an AI-era documentation governance system:
-the librarian and traffic desk for AI-created project documents. Explain what
-problem it solves, why it matters, how doc-gov checks work, and how it fits next
-to Git, AGENTS.md, Superpowers, pro-gov starter/profile distribution, and
-project-local product truth.
+Position it for normal readers as the system that keeps long-running AI-assisted
+projects understandable and governable. Lead with the pain: AI creates useful
+plans, specs, rules, and evidence faster than people can organize and retire
+them. Use the librarian, traffic desk, and inspection-machine analogy before
+technical package details. Explain how it fits next to Git, AGENTS.md,
+Superpowers, optional Ponytail advice, pro-gov starter/profile distribution,
+ProjectLens inspection, and project-local product truth.
 
 Keep the copy confident but accurate. Do not claim automatic migration or
 full replacement of existing workflow tools. npm publication is live, so include

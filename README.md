@@ -1,270 +1,266 @@
 # Project Governance System
 
 [![Docs Check](https://github.com/PieAIStudio/ProjectGovernanceSystem/actions/workflows/docs-check.yml/badge.svg)](https://github.com/PieAIStudio/ProjectGovernanceSystem/actions/workflows/docs-check.yml)
-[![npm](https://img.shields.io/npm/v/@pieai/doc-gov.svg)](https://www.npmjs.com/package/@pieai/doc-gov)
+[![pro-gov on npm](https://img.shields.io/npm/v/@pieai/pro-gov.svg?label=pro-gov)](https://www.npmjs.com/package/@pieai/pro-gov)
+[![doc-gov on npm](https://img.shields.io/npm/v/@pieai/doc-gov.svg?label=doc-gov)](https://www.npmjs.com/package/@pieai/doc-gov)
 
-AI-native documentation governance, agents routing, and workflow integration profiles for projects that work with AI agents over time.
+**[English](README.md)** | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
-This repository is the upstream home of the Project Governance System, the
-published `@pieai/doc-gov` validator package, and the project-level
-`@pieai/pro-gov` package surface. It also holds Yuanfei's local private
-`agent-assets/` registry for agent-facing skills, rules, commands, and the
-absorbed ProjectLens inspection capability. It defines the thin shared rules
-that PieAI projects use to keep AI-generated plans, specs, decisions,
-references, routing instructions, and optional agent assets from turning into
-unmanaged clutter.
+**Project Governance System (PGS) keeps long-running AI-assisted projects
+understandable, verifiable, and easier to continue.**
 
-This root README is for humans. AI agents should use `AGENTS.md` as their startup entrypoint and only read this README when the task is about project positioning, public explanation, or the README itself.
+AI can create plans, specifications, rules, reports, and code very quickly.
+Without a shared system, yesterday's helpful files become tomorrow's pile of
+conflicting instructions. PGS gives durable AI-created work a clear home,
+chooses the right workflow depth for each task, and checks that the project's
+guardrails are still connected.
 
-## Positioning
+It is deliberately a thin layer. It works beside Git, `AGENTS.md`,
+[Superpowers](integrations/superpowers.md), and optional
+[Ponytail](integrations/ponytail.md) rather than trying to replace them.
 
-Project Governance System is an **AI-native governance layer for project documentation and agent work artifacts**.
+## Why PGS Exists
 
-It does not replace Git, AGENTS.md, or Superpowers:
+Imagine returning to an AI-assisted project after three weeks.
 
-- Git records file history: what changed, when, and by whom.
-- AGENTS.md gives project-specific instructions to coding agents.
-- Superpowers provides engineering workflows such as brainstorming, TDD, debugging, planning, and verification.
-- Project Governance System decides where durable AI-created governance artifacts belong, what counts as current truth, which workflow depth an agent task needs, and how finished or stale governed documents retire.
+You find four plans, two "final" specifications, several rules copied by
+different AI tools, and a report that may or may not describe the current code.
+The AI can read all of it, but it cannot magically know which file still tells
+the truth.
 
-Beginner version:
+PGS solves that memory-and-organization problem:
 
-> Git is the storage and history system. Superpowers is the engineering playbook. Project Governance System is the project librarian and traffic desk: it tells agents where governed docs belong, which shelf is current, which route to take, and when old governed material belongs in the archive.
+- one clear place for current governed truth;
+- a lifecycle for drafts, active work, completed proof, and retired material;
+- a router that chooses a lightweight or engineering workflow;
+- checks that catch broken links, stale manifests, missing hooks, and incomplete
+  CI wiring;
+- read-only project inspection before anything is changed;
+- reviewed, explicit installation plans for local agent skills and rules.
 
-This matters because AI agents can create useful specs, plans, decisions, and research quickly, but without a lifecycle those files become clutter. The goal is not more ceremony. The goal is one clear place for current governed truth, one small agents-routing layer for task depth, and one validation layer that keeps AI-generated documentation from piling up into noise.
+The goal is not more paperwork. The goal is less time asking, "Which document
+should I trust?"
+
+## The 30-Second Model
+
+Think of the project as a busy building:
+
+| System | Everyday comparison | Job |
+| --- | --- | --- |
+| Git | Security camera and history ledger | Records what changed, when, and by whom. |
+| `AGENTS.md` | Front-door instructions | Tells an AI how to enter this particular project. |
+| PGS | Librarian, traffic desk, and inspection station | Organizes durable truth, routes work, and checks the guardrails. |
+| Superpowers | Construction process | Provides brainstorming, plans, TDD, debugging, verification, and worktree discipline. |
+| Ponytail | Optional cost and complexity adviser | Questions unnecessary code and structure without canceling requirements or proof. |
 
 ```mermaid
-flowchart TD
-  A["Task or project question arrives"] --> B["Read AGENTS.md and current-work.md"]
-  B --> C["Select profile and agents route"]
-  C --> D{"What kind of work is this?"}
-  D --> E["Doc-only governance lane"]
-  D --> F["Engineering/runtime lane"]
-  F --> G["Use matching Superpowers workflow when applicable"]
-  E --> H["Use SSOT and provenance rules"]
-  G --> I["Run AI-in-the-Loop evidence cycle"]
-  H --> I
-  I --> J["Record governed output in doc-gov layers"]
-  J --> K["Git tracks the actual file history"]
+flowchart LR
+  A["A task arrives"] --> B["PGS chooses the lane"]
+  B --> C["Superpowers runs the needed workflow"]
+  C --> D["Optional Ponytail simplicity review"]
+  D --> E["PGS records durable evidence"]
+  E --> F["Git records the history"]
 ```
 
-## Quick Start
+PGS decides **where the work belongs and which route it needs**. Superpowers
+decides **how disciplined engineering work should proceed**. Ponytail may ask
+**whether the implementation can be leaner**. Git remembers what actually
+changed.
 
-For a local checkout:
+## A Concrete Example
 
-```bash
-pnpm install
-pnpm build
-pnpm doc-gov doctor
-pnpm pro-gov doctor
-```
+Maya is building a small app with two AI coding tools.
 
-For a project that wants to evaluate adoption without changing files, use
-`pro-gov` to inspect starter/profile assets and `doc-gov` to validate the local
-governance wiring:
+Before PGS:
+
+1. One AI writes `plan-final.md`.
+2. Another creates `new-plan-final-v2.md`.
+3. A finished plan stays in the active folder.
+4. A new session reads both and chooses the wrong one.
+5. The team spends time reconstructing what is current.
+
+After PGS:
+
+1. `AGENTS.md` sends the AI to the project router and current-work index.
+2. The active specification and plan live in governed locations.
+3. A finished plan moves to `docs/plans/completed/` as proof history.
+4. `doc-gov` checks document status, links, the generated manifest, hooks, and
+   CI wiring.
+5. A later AI session finds the current path instead of guessing.
+
+PGS does not make the product decision for Maya. It makes the project's memory
+reliable enough that Maya and her AI tools can make the next decision together.
+
+## What You Get
+
+### `@pieai/doc-gov`: the inspection machine
+
+`doc-gov` is a CLI, meaning a command that a person, an AI, or CI can run. It
+checks:
+
+- document frontmatter, lifecycle, and canonical truth;
+- router and profile integrity;
+- generated manifest freshness;
+- local Markdown links;
+- local Git hooks and GitHub Actions wiring;
+- read-only migration readiness.
+
+### `@pieai/pro-gov`: the project setup kit
+
+`pro-gov` distributes and inspects:
+
+- starter governance files;
+- `engineering-runtime` and `doc-only` profiles;
+- read-only init and sync comparisons;
+- project signal discovery and agent-asset recommendations;
+- ProjectLens-style local inspection and reports;
+- reviewed agent-asset plans when using a full PGS checkout.
+
+### Two project profiles
+
+| Profile | Use it for |
+| --- | --- |
+| `engineering-runtime` | Apps, games, services, browser products, and other projects with runtime behavior. |
+| `doc-only` | Research, writing, intellectual property, AI media, and asset-focused projects. |
+
+The profiles change the route, not the project's product truth. Your app rules,
+story canon, runtime configuration, prompts, and source assets stay in the
+project that owns them.
+
+## How The Pieces Work Together
+
+1. The AI reads `AGENTS.md`.
+2. PGS routing selects the appropriate profile and lane from
+   `docs/governance/agents-routing/`.
+3. Superpowers runs inside that lane when engineering discipline is needed.
+4. Ponytail may be called explicitly for a bounded simplicity review.
+5. Durable specifications, plans, decisions, and references go to governed
+   locations.
+6. `doc-gov` and `pro-gov doctor` check that the system is actually wired, not
+   merely described.
+
+PGS uses **SSOT**, or "single source of truth": one durable fact should have one
+canonical home. Other files may summarize and link to it, but should not become
+competing copies.
+
+## Try It Safely
+
+You can inspect PGS without allowing it to overwrite a project.
+
+Requires Node.js `22.12.0` or newer.
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list
 pnpm dlx @pieai/pro-gov assets discover --target .
 pnpm dlx @pieai/pro-gov assets recommend --target .
 pnpm dlx @pieai/pro-gov lens inspect --target .
-pnpm dlx @pieai/pro-gov init --profile doc-only --dry-run
 pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
-pnpm dlx @pieai/doc-gov migrate --profile doc-only --check
 pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 ```
 
-If the npm package is not available in your environment yet, run the same commands from a clone:
+These first-release init and sync paths are read-only. They show what is present,
+missing, or different. They do not silently rewrite another project's router.
+
+To adopt the packages in a project:
 
 ```bash
-node /path/to/ProjectGovernanceSystem/packages/doc-gov/dist/cli.js doctor
-node /path/to/ProjectGovernanceSystem/packages/pro-gov/dist/cli.js assets list
+pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov doctor
+pnpm doc-gov check
 ```
 
-For Yuanfei's private local agent asset registry, use a full checkout of this
-repository. The public npm package intentionally excludes private and
-third-party skill bodies:
+Read the [Adoption Playbook](docs/reference/adoption/adoption-playbook.md)
+before migrating existing project files.
 
-```bash
-node packages/pro-gov/dist/cli.js assets list --json
-node packages/pro-gov/dist/cli.js assets plan --bundle base-governance --target /path/to/project --out /tmp/pro-gov-asset-plan.json
-node packages/pro-gov/dist/cli.js assets apply --plan /tmp/pro-gov-asset-plan.json
-node packages/pro-gov/dist/cli.js assets check --target /path/to/project
-```
+## Choose A Profile
 
-## Local Checkout Naming
+Use `engineering-runtime` when the project has code or runtime behavior that
+needs tests and execution proof.
 
-This project has separate naming surfaces:
+Use `doc-only` when the main truth is research, writing, canon, media, or
+assets. A doc-only project can still use engineering tools for a real coding
+task; it simply does not inherit full engineering ceremony by default.
 
-- **System name:** Project Governance System.
-- **Current local checkout folder:** `ProjectGovernanceSystem`.
-- **GitHub repository slug:** `ProjectGovernanceSystem`.
-- **Private workspace package identity:** `pro-gov`.
-- **Published package identities:** `@pieai/doc-gov` for validation and
-  `@pieai/pro-gov` for project-level starter/profile distribution.
+If you are unsure, start with `doc-only` and add the engineering route when the
+project has a real runtime to prove.
 
-Do not treat a local checkout folder rename as a reason to hard-code local paths
-into downstream projects. Downstream projects should prefer `@pieai/doc-gov`
-and `@pieai/pro-gov` commands, the canonical GitHub repository URL, and
-repository-relative paths, not machine-local paths to this checkout.
+## Recommended Companion Tools
 
-## Start Here By Role
+Superpowers is recommended for engineering/runtime projects. It owns
+brainstorming, implementation plans, TDD, debugging, verification, and isolated
+worktree workflows.
 
-Use this table before trying to understand the whole repository.
+Ponytail is useful as an installed but opt-in complexity adviser. Keep its global
+mode `off`. Test `lite` in one isolated, low-risk task before considering an
+optional `full` stress test. A smaller diff is not a win if it drops requested
+scope, tests, safety, accessibility, or evidence.
 
-| If you are... | Read first | Goal |
-| --- | --- | --- |
-| New to this system | `README.md`, `docs/policy/design-principles.md`, `docs/reference/adoption/project-relationship.md` | Understand what this repo is and what it is not |
-| Adopting it into a project | `docs/reference/adoption/adoption-playbook.md`, `profiles/engineering-runtime/profile.md` or `profiles/doc-only/profile.md`, `starter/` | Copy the right shape without copying project-local truth |
-| Editing package behavior | `packages/doc-gov/cli-guide.md`, `packages/pro-gov/cli-guide.md`, `docs/policy/upstreaming-policy.md` | Keep validator behavior and project-level distribution behavior separate |
-| Editing agents routing | `docs/governance/agents-routing/engineering-runtime-v0.9.md`, `docs/governance/agents-routing/doc-only-v0.9.md`, `integrations/superpowers.md` | Keep routing separate from current work and external workflow execution |
-| Deciding where a file belongs | `starter/docs/reference/documentation-map.md`, `docs/governance/boundary.md`, `docs/governance/ssot-v0.9.md` | Put durable information on the right shelf |
+See [Recommended Agent Tooling](docs/reference/adoption/recommended-agent-tooling.md)
+for the exact recommendation strength and project-type differences.
 
-## What This System Answers
+## What PGS Does Not Do
 
-| Question | Answered by |
+PGS does not:
+
+- replace Git, `AGENTS.md`, Superpowers, or Ponytail;
+- automatically understand or rewrite every project;
+- move every Markdown file under `docs/**`;
+- treat generated media, product prompts, runtime notes, and source-package
+  documentation as governed docs by default;
+- publish private or third-party agent skill bodies in the public npm package;
+- promise a fixed reduction in code, tokens, time, or cost;
+- silently install, enable, update, or delete external AI plugins.
+
+The public package is conservative on purpose. Read-only inspection comes before
+write mode because a governance tool should not become a new source of damage.
+
+## Repository Map
+
+| Path | Purpose |
 | --- | --- |
-| Where should an AI-generated spec, plan, decision, or reference go? | `doc-gov`, `pro-gov`, `starter/`, and project-local `docs/` layers |
-| Which document is current truth? | frontmatter, `canonical`, lifecycle status, and `current-work.md` |
-| Should this task be lightweight, doc-only, TDD, or Directed Development? | `docs/governance/agents-routing/` plus the project-local lane profile |
-| Should Superpowers run here? | the selected profile and `integrations/superpowers.md` |
-| Is the router/profile/Superpowers wiring still connected? | `doc-gov router-check` |
-| Is this project really wired, not just documented? | `doc-gov doctor` |
-| Is this project structurally ready for a selected profile? | `doc-gov migrate --profile <profile> --check` |
-| What project-level assets would be installed or checked? | `pro-gov assets list`, `pro-gov init --profile <profile> --dry-run`, and `pro-gov sync --check` |
-| What agent-facing assets are recommended for a target project? | `pro-gov assets discover`, `pro-gov assets recommend`, and, from a full PGS checkout, `pro-gov assets plan/apply/check` |
-| What local ProjectLens evidence can be collected? | `pro-gov lens inspect` and `pro-gov lens report` |
-| What happens after a plan is done? | `completed` status and completed folders, not active-plan pileup |
-| What stays local to a product project? | project-local canon, runtime truth, product artifacts, verification ladders, and lane wording |
+| `packages/doc-gov/` | Documentation validator CLI and lifecycle checks. |
+| `packages/pro-gov/` | Project-level distribution, inspection, and read-only adoption CLI. |
+| `starter/` | Reference files for a governed project. |
+| `profiles/` | Reusable project-type routes. |
+| `docs/governance/` | Core document and routing contracts. |
+| `docs/policy/` | PGS's own development and adoption policies. |
+| `docs/reference/adoption/` | Migration, relationship, release, and tooling guides. |
+| `integrations/` | Boundaries with Superpowers, Ponytail, and Directed Development. |
+| `agent-assets/` | Local upstream registry for skills, rules, commands, and bundles. |
 
-## What Belongs Here
+The full checkout contains Yuanfei's private and mirrored third-party agent
+assets. The public npm tarball intentionally excludes those bodies.
 
-| Layer | Purpose | Example |
-| --- | --- | --- |
-| `packages/doc-gov/` | Validator CLI, schema, lifecycle, templates, validation logic | `completed` status, manifest scan, link checks |
-| `packages/pro-gov/` | Project-level package, reusable asset inventory, local inspection, read-only init/sync checks | `pro-gov assets list`, `pro-gov lens inspect`, `pro-gov init --dry-run`, `pro-gov sync --check` |
-| `agent-assets/` | Local private registry for agent-facing skills, rules, commands, bundles, and npx skill cache | `pie-skills`, `dokobot`, `npx-skills`, `pie-rules`, `pie-commands` |
-| `starter/` | New-project starter files | `docs/`, `docs/governance/`, `AGENTS.template.md` |
-| `docs/governance/` | Governance core rules | SSOT, doc types, agents routing, manifest |
-| `integrations/` | How this system cooperates with external workflows | Superpowers, Directed Development |
-| `profiles/` | Optional adoption profiles by project type | engineering-runtime, doc-only |
-| `examples/` | Representative implementation notes | Non-Heroes |
+## For Contributors
 
-## What Does Not Belong Here
+AI agents should start from `AGENTS.md`, not this README. This README is the
+human-facing introduction.
 
-- Non-Heroes product/runtime truth.
-- Downstream product roadmaps and runtime rules.
-- Downstream character, script, prompt, or asset canon.
-- Product prompts, generated media notes, source assets, or project-package workbench files.
-- Copies of external shared AI work rules. Target projects may link those inside
-  their docs/policy/shared-rules folder, but this repo does not keep their
-  bodies.
-- A fork or copy of the Superpowers plugin.
-- The body of the Directed Development skill.
-- Private or third-party `agent-assets/` bodies inside the public npm package.
+For a local checkout:
 
-Those are project-local or external systems. This repo only defines how projects should integrate with them.
-
-## Current Adoption Model
-
-The system now uses package-based distribution. The safe rule is: install
-`@pieai/doc-gov` as the validator and `@pieai/pro-gov` as the project-level
-starter/profile distribution package, but migrate each project's governance
-files intentionally.
-
-1. This repo records the upstream contract.
-2. The `@pieai/doc-gov` package supplies the `doc-gov` validation command.
-3. The `@pieai/pro-gov` package supplies starter/profile assets, public
-   project-level inspection commands, and read-only sync checks.
-4. AI-assisted migrations compare a project against the matching profile.
-5. `doc-gov migrate --profile <profile> --check` can now do the first read-only
-   structural check before any sync work.
-6. `doc-gov doctor` checks whether router, docs, manifest, links, local hooks,
-   and CI guardrails are actually connected.
-7. `pro-gov init --profile <profile> --dry-run`, `pro-gov sync --check`, and
-   `pro-gov doctor` help inspect packaged project-level assets without
-   overwriting local truth.
-8. `pro-gov assets discover`, `pro-gov assets recommend`, and `pro-gov lens
-   inspect/report` can collect local evidence without writing.
-9. A full PGS checkout can additionally plan, apply, and check managed
-   agent-asset symlinks, but only from explicit plan files.
-10. Downstream projects should prefer the npm packages; legacy local copies
-   should be removed when scripts and CI are updated together.
-
-Do not silently replace project-local governance with this repo. Use the adoption guides and run each project's doc checks.
-
-For migration steps, read `docs/reference/adoption/adoption-playbook.md`.
-
-## Starter Template Vision
-
-This repo can become a new-project starter for AI-assisted work, but only in stages:
-
-1. Today: use it as the upstream design and compare projects against the matching profile.
-2. Now: use `pro-gov assets list`, `pro-gov init --profile <profile> --dry-run`,
-   and `pro-gov sync --check` to inspect starter/profile assets without writing.
-3. Now: use `doc-gov migrate --profile <profile> --check` and `doc-gov doctor`
-   to find drift without changing files.
-4. Now: install `@pieai/doc-gov` and `@pieai/pro-gov` as package sources and
-   remove vendored CLI copies during the same migration.
-5. Later: add a safe apply path only after repeated projects show
-   the same sync shape.
-6. Later: publish full write-mode init profiles for new projects.
-
-Do not treat the starter as a magic install. A useful project still needs local truth: its product canon, runtime proof commands, asset provenance rules, product-package folders, and current work index. The central system supplies the governed shelves and guardrails; each project supplies the actual content.
-
-## Downstream Projects
-
-The current local downstream ledger lives in
-`docs/reference/adoption/downstream-project-registry.md`.
-
-That registry is the source for which local projects are currently using this
-system, which profile each project adopts, which package versions are
-installed, and whether the latest health check passed.
-
-Representative examples live under `examples/`; they are teaching cases, not
-the exhaustive project list.
-
-## Key Lifecycle Decision
-
-Normal documents use:
-
-```text
-draft -> active -> completed -> stable -> superseded -> archived
+```bash
+pnpm install
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm doc-gov doctor
+pnpm pro-gov doctor
 ```
 
-`completed` is for execution artifacts that finished but remain useful as proof history, especially `docs/plans/completed/**`.
+Core lifecycle, schema, routing, starter, and reusable CLI changes belong in
+this upstream repository first. Product-specific truth stays downstream.
 
-`completed` is not the same as `archived`:
+## Quick FAQ
 
-- `completed`: no longer active, still useful proof/history, may remain canonical.
-- `archived`: retired historical material, must be `canonical: false`.
+| Question | Answer |
+| --- | --- |
+| Is this a project-management app? | No. It is a thin governance and distribution layer for durable AI project work. |
+| Does it replace Git? | No. Git records history; PGS organizes truth and validates the collaboration structure. |
+| Does it require Superpowers? | No, but Superpowers is recommended for engineering/runtime workflows. |
+| Should I turn Ponytail on globally? | No. Keep it `off` and test `lite` in an isolated task first. |
+| Will `pro-gov init` overwrite my project? | Not in the current release. The supported init path is read-only `--dry-run`. |
+| Can friends use it? | Yes. The public packages are `@pieai/pro-gov` and `@pieai/doc-gov`; private and third-party skill bodies are not included. |
 
-Decision documents still use:
-
-```text
-proposed -> accepted -> rejected | superseded
-```
-
-## How A Local Improvement Flows Upstream
-
-When a project discovers a better rule:
-
-1. Decide whether it is **core**, **profile**, or **project-local**.
-2. Core changes go to this repo first.
-3. Profile changes update `profiles/**`.
-4. Project-local changes stay in the project.
-5. Other projects upgrade by comparing against the central profile, not by re-inventing the rule.
-
-Example: an active project's plan pileup revealed a core lifecycle gap. The fix
-is `completed`, so it belongs in `packages/doc-gov/`, `packages/pro-gov/`
-packaged assets, and the starter templates, not only in that project.
-
-## Minimality Rule
-
-This repo should remain a thin viable platform:
-
-- keep only two profiles until a third is proven by multiple projects
-- keep product/game/app truth out of the central repo
-- keep Superpowers external and documented as an integration
-- keep Directed Development as an optional workflow integration, not a mandatory default path
-- prefer one-page agents-routing rules over layered methodology docs
+PGS is useful when AI is already fast enough and the real problem is keeping the
+project understandable after the tenth plan, the fifth AI session, and the next
+person who needs to continue the work.
