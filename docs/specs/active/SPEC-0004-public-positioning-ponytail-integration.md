@@ -2,8 +2,8 @@
 id: SPEC-0004
 title: Public Positioning And Ponytail Integration
 type: spec
-status: draft
-canonical: false
+status: active
+canonical: true
 owner: ai-assisted
 created: 2026-06-21
 last_reviewed: 2026-06-21
@@ -23,6 +23,63 @@ related:
 ---
 
 # SPEC-0004: Public Positioning And Ponytail Integration
+
+## 先看懂全局
+
+这次升级不是单纯“改一篇 README”，而是把三件互相影响的事一次理顺：
+
+1. Ponytail 装好了以后，到底应该开还是关。
+2. PGS 应该怎样向使用者推荐 Superpowers 和 Ponytail。
+3. GitHub 首页怎样让第一次来的初学者也能马上看懂 PGS 有什么用。
+
+可以把一个 AI 项目想成正在装修的房子：
+
+| 角色 | 像什么 | 负责什么 |
+| --- | --- | --- |
+| PGS | 图书管理员、交通调度员和验收台 | 管文件放哪、任务走哪条路、结果有没有留下证据。 |
+| Superpowers | 施工流程表 | 管先讨论、再计划、再测试、再施工、最后验收。 |
+| Ponytail | 成本和复杂度顾问 | 提醒施工队少绕路、少加没用的材料和结构。 |
+| Git | 施工录像和历史账本 | 记录谁在什么时候改了什么。 |
+
+成本顾问很有价值，但不能让他为了省钱取消消防通道和验收。因此这次不会把 Ponytail
+全局改成 `lite` 或 `full`。全局继续保持 `off`，需要时在隔离任务里单独打开，先比较
+结果，再决定某个项目或某次会话是否使用。
+
+```mermaid
+flowchart TD
+  A["任务进入项目"] --> B["PGS 判断任务走哪条路"]
+  B --> C["Superpowers 保证施工流程完整"]
+  C --> D{"这次要不要请 Ponytail 提醒减复杂度?"}
+  D -- "不需要" --> E["按正常流程完成并验收"]
+  D -- "需要" --> F["只在这次隔离任务中打开 lite"]
+  F --> G["比较有没有少写废代码，也检查有没有漏做"]
+  G --> H{"lite 表现可靠吗?"}
+  H -- "不可靠" --> E
+  H -- "可靠" --> I["以后仍按项目或会话单独决定"]
+  I --> E
+```
+
+公开介绍也采用同一原则：先告诉读者“它解决什么痛点”，再讲里面有哪些零件。英文
+README 是唯一原文，中文、日文、西班牙文、法文和德文是忠实翻译。每个版本顶部都有
+语言切换，任何人不需要先懂命令行就能开始阅读。
+
+整个升级按下面顺序完成：
+
+```text
+写清 Ponytail 与 Superpowers 的边界
+-> 写推荐工具文档
+-> 把英文 README 迭代三轮
+-> 生成并核对五种翻译
+-> 更新 npm 包介绍和公开资产
+-> 跑全部检查
+-> 推送 GitHub 并等待 CI
+-> 发布 npm 并做真实安装测试
+-> 创建 GitHub Release
+-> 交给另一个 session 同步下游项目
+```
+
+后面的章节是这张“通俗地图”的完整施工要求。它们写得更精确，是为了让实施时不会
+因为一句话有两种理解而走偏。
 
 ## Problem
 

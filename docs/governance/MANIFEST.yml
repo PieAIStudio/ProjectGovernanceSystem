@@ -1,6 +1,6 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-21T11:54:34.902Z
+generated_at: 2026-06-21T12:16:29.739Z
 generator_version: doc-gov@0.3.3
 docs_count: 24
 docs:
@@ -154,8 +154,8 @@ docs:
   - id: SPEC-0004
     path: docs/specs/active/SPEC-0004-public-positioning-ponytail-integration.md
     type: spec
-    status: draft
-    canonical: false
+    status: active
+    canonical: true
     last_reviewed: 2026-06-21
     pinned: false
   - id: SPEC-0002
