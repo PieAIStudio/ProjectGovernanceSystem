@@ -1,5 +1,6 @@
+import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { isAbsolute, join, resolve } from 'node:path';
 import { checkDocs } from '../core/checker';
 import { checkCurrentMarkdownLinks } from '../core/link-checker';
 import { manifestInSync } from '../core/manifest';
@@ -116,8 +117,8 @@ function checkLefthook(rootDir: string): DoctorIssue[] {
     }
   }
 
-  const preCommit = join(rootDir, '.git/hooks/pre-commit');
-  const commitMsg = join(rootDir, '.git/hooks/commit-msg');
+  const preCommit = resolveGitHookPath(rootDir, 'pre-commit');
+  const commitMsg = resolveGitHookPath(rootDir, 'commit-msg');
   if (!hookCallsLefthook(preCommit)) {
     issues.push({
       severity: 'error',
@@ -171,4 +172,13 @@ function checkDocsCheckWorkflow(rootDir: string): DoctorIssue[] {
 
 function hookCallsLefthook(path: string): boolean {
   return existsSync(path) && readFileSync(path, 'utf8').includes('lefthook');
+}
+
+function resolveGitHookPath(rootDir: string, hookName: string): string {
+  const result = spawnSync('git', ['-C', rootDir, 'rev-parse', '--git-path', `hooks/${hookName}`], {
+    encoding: 'utf8',
+  });
+  const gitPath = result.status === 0 ? result.stdout.trim() : '';
+  if (!gitPath) return join(rootDir, '.git/hooks', hookName);
+  return isAbsolute(gitPath) ? gitPath : resolve(rootDir, gitPath);
 }

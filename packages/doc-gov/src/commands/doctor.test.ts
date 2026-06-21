@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -22,8 +23,26 @@ test('doctor fails when lefthook is configured but not installed', () => {
   }));
 });
 
-function createDoctorProject(options: { installHooks: boolean; includeCi: boolean }): string {
-  const root = mkdtempSync(join(tmpdir(), 'doc-gov-doctor-'));
+test('doctor recognizes installed lefthook hooks from a linked worktree', () => {
+  const root = createDoctorProject({
+    installHooks: true,
+    includeCi: true,
+    linkedWorktree: true,
+  });
+
+  withCwd(root, () => withMutedConsole(() => {
+    assert.equal(runDoctor([]), 0);
+  }));
+});
+
+function createDoctorProject(options: {
+  installHooks: boolean;
+  includeCi: boolean;
+  linkedWorktree?: boolean;
+}): string {
+  const root = options.linkedWorktree
+    ? createLinkedWorktree()
+    : mkdtempSync(join(tmpdir(), 'doc-gov-doctor-'));
   mkdirSync(join(root, 'docs/governance/agents-routing'), { recursive: true });
   mkdirSync(join(root, 'docs/reference/execution'), { recursive: true });
   mkdirSync(join(root, 'docs/policy'), { recursive: true });
@@ -106,9 +125,12 @@ function createDoctorProject(options: { installHooks: boolean; includeCi: boolea
   );
 
   if (options.installHooks) {
-    mkdirSync(join(root, '.git/hooks'), { recursive: true });
-    writeFileSync(join(root, '.git/hooks/pre-commit'), 'lefthook run pre-commit "$@"\n');
-    writeFileSync(join(root, '.git/hooks/commit-msg'), 'lefthook run commit-msg "$@"\n');
+    const hooksDir = options.linkedWorktree
+      ? runGit(root, ['rev-parse', '--git-path', 'hooks']).trim()
+      : join(root, '.git/hooks');
+    mkdirSync(hooksDir, { recursive: true });
+    writeFileSync(join(hooksDir, 'pre-commit'), 'lefthook run pre-commit "$@"\n');
+    writeFileSync(join(hooksDir, 'commit-msg'), 'lefthook run commit-msg "$@"\n');
   }
 
   if (options.includeCi) {
@@ -130,6 +152,26 @@ function createDoctorProject(options: { installHooks: boolean; includeCi: boolea
   }
 
   return root;
+}
+
+function createLinkedWorktree(): string {
+  const repository = mkdtempSync(join(tmpdir(), 'doc-gov-doctor-repo-'));
+  runGit(repository, ['init']);
+  runGit(repository, ['config', 'user.name', 'Doc Gov Test']);
+  runGit(repository, ['config', 'user.email', 'doc-gov@example.test']);
+  writeFileSync(join(repository, 'seed.txt'), 'seed\n');
+  runGit(repository, ['add', 'seed.txt']);
+  runGit(repository, ['commit', '-m', 'seed']);
+
+  const root = join(repository, 'linked');
+  runGit(repository, ['worktree', 'add', root, '-b', 'doctor-linked']);
+  return root;
+}
+
+function runGit(cwd: string, args: string[]): string {
+  const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  return result.stdout;
 }
 
 function writeGovernedDoc(
