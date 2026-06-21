@@ -293,32 +293,34 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 
 **Files:** public npm and GitHub release state.
 
-- [ ] **Step 14.1:** Confirm public npm still reports both packages below
+- [x] **Step 14.1:** Confirm public npm still reports both packages below
   `0.3.5` and neither package already has `0.3.5`.
-- [ ] **Step 14.2:** Configure npm Trusted Publisher for both packages when the
+- [x] **Step 14.2:** Configure npm Trusted Publisher for both packages when the
   package settings do not already trust `.github/workflows/npm-publish.yml`.
-- [ ] **Step 14.3:** Publish `@pieai/doc-gov@0.3.5` first, verify it, then
+- [x] **Step 14.3:** Publish `@pieai/doc-gov@0.3.5` first, verify it, then
   publish `@pieai/pro-gov@0.3.5` through the GitHub Actions publish workflow.
-- [ ] **Step 14.4:** Poll the official registry until both `npm view` commands
+- [x] **Step 14.4:** Poll the official registry until both `npm view` commands
   return `0.3.5`.
-- [ ] **Step 14.5:** Install both `0.3.5` packages from the public registry in a
+- [x] **Step 14.5:** Install both `0.3.5` packages from the public registry in a
   clean temporary project and run CLI smoke checks.
 - [ ] **Step 14.6:** Create GitHub release `v0.3.5` at the verified final commit
   with beginner-friendly release notes and package links.
 - [ ] **Step 14.7:** Verify the public release, tag target, npm dist-tag, exact
   GitHub head, and clean synchronized `main`.
 
-## Task 15: Produce The Downstream Session Prompt
+## Task 15: Synchronize Downstream Projects
 
-**Files:** final response only.
+**Files:** downstream project repositories listed in the adoption registry.
 
-- [ ] **Step 15.1:** Write a short Chinese prompt that tells a separate session
-  to read the downstream registry, compare versions/profiles, apply only
-  relevant central changes, preserve project truth, run each project's tests,
-  and report per-project results.
-- [ ] **Step 15.2:** Include released package versions and central commit/tag so
-  the downstream session has an exact synchronization target.
-- [ ] **Step 15.3:** Keep the prompt short enough to paste directly.
+- [ ] **Step 15.1:** Read the downstream registry and list each downstream
+  project, selected profile, package manager, and validation command.
+- [ ] **Step 15.2:** Apply only relevant `@pieai/doc-gov@0.3.5`,
+  `@pieai/pro-gov@0.3.5`, profile, integration, starter, and entry-file changes
+  to each downstream project.
+- [ ] **Step 15.3:** Preserve project-local product truth and avoid blindly
+  copying the central repository into downstream projects.
+- [ ] **Step 15.4:** Run each downstream project's appropriate checks and record
+  per-project results.
 
 ## Acceptance
 
@@ -328,7 +330,7 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 - [ ] All local and GitHub checks pass from the final commit.
 - [ ] npm and GitHub publicly expose the verified `0.3.5` release.
 - [ ] Main is clean and synchronized.
-- [ ] Final response includes the downstream synchronization prompt.
+- [ ] Downstream projects listed in the registry are synchronized and verified.
 
 ## Closeout
 

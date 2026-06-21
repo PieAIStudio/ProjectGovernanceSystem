@@ -362,7 +362,8 @@ project.
 14. Run the complete repository verification and require successful GitHub CI.
 15. Verify the public npm version and a clean temporary installation before
     creating the GitHub release.
-16. Provide a short downstream synchronization prompt in the final report.
+16. Synchronize the downstream projects listed in the adoption registry from
+    this session, preserving project-local truth and verifying each project.
 
 ## Acceptance
 
@@ -382,4 +383,5 @@ project.
 - npm publicly resolves both packages at `0.3.5`, and a temporary project can
   run both CLIs.
 - GitHub publishes `v0.3.5` only after npm verification.
-- The final report includes the requested concise downstream sync prompt.
+- The final report lists each downstream project synchronized and its
+  verification result.
