@@ -294,8 +294,10 @@ The order is:
    parity, link checks, and both package dry-run packs;
 2. commit and push a clean `main`;
 3. wait for GitHub Actions success;
-4. publish `@pieai/doc-gov@0.3.4` through the authenticated npm account;
-5. verify doc-gov, then publish `@pieai/pro-gov@0.3.4`;
+4. configure npm Trusted Publisher for the GitHub Actions `npm-publish.yml`
+   workflow when the package settings do not already trust it;
+5. publish `@pieai/doc-gov@0.3.4` and `@pieai/pro-gov@0.3.4` through the
+   manual GitHub Actions publish workflow;
 6. verify the public npm registry and install both packages in a temporary
    project;
 7. create and verify GitHub release `v0.3.4`;

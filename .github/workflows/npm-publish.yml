@@ -3,6 +3,10 @@ name: npm-publish
 on:
   workflow_dispatch:
 
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
 permissions:
   contents: read
   id-token: write
@@ -12,14 +16,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Guard main branch
+        run: |
+          if [ "$GITHUB_REF_NAME" != "main" ]; then
+            echo "npm publishing is only allowed from main, got: $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+
       - uses: pnpm/action-setup@v4
         with:
           version: 10.26.0
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org
           cache: pnpm
+
+      - name: Ensure npm supports Trusted Publishing
+        run: |
+          npm install -g npm@latest
+          npm --version
+
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
@@ -29,5 +48,60 @@ jobs:
       - run: pnpm doc-gov scan --check
       - run: pnpm doc-gov links
       - run: pnpm doc-gov audit
-      - run: npm publish --access public --registry https://registry.npmjs.org/
+
+      - name: Resolve release versions
+        id: versions
+        run: |
+          DOC_VERSION=$(node -p "require('./packages/doc-gov/package.json').version")
+          PRO_VERSION=$(node -p "require('./packages/pro-gov/package.json').version")
+
+          if [ "$DOC_VERSION" != "$PRO_VERSION" ]; then
+            echo "Package versions must match. doc-gov=$DOC_VERSION pro-gov=$PRO_VERSION" >&2
+            exit 1
+          fi
+
+          echo "version=$DOC_VERSION" >> "$GITHUB_OUTPUT"
+          echo "doc_version=$DOC_VERSION" >> "$GITHUB_OUTPUT"
+          echo "pro_version=$PRO_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Check existing npm versions
+        id: registry
+        run: |
+          DOC_PKG="@pieai/doc-gov@${{ steps.versions.outputs.doc_version }}"
+          PRO_PKG="@pieai/pro-gov@${{ steps.versions.outputs.pro_version }}"
+
+          if npm view "$DOC_PKG" version --registry https://registry.npmjs.org/ >/tmp/doc-gov-version 2>/dev/null; then
+            echo "doc_exists=true" >> "$GITHUB_OUTPUT"
+            echo "Found existing $DOC_PKG"
+          else
+            echo "doc_exists=false" >> "$GITHUB_OUTPUT"
+            echo "$DOC_PKG is not published yet"
+          fi
+
+          if npm view "$PRO_PKG" version --registry https://registry.npmjs.org/ >/tmp/pro-gov-version 2>/dev/null; then
+            echo "pro_exists=true" >> "$GITHUB_OUTPUT"
+            echo "Found existing $PRO_PKG"
+          else
+            echo "pro_exists=false" >> "$GITHUB_OUTPUT"
+            echo "$PRO_PKG is not published yet"
+          fi
+
+      - name: Publish @pieai/doc-gov
+        if: steps.registry.outputs.doc_exists != 'true'
+        run: npm publish --provenance --access public --registry https://registry.npmjs.org/
         working-directory: packages/doc-gov
+
+      - name: Verify @pieai/doc-gov
+        run: |
+          PUBLISHED=$(npm view "@pieai/doc-gov@${{ steps.versions.outputs.doc_version }}" version --registry https://registry.npmjs.org/)
+          test "$PUBLISHED" = "${{ steps.versions.outputs.doc_version }}"
+
+      - name: Publish @pieai/pro-gov
+        if: steps.registry.outputs.pro_exists != 'true'
+        run: npm publish --provenance --access public --registry https://registry.npmjs.org/
+        working-directory: packages/pro-gov
+
+      - name: Verify @pieai/pro-gov
+        run: |
+          PUBLISHED=$(npm view "@pieai/pro-gov@${{ steps.versions.outputs.pro_version }}" version --registry https://registry.npmjs.org/)
+          test "$PUBLISHED" = "${{ steps.versions.outputs.pro_version }}"

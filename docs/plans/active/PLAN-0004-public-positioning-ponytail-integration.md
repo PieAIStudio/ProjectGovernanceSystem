@@ -295,10 +295,10 @@ pnpm 10.26.0, GitHub Actions, npm registry.
 
 - [ ] **Step 14.1:** Confirm public npm still reports both packages at `0.3.3`
   and neither package already has `0.3.4`.
-- [ ] **Step 14.2:** Authenticate through the user's already logged-in Edge npm
-  session without reading or transmitting credentials.
+- [ ] **Step 14.2:** Configure npm Trusted Publisher for both packages when the
+  package settings do not already trust `.github/workflows/npm-publish.yml`.
 - [ ] **Step 14.3:** Publish `@pieai/doc-gov@0.3.4` first, verify it, then
-  publish `@pieai/pro-gov@0.3.4`.
+  publish `@pieai/pro-gov@0.3.4` through the GitHub Actions publish workflow.
 - [ ] **Step 14.4:** Poll the official registry until both `npm view` commands
   return `0.3.4`.
 - [ ] **Step 14.5:** Install both `0.3.4` packages from the public registry in a

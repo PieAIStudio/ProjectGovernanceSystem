@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-13
+last_reviewed: 2026-06-21
 domain: adoption
 tags:
   - release
@@ -69,27 +69,52 @@ Before publishing:
 - package dry-runs show only intended files
 - publish `@pieai/doc-gov` before `@pieai/pro-gov` when both package versions
   are new, because `pro-gov` depends on the matching validator release
-- maintainer is authenticated to npm
+- npm Trusted Publisher is configured for both packages
 - registry is the official npm registry, not a mirror
 - scoped publish uses public access
 
-Recommended commands:
+Recommended local verification:
 
 ```bash
-npm whoami --registry https://registry.npmjs.org/
-
 pnpm --filter @pieai/doc-gov pack --dry-run
 pnpm --filter @pieai/pro-gov pack --dry-run
+```
 
-pnpm --filter @pieai/doc-gov publish --access public --registry https://registry.npmjs.org/
-npm view @pieai/doc-gov version --registry https://registry.npmjs.org/
+Recommended publish command:
 
-pnpm --filter @pieai/pro-gov publish --access public --registry https://registry.npmjs.org/
-npm view @pieai/pro-gov version --registry https://registry.npmjs.org/
+```bash
+gh workflow run npm-publish.yml --ref main
 ```
 
 Important: do not claim an npm package is live until its `npm view <package>
 version` command resolves from the public registry.
+
+## Trusted Publishing Setup
+
+npm publishing should use Trusted Publishing through GitHub Actions. This is the
+smooth path: GitHub Actions proves to npm that a specific workflow in this
+repository is publishing the package, so maintainers do not need to pass a
+long-lived npm token around.
+
+Set this once for each package on npmjs.com:
+
+1. Open the package settings for `@pieai/doc-gov`.
+2. Add a Trusted Publisher for GitHub Actions:
+   - owner: `PieAIStudio`
+   - repository: `ProjectGovernanceSystem`
+   - workflow file: `npm-publish.yml`
+   - allowed action: `npm publish`
+3. Repeat the same setup for `@pieai/pro-gov`.
+4. Keep the workflow as manual `workflow_dispatch` until several releases have
+   succeeded.
+
+The workflow must keep:
+
+- `permissions.id-token: write`
+- a GitHub-hosted runner
+- npm CLI `11.5.1` or newer
+- package `repository` fields that match the public GitHub repository
+- `npm publish --provenance --access public`
 
 ## After Release
 
@@ -101,23 +126,3 @@ After GitHub and npm are live:
 - update downstream projects only through an explicit sync task
 - update public website copy from the current README and this checklist, not
   from stale chat history
-
-## Future: Trusted Publishing
-
-The first release may be published from a logged-in maintainer machine. Future
-releases should move to npm Trusted Publishing through GitHub Actions.
-
-Recommended future setup:
-
-1. On npmjs.com, open the package settings for `@pieai/doc-gov` and
-   `@pieai/pro-gov`.
-2. Add a Trusted Publisher for GitHub Actions to each package:
-   - owner: `PieAIStudio`
-   - repository: `ProjectGovernanceSystem` (GitHub slug)
-   - workflow file: `npm-publish.yml`
-3. Keep the workflow as manual `workflow_dispatch` until the first trusted
-   publishing run succeeds.
-4. After that, optionally add a release-tag trigger such as `v0.3.1`.
-
-Trusted Publishing gives npm a verifiable GitHub build origin and avoids
-long-lived npm tokens.
