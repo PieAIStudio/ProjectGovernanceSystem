@@ -93,8 +93,18 @@ jobs:
 
       - name: Verify @pieai/doc-gov
         run: |
-          PUBLISHED=$(npm view "@pieai/doc-gov@${{ steps.versions.outputs.doc_version }}" version --registry https://registry.npmjs.org/)
-          test "$PUBLISHED" = "${{ steps.versions.outputs.doc_version }}"
+          for attempt in {1..24}; do
+            PUBLISHED=$(npm view "@pieai/doc-gov@${{ steps.versions.outputs.doc_version }}" version --registry https://registry.npmjs.org/ 2>/dev/null || true)
+            if [ "$PUBLISHED" = "${{ steps.versions.outputs.doc_version }}" ]; then
+              echo "@pieai/doc-gov@$PUBLISHED is visible on npm."
+              exit 0
+            fi
+            echo "Waiting for @pieai/doc-gov@${{ steps.versions.outputs.doc_version }} to become visible on npm (attempt $attempt/24)."
+            sleep 5
+          done
+
+          echo "@pieai/doc-gov@${{ steps.versions.outputs.doc_version }} did not become visible on npm in time." >&2
+          exit 1
 
       - name: Publish @pieai/pro-gov
         if: steps.registry.outputs.pro_exists != 'true'
@@ -103,5 +113,15 @@ jobs:
 
       - name: Verify @pieai/pro-gov
         run: |
-          PUBLISHED=$(npm view "@pieai/pro-gov@${{ steps.versions.outputs.pro_version }}" version --registry https://registry.npmjs.org/)
-          test "$PUBLISHED" = "${{ steps.versions.outputs.pro_version }}"
+          for attempt in {1..24}; do
+            PUBLISHED=$(npm view "@pieai/pro-gov@${{ steps.versions.outputs.pro_version }}" version --registry https://registry.npmjs.org/ 2>/dev/null || true)
+            if [ "$PUBLISHED" = "${{ steps.versions.outputs.pro_version }}" ]; then
+              echo "@pieai/pro-gov@$PUBLISHED is visible on npm."
+              exit 0
+            fi
+            echo "Waiting for @pieai/pro-gov@${{ steps.versions.outputs.pro_version }} to become visible on npm (attempt $attempt/24)."
+            sleep 5
+          done
+
+          echo "@pieai/pro-gov@${{ steps.versions.outputs.pro_version }} did not become visible on npm in time." >&2
+          exit 1
