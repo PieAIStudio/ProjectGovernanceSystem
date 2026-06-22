@@ -1,0 +1,11 @@
+{
+  "id": "base-governance",
+  "title": "Base Governance",
+  "description": "Public baseline rules and skills for evidence-first AI project governance and documentation quality.",
+  "assets": [
+    "pie-rules/ai-in-the-loop",
+    "pie-rules/rule-evolution-methodology",
+    "pie-skills/beginner-friendly-docs",
+    "pie-skills/doc-cross-validator"
+  ]
+}

@@ -1,4 +1,98 @@
 {
   "schemaVersion": 1,
-  "assets": []
+  "assets": [
+    {
+      "id": "pie-rules/ai-in-the-loop",
+      "title": "AI-in-the-Loop",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "public",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/ai-in-the-loop.md",
+      "hosts": [
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules",
+        "verification"
+      ],
+      "publishable": true,
+      "origin": "Promoted from the PGS shared-rule source.",
+      "notes": "Public rule for choosing evidence lanes and requiring fresh verification before completion."
+    },
+    {
+      "id": "pie-rules/rule-evolution-methodology",
+      "title": "Rule Evolution Methodology",
+      "family": "pie-rules",
+      "kind": "rule",
+      "visibility": "public",
+      "sourceKind": "local",
+      "sourcePath": "rules/pie-rules/rule-evolution-methodology.md",
+      "hosts": [
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
+      ],
+      "tags": [
+        "rule",
+        "pie-rules",
+        "rule-design"
+      ],
+      "publishable": true,
+      "origin": "Promoted from the PGS shared-rule source.",
+      "notes": "Public method for keeping shared rules short, specific, and useful."
+    },
+    {
+      "id": "pie-skills/beginner-friendly-docs",
+      "title": "Beginner-Friendly Docs",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "public",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/beginner-friendly-docs",
+      "hosts": [
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills",
+        "documentation"
+      ],
+      "publishable": true,
+      "origin": "Promoted from maintainer-authored PGS local skills after public review.",
+      "notes": "Public skill for writing teaching-oriented documentation with stories, analogies, diagrams, and examples."
+    },
+    {
+      "id": "pie-skills/doc-cross-validator",
+      "title": "Doc Cross Validator",
+      "family": "pie-skills",
+      "kind": "skill",
+      "visibility": "public",
+      "sourceKind": "local",
+      "sourcePath": "skills/pie-skills/doc-cross-validator",
+      "hosts": [
+        "codex",
+        "claude-code",
+        "gemini-cli",
+        "antigravity"
+      ],
+      "tags": [
+        "skill",
+        "pie-skills",
+        "documentation",
+        "validation"
+      ],
+      "publishable": true,
+      "origin": "Promoted from maintainer-authored PGS local skills after public review.",
+      "notes": "Public skill for checking documentation claims against source code, config, data structures, and command output."
+    }
+  ]
 }

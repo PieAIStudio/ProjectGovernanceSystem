@@ -2,7 +2,7 @@
 
 This directory is the public promotion surface for Project Governance System agent assets.
 
-It mirrors the high-level shape of the local `agent-assets/` source tree, but it does not mirror unpublished asset names or unpublished asset bodies. Add assets here only after Yuanfei explicitly decides that a skill, rule, command, or bundle is safe to publish.
+It mirrors the high-level shape of the local `agent-assets/` source tree, but it does not mirror unpublished asset names or unpublished asset bodies. Add assets here only after the maintainer explicitly approves that a skill, rule, command, or bundle is safe to publish.
 
 Current policy:
 
