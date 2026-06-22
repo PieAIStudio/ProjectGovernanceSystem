@@ -1,0 +1,82 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Project Governance System AI host loop</title>
+  <desc id="desc">A visual overview showing a human and AI host opening a target project, using PGS to route work, inspect documents, choose a profile, run checks, and preserve evidence in Git.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="620" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.52" stop-color="#172554"/>
+      <stop offset="1" stop-color="#312E81"/>
+    </linearGradient>
+    <linearGradient id="card" x1="120" y1="100" x2="1080" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="128" y1="438" x2="1072" y2="438" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#F472B6"/>
+    </linearGradient>
+    <filter id="shadow" x="60" y="52" width="1080" height="520" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#020617" flood-opacity="0.35"/>
+    </filter>
+    <style>
+      .small { font: 500 20px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #CBD5E1; }
+      .label { font: 700 24px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #F8FAFC; }
+      .mono { font: 600 18px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; fill: #BAE6FD; }
+      .nodeText { font: 700 21px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #F8FAFC; }
+      .nodeSub { font: 500 15px Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; fill: #CBD5E1; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="620" rx="36" fill="url(#bg)"/>
+  <circle cx="1030" cy="100" r="150" fill="#38BDF8" opacity="0.12"/>
+  <circle cx="160" cy="530" r="190" fill="#C084FC" opacity="0.10"/>
+  <path d="M60 474C205 398 305 505 450 430C615 344 733 461 908 374C1016 320 1094 356 1160 391" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="2"/>
+
+  <g filter="url(#shadow)">
+    <rect x="90" y="78" width="1020" height="464" rx="34" fill="url(#card)" stroke="#FFFFFF" stroke-opacity="0.18"/>
+  </g>
+
+  <text x="128" y="142" class="label">Project Governance System</text>
+  <text x="128" y="180" class="small">A thin governance layer for long-running AI-assisted projects</text>
+  <text x="128" y="218" class="mono">Open with Antigravity · Codex · Claude Code · Gemini CLI · Cursor</text>
+
+  <g transform="translate(128 276)">
+    <rect x="0" y="0" width="184" height="118" rx="22" fill="#020617" fill-opacity="0.48" stroke="#67E8F9" stroke-opacity="0.75"/>
+    <text x="24" y="45" class="nodeText">AI host</text>
+    <text x="24" y="75" class="nodeSub">opens the target</text>
+    <text x="24" y="98" class="nodeSub">project workspace</text>
+  </g>
+
+  <g transform="translate(360 276)">
+    <rect x="0" y="0" width="184" height="118" rx="22" fill="#020617" fill-opacity="0.48" stroke="#A78BFA" stroke-opacity="0.80"/>
+    <text x="24" y="45" class="nodeText">AGENTS.md</text>
+    <text x="24" y="75" class="nodeSub">front-door rules</text>
+    <text x="24" y="98" class="nodeSub">and project router</text>
+  </g>
+
+  <g transform="translate(592 276)">
+    <rect x="0" y="0" width="184" height="118" rx="22" fill="#020617" fill-opacity="0.48" stroke="#F0ABFC" stroke-opacity="0.80"/>
+    <text x="24" y="45" class="nodeText">PGS profile</text>
+    <text x="24" y="75" class="nodeSub">doc-only or</text>
+    <text x="24" y="98" class="nodeSub">engineering-runtime</text>
+  </g>
+
+  <g transform="translate(824 276)">
+    <rect x="0" y="0" width="184" height="118" rx="22" fill="#020617" fill-opacity="0.48" stroke="#FDA4AF" stroke-opacity="0.82"/>
+    <text x="24" y="45" class="nodeText">Evidence</text>
+    <text x="24" y="75" class="nodeSub">checks, links,</text>
+    <text x="24" y="98" class="nodeSub">manifest, Git</text>
+  </g>
+
+  <path d="M312 335H350" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M350 335L338 327M350 335L338 343" stroke="#A5F3FC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M544 335H582" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M582 335L570 327M582 335L570 343" stroke="#DDD6FE" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M776 335H814" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M814 335L802 327M814 335L802 343" stroke="#FBCFE8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <rect x="128" y="438" width="944" height="6" rx="3" fill="url(#accent)"/>
+  <text x="128" y="480" class="small">PGS does not replace the AI host or Git.</text>
+  <text x="128" y="510" class="small">It tells the AI where durable truth lives, which lane to use, and how to prove the project is still coherent.</text>
+</svg>

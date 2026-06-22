@@ -6,6 +6,10 @@
 
 [English](README.md) | **[简体中文](README.zh-CN.md)** | [日本語](README.ja-JP.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
+<p align="center">
+  <img src="assets/readme/pgs-ai-host-loop.svg" alt="Project Governance System AI host loop" />
+</p>
+
 > 英文版是内容的唯一原文。如果翻译与英文版出现差异，请以
 > [README.md](README.md) 为准。
 
@@ -131,6 +135,48 @@ Profile 改变的是工作路线，不是项目自己的产品事实。应用规
 
 PGS 使用 **SSOT**，即“单一事实来源”：一个长期事实应该只有一个权威住所。其他文件
 可以概括并链接它，但不应该变成互相竞争的副本。
+
+## 在 AI 宿主中使用 PGS
+
+PGS 不是单独打开的项目管理软件，而是通过你已经在用的 AI 编程宿主来使用。这个宿主
+可以是 Antigravity、Codex、Claude Code、Gemini CLI、Cursor，或者其他能够打开
+本地仓库并读取项目文件的 agentic coding 环境。
+
+基本循环很简单：
+
+1. 在 AI 宿主中打开**目标项目**。
+2. 让 AI 先读取 `AGENTS.md`。如果目标项目还没有采用 PGS，就先用只读的
+   `pro-gov` 命令检查它，不要急着改文件。
+3. 让 PGS 选择 profile：应用、游戏、服务和浏览器产品用 `engineering-runtime`；
+   研究、写作、设定、AI 媒体和资产治理用 `doc-only`。
+4. 让 AI 在选定路线中研究、迁移或继续目标项目。
+5. 用 `doc-gov` 和 `pro-gov doctor` 证明链接、manifest、hooks、profiles 和 CI
+   接线仍然符合规则。
+
+```mermaid
+flowchart TD
+  U["人在 AI 宿主中打开目标仓库"] --> H["AI 编程宿主\nAntigravity / Codex / Claude Code / Gemini / Cursor"]
+  H --> R["读取 AGENTS.md\n和 current-work 索引"]
+  R --> I["运行只读 PGS 检查"]
+  I --> P{"选择 profile"}
+  P -->|"engineering-runtime"| E["进入运行路线\n计划、测试、证据"]
+  P -->|"doc-only"| D["进入文档路线\ncanon、provenance、archive"]
+  E --> V["运行 doc-gov / pro-gov 检查"]
+  D --> V
+  V --> G["用 Git 提交受治理事实\n和证据"]
+```
+
+一个好用的第一条提示词是：
+
+```text
+先读取 AGENTS.md。然后用 PGS 的只读模式检查这个项目。告诉我它适合哪种
+profile，当前事实来源在哪里，哪些内容看起来过期或冲突，以及开始改文件之前应该
+通过哪些验证命令。
+```
+
+把 PGS 应用到另一个项目时，不要把这个上游仓库里的私人或镜像第三方 agent 资产
+复制过去。除非你正在完整本地 PGS checkout 中有意应用受管理的 agent 资产，否则应
+使用公开包、starter 文件和经过审查的迁移计划。
 
 ## 安全地试用
 

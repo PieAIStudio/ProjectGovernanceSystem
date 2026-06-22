@@ -6,6 +6,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [Español](README.es.md) | [Français](README.fr.md) | **[Deutsch](README.de.md)**
 
+<p align="center">
+  <img src="assets/readme/pgs-ai-host-loop.svg" alt="Project Governance System AI host loop" />
+</p>
+
 > Die englische Fassung ist die einzige maßgebliche Quelle. Bei Abweichungen
 > gilt [README.md](README.md).
 
@@ -142,6 +146,55 @@ zuständigen Projekt.
 PGS verwendet **SSOT**, „Single Source of Truth“: Eine dauerhafte Tatsache soll
 genau ein kanonisches Zuhause haben. Andere Dateien dürfen sie zusammenfassen
 und verlinken, aber nicht mit ihr konkurrieren.
+
+## PGS aus einem KI-Host verwenden
+
+PGS ist dafür gedacht, über den KI-Coding-Host genutzt zu werden, in dem du
+bereits arbeitest. Dieser Host kann Antigravity, Codex, Claude Code, Gemini CLI,
+Cursor oder eine andere agentic-coding-Umgebung sein, die ein lokales Repository
+öffnen und Projektdateien lesen kann.
+
+Die Grundschleife ist einfach:
+
+1. Öffne das **Zielprojekt** in deinem KI-Host.
+2. Weise die KI an, zuerst `AGENTS.md` zu lesen. Wenn das Zielprojekt PGS noch
+   nicht übernommen hat, lass es vor Dateiänderungen mit schreibgeschützten
+   `pro-gov`-Befehlen prüfen.
+3. Lass PGS das Profile wählen: `engineering-runtime` für Apps, Spiele, Dienste
+   und Browserprodukte; `doc-only` für Forschung, Schreiben, Canon, KI-Medien
+   und Asset-Governance.
+4. Bitte die KI, das Zielprojekt in der gewählten Spur zu untersuchen, zu
+   migrieren oder fortzuführen.
+5. Nutze `doc-gov` und `pro-gov doctor`, um zu belegen, dass Links, Manifest,
+   Hooks, Profiles und CI weiterhin den Regeln entsprechen.
+
+```mermaid
+flowchart TD
+  U["Mensch öffnet das Ziel-Repository"] --> H["KI-Coding-Host\nAntigravity / Codex / Claude Code / Gemini / Cursor"]
+  H --> R["AGENTS.md und\ncurrent-work-Index lesen"]
+  R --> I["Schreibgeschützte PGS-Prüfung ausführen"]
+  I --> P{"Profile wählen"}
+  P -->|"engineering-runtime"| E["Runtime-Spur\nPläne, Tests, Nachweise"]
+  P -->|"doc-only"| D["Dokument-Spur\nCanon, Provenance, Archive"]
+  E --> V["doc-gov / pro-gov Checks ausführen"]
+  D --> V
+  V --> G["Verwaltete Wahrheit\nund Nachweise mit Git committen"]
+```
+
+Ein guter erster Prompt ist:
+
+```text
+Lies zuerst AGENTS.md. Prüfe dieses Projekt dann mit PGS im schreibgeschützten
+Modus. Sag mir, welches Profile passt, wo die aktuelle Quelle der Wahrheit liegt,
+was veraltet oder widersprüchlich wirkt und welche Validierungsbefehle vor
+Dateiänderungen bestehen sollten.
+```
+
+Wenn du PGS auf ein anderes Projekt anwendest, kopiere keine privaten oder
+mirrored Drittanbieter-Agent-Assets aus diesem Upstream-Repository. Nutze die
+öffentlichen Pakete, Starter-Dateien und einen geprüften Migrationsplan, außer
+du arbeitest aus einem vollständigen lokalen PGS-Checkout und wendest bewusst
+verwaltete Agent-Assets an.
 
 ## Sicher ausprobieren
 

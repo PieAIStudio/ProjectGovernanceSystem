@@ -6,6 +6,10 @@
 
 **[English](README.md)** | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
+<p align="center">
+  <img src="assets/readme/pgs-ai-host-loop.svg" alt="Project Governance System AI host loop" />
+</p>
+
 **Project Governance System (PGS) keeps long-running AI-assisted projects
 understandable, verifiable, and easier to continue.**
 
@@ -142,6 +146,55 @@ project that owns them.
 PGS uses **SSOT**, or "single source of truth": one durable fact should have one
 canonical home. Other files may summarize and link to it, but should not become
 competing copies.
+
+## Use PGS From An AI Host
+
+PGS is meant to be used through the AI coding host where you already work. That
+host can be Antigravity, Codex, Claude Code, Gemini CLI, Cursor, or another
+agentic coding environment that can open a local repository and read project
+files.
+
+The basic loop is simple:
+
+1. Open the **target project** in your AI host.
+2. Tell the AI to read `AGENTS.md` first. If the target project has not adopted
+   PGS yet, tell the AI to inspect it with the read-only `pro-gov` commands
+   before changing files.
+3. Let PGS choose the profile: `engineering-runtime` for apps, games, services,
+   and browser products; `doc-only` for research, writing, canon, AI media, and
+   asset governance.
+4. Ask the AI to study, migrate, or continue the target project inside the
+   selected lane.
+5. Use `doc-gov` and `pro-gov doctor` to prove that links, manifests, hooks,
+   profiles, and CI wiring still match the rules.
+
+```mermaid
+flowchart TD
+  U["Human opens a target repo"] --> H["AI coding host\nAntigravity / Codex / Claude Code / Gemini / Cursor"]
+  H --> R["Read AGENTS.md\nand current-work index"]
+  R --> I["Run read-only PGS inspection"]
+  I --> P{"Choose profile"}
+  P -->|"engineering-runtime"| E["Use runtime lane\nplans, tests, proof"]
+  P -->|"doc-only"| D["Use document lane\ncanon, provenance, archive"]
+  E --> V["Run doc-gov / pro-gov checks"]
+  D --> V
+  V --> G["Commit governed truth\nand evidence with Git"]
+```
+
+A useful first prompt is:
+
+```text
+Read AGENTS.md first. Then inspect this project with PGS in read-only mode.
+Tell me which profile fits, what the current source of truth is, what looks
+stale or conflicting, and which validation commands should pass before we edit
+files.
+```
+
+When you are applying PGS to another project, do not copy this upstream
+repository's private or mirrored agent assets into that project. Use the public
+packages, the starter files, and a reviewed migration plan unless you are
+working from a full local PGS checkout and intentionally applying managed agent
+assets.
 
 ## Try It Safely
 

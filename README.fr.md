@@ -6,6 +6,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | [日本語](README.ja-JP.md) | [Español](README.es.md) | **[Français](README.fr.md)** | [Deutsch](README.de.md)
 
+<p align="center">
+  <img src="assets/readme/pgs-ai-host-loop.svg" alt="Project Governance System AI host loop" />
+</p>
+
 > La version anglaise est l'unique source canonique. En cas d'écart, consultez
 > [README.md](README.md).
 
@@ -138,6 +142,53 @@ canon narratif, configuration, prompts et actifs source restent dans leur projet
 
 PGS applique le **SSOT**, ou « source unique de vérité » : un fait durable doit
 avoir un seul domicile canonique. Les autres fichiers résument et pointent vers lui.
+
+## Utiliser PGS depuis un hôte IA
+
+PGS est conçu pour être utilisé depuis l'hôte de programmation IA dans lequel
+vous travaillez déjà. Cet hôte peut être Antigravity, Codex, Claude Code, Gemini
+CLI, Cursor ou un autre environnement agentic coding capable d'ouvrir un dépôt
+local et de lire les fichiers du projet.
+
+La boucle de base est simple :
+
+1. Ouvrez le **projet cible** dans votre hôte IA.
+2. Demandez à l'IA de lire `AGENTS.md` en premier. Si le projet cible n'a pas
+   encore adopté PGS, demandez une inspection avec les commandes `pro-gov` en
+   lecture seule avant de modifier des fichiers.
+3. Laissez PGS choisir le profile : `engineering-runtime` pour applications,
+   jeux, services et produits navigateur ; `doc-only` pour recherche, écriture,
+   canon, médias IA et gouvernance d'actifs.
+4. Demandez à l'IA d'étudier, migrer ou continuer le projet dans la voie choisie.
+5. Utilisez `doc-gov` et `pro-gov doctor` pour prouver que liens, manifest,
+   hooks, profiles et CI correspondent toujours aux règles.
+
+```mermaid
+flowchart TD
+  U["La personne ouvre le dépôt cible"] --> H["Hôte de programmation IA\nAntigravity / Codex / Claude Code / Gemini / Cursor"]
+  H --> R["Lire AGENTS.md\net l'index current-work"]
+  R --> I["Exécuter l'inspection PGS en lecture seule"]
+  I --> P{"Choisir le profile"}
+  P -->|"engineering-runtime"| E["Voie runtime\nplans, tests, preuves"]
+  P -->|"doc-only"| D["Voie documentaire\ncanon, provenance, archive"]
+  E --> V["Exécuter les checks doc-gov / pro-gov"]
+  D --> V
+  V --> G["Valider la vérité gouvernée\net les preuves avec Git"]
+```
+
+Un bon premier prompt :
+
+```text
+Lisez d'abord AGENTS.md. Inspectez ensuite ce projet avec PGS en mode lecture
+seule. Dites-moi quel profile convient, où se trouve la source actuelle de vérité,
+ce qui semble obsolète ou conflictuel, et quelles commandes de validation doivent
+passer avant toute modification de fichiers.
+```
+
+Lorsque vous appliquez PGS à un autre projet, ne copiez pas les agent assets
+privés ou tiers miroirs de ce dépôt upstream. Utilisez les paquets publics, les
+fichiers starter et un plan de migration relu, sauf si vous travaillez depuis un
+checkout local complet de PGS et appliquez volontairement des agent assets gérés.
 
 ## Essayez sans risque
 

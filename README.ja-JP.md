@@ -6,6 +6,10 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md) | **[日本語](README.ja-JP.md)** | [Español](README.es.md) | [Français](README.fr.md) | [Deutsch](README.de.md)
 
+<p align="center">
+  <img src="assets/readme/pgs-ai-host-loop.svg" alt="Project Governance System AI host loop" />
+</p>
+
 > 英語版が唯一の原文です。翻訳との間に差異がある場合は
 > [README.md](README.md) を基準にしてください。
 
@@ -133,6 +137,50 @@ Profile が変えるのは作業経路であり、製品の真実ではありま
 
 PGS は **SSOT**、つまり「単一の真実の源」を使います。長期的な事実には正規の住所を
 一つだけ持たせ、他のファイルは要約とリンクに留めます。
+
+## AI ホストから PGS を使う
+
+PGS は単独で開くプロジェクト管理アプリではありません。すでに使っている AI コーディング
+ホストから使うための仕組みです。ホストは Antigravity、Codex、Claude Code、Gemini
+CLI、Cursor、またはローカルリポジトリを開いてファイルを読める agentic coding 環境です。
+
+基本の流れはシンプルです。
+
+1. AI ホストで**対象プロジェクト**を開く。
+2. AI にまず `AGENTS.md` を読むよう指示する。対象プロジェクトがまだ PGS を採用して
+   いない場合は、ファイル変更の前に読み取り専用の `pro-gov` コマンドで検査する。
+3. PGS に profile を選ばせる。アプリ、ゲーム、サービス、ブラウザ製品は
+   `engineering-runtime`、調査、執筆、canon、AI メディア、資産ガバナンスは
+   `doc-only`。
+4. 選ばれたレーンの中で、AI に対象プロジェクトを調査、移行、または継続させる。
+5. `doc-gov` と `pro-gov doctor` で、リンク、manifest、hooks、profiles、CI 配線が
+   ルールと一致していることを証明する。
+
+```mermaid
+flowchart TD
+  U["人が対象リポジトリを開く"] --> H["AI コーディングホスト\nAntigravity / Codex / Claude Code / Gemini / Cursor"]
+  H --> R["AGENTS.md と\ncurrent-work 索引を読む"]
+  R --> I["読み取り専用の PGS 検査を実行"]
+  I --> P{"profile を選ぶ"}
+  P -->|"engineering-runtime"| E["runtime レーン\n計画・テスト・証拠"]
+  P -->|"doc-only"| D["document レーン\ncanon・provenance・archive"]
+  E --> V["doc-gov / pro-gov チェックを実行"]
+  D --> V
+  V --> G["管理対象の真実と証拠を\nGit にコミット"]
+```
+
+最初のプロンプト例：
+
+```text
+まず AGENTS.md を読んでください。次に PGS を読み取り専用モードで使い、この
+プロジェクトを検査してください。どの profile が合うか、現在の真実の源はどこか、
+古いまたは衝突しているものは何か、編集前に通すべき検証コマンドは何かを教えてください。
+```
+
+PGS を別プロジェクトに適用するとき、この上流リポジトリの private または mirror された
+第三者 agent assets をコピーしないでください。完全なローカル PGS checkout から意図的に
+managed agent assets を適用する場合を除き、公開パッケージ、starter ファイル、レビュー済み
+移行計画を使います。
 
 ## 安全に試す
 
