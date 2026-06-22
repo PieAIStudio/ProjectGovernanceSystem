@@ -11,6 +11,7 @@ const assetRoots = [
   'profiles',
   'integrations',
   'docs/reference/adoption',
+  'public-agent-assets',
 ];
 const privateRoots = new Set(['agent-assets']);
 

@@ -1,9 +1,10 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, readFileSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, symlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
 
+import { loadAgentAssetRegistry } from './loader';
 import { validateAssetRegistry } from './registry';
 
 const baseAsset = {
@@ -115,10 +116,8 @@ test('validateAssetRegistry rejects an internal npx compatibility layer', () => 
   assert.ok(issues.some((issue) => issue.type === 'internal-npx-compatibility-layer'));
 });
 
-test('checked-in agent-assets registry is valid', () => {
-  const registryPath = join(process.cwd(), '..', '..', 'agent-assets', 'registry.json');
-  const registry = JSON.parse(readFileSync(registryPath, 'utf8'));
-  const agentAssetsDir = join(process.cwd(), '..', '..', 'agent-assets');
+test('default agent asset registry is valid', () => {
+  const loaded = loadAgentAssetRegistry();
 
-  assert.deepEqual(validateAssetRegistry(registry, { agentAssetsDir }), []);
+  assert.deepEqual(loaded.issues, []);
 });

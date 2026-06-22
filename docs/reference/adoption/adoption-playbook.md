@@ -113,9 +113,9 @@ upstream repository.
 Agent assets are skills, rules, and commands exposed to AI hosts. They are not
 the same as governed project docs.
 
-Use this flow only from a full Project Governance System checkout that contains
-`agent-assets/`; the public npm package excludes Yuanfei's private and
-third-party skill bodies by design:
+Use this flow from a maintainer checkout that contains local-only
+`agent-assets/`, or from reviewed public assets under `public-agent-assets/`.
+The public npm package excludes unpublished asset bodies by design:
 
 ```bash
 pro-gov assets discover --target /path/to/project --json

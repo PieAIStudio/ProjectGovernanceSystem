@@ -276,10 +276,10 @@ antes que la escritura para que la gobernanza no cause daños nuevos.
 | `docs/policy/` | Políticas propias de desarrollo y adopción. |
 | `docs/reference/adoption/` | Guías de migración, relación, publicación y herramientas. |
 | `integrations/` | Límites con Superpowers, Ponytail y Directed Development. |
-| `agent-assets/` | Registro local de habilidades, reglas, comandos y bundles. |
+| `public-agent-assets/` | Superficie pública para habilidades, reglas, comandos y bundles revisados. |
 
-El checkout completo contiene activos privados de Yuanfei y espejos de terceros.
-El tarball público de npm excluye intencionadamente esos cuerpos.
+Los checkouts de mantenedor pueden tener un árbol local `agent-assets/`. Git lo
+ignora; solo el contenido revisado para publicación debe promocionarse a `public-agent-assets/`.
 
 ## Para contribuir
 

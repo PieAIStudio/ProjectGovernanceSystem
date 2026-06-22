@@ -254,10 +254,10 @@ PGS 不会：
 | `docs/policy/` | PGS 自己的开发和采用策略。 |
 | `docs/reference/adoption/` | 迁移、关系、发布和工具指南。 |
 | `integrations/` | 与 Superpowers、Ponytail 和 Directed Development 的边界。 |
-| `agent-assets/` | 技能、规则、命令和 bundle 的本地上游登记库。 |
+| `public-agent-assets/` | 经过公开发布审查后的技能、规则、命令和 bundle 发布面。 |
 
-完整仓库包含袁飞的私人资产和镜像的第三方 agent 资产。公开 npm 压缩包会故意排除
-这些正文。
+维护者本机可以有一个仅本地使用的 `agent-assets/` 树。它会被 Git 忽略；只有经过明确
+公开发布审查的内容，才能提升到 `public-agent-assets/`。
 
 ## 给贡献者
 

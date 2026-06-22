@@ -38,9 +38,9 @@ pro-gov assets npx add <source> --plan
 pro-gov assets npx update --plan
 ```
 
-These commands need the private `agent-assets/` registry in a full Project
-Governance System checkout. The public npm package excludes private and
-third-party skill bodies by design.
+These commands use a maintainer-local `agent-assets/` registry when local-only
+assets are present. Publicly reviewed assets live under `public-agent-assets/`;
+the public npm package excludes unpublished asset bodies by design.
 
 ## Typical Adoption Flow
 

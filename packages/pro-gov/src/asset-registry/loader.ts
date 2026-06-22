@@ -84,7 +84,12 @@ export function hashAgentAssetContent(
 function findDefaultAgentAssetsDir(): string {
   const packageRoot = findPackageRoot(dirname(fileURLToPath(import.meta.url)));
   const repoRoot = join(packageRoot, '..', '..');
-  const candidates = [join(packageRoot, 'assets/agent-assets'), join(repoRoot, 'agent-assets')];
+  const candidates = [
+    join(packageRoot, 'assets/agent-assets'),
+    join(repoRoot, 'agent-assets'),
+    join(packageRoot, 'assets/public-agent-assets'),
+    join(repoRoot, 'public-agent-assets'),
+  ];
   return candidates.find((candidate) => existsSync(join(candidate, 'registry.json'))) ?? candidates[0];
 }
 

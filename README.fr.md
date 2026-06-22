@@ -270,10 +270,10 @@ source de dégâts.
 | `docs/policy/` | Politiques de développement et d'adoption de PGS. |
 | `docs/reference/adoption/` | Guides de migration, relation, publication et outils. |
 | `integrations/` | Frontières avec Superpowers, Ponytail et Directed Development. |
-| `agent-assets/` | Registre local de compétences, règles, commandes et bundles. |
+| `public-agent-assets/` | Surface publique pour les compétences, règles, commandes et bundles revus. |
 
-Le checkout complet contient les actifs privés de Yuanfei et des miroirs tiers.
-Le tarball npm public exclut volontairement leurs corps.
+Les checkouts de mainteneur peuvent avoir un arbre local `agent-assets/`. Ce dossier
+est ignoré par Git ; seul le contenu revu pour publication doit être promu dans `public-agent-assets/`.
 
 ## Pour contribuer
 

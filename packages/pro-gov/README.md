@@ -78,9 +78,9 @@ pro-gov assets npx update --plan
 The plan is the safety gate. `apply` may update managed targets described by the
 plan; it must not overwrite an unrelated unmanaged file.
 
-These checkout-only workflows depend on the upstream `agent-assets/` registry.
-The public npm package intentionally excludes private and mirrored third-party
-skill bodies.
+These checkout-only workflows depend on a maintainer-local `agent-assets/`
+registry when local-only assets are being used. The public repository and npm
+package use `public-agent-assets/` as the reviewed promotion surface.
 
 ## Package Boundary
 

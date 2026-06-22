@@ -111,17 +111,18 @@ a review is too risky.
 
 ## Local Agent Asset Registry
 
-`agent-assets/` is the local upstream registry for Yuanfei's skills, Dokobot
-skills, npx-installed skills, rules, commands, bundles, and ProjectLens skills.
-It is intentionally part of the full Project Governance System checkout, not
-the public npm tarball.
+`agent-assets/` is the local-only upstream registry for Yuanfei's skills,
+Dokobot skills, npx-installed skills, rules, commands, bundles, and ProjectLens
+skills. It is ignored by Git in the public repository. Reviewed, publishable
+agent assets are promoted into `public-agent-assets/`.
 
 This keeps two concerns separate:
 
 | Surface | Contains |
 | --- | --- |
 | Public `@pieai/pro-gov` package | starter/profile/adoption assets, read-only discovery, ProjectLens evidence commands |
-| Full PGS checkout | private and third-party skill bodies plus explicit asset plan/apply/check commands |
+| Maintainer local checkout | local-only private and third-party skill bodies plus explicit asset plan/apply/check commands |
+| Public repository | `public-agent-assets/` promotion surface only; no unpublished asset bodies |
 
 Use managed asset writes only through reviewable plans:
 
@@ -131,9 +132,11 @@ pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
 pro-gov assets check --target /path/to/project
 ```
 
-Do not run `npx skills` inside every target project. Maintain the native npx
-root in `agent-assets/skills/npx-skills/` through `pro-gov assets npx ... --plan`
-and then review the generated diff before changing the real registry.
+Do not run `npx skills` inside every target project. Maintainers may keep a
+native npx root in local `agent-assets/skills/npx-skills/` through
+`pro-gov assets npx ... --plan` and then review the generated diff before
+changing the local registry. Promote only reviewed public assets into
+`public-agent-assets/`.
 
 ## Checkout Path Boundary
 

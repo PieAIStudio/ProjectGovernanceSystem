@@ -279,10 +279,11 @@ write mode because a governance tool should not become a new source of damage.
 | `docs/policy/` | PGS's own development and adoption policies. |
 | `docs/reference/adoption/` | Migration, relationship, release, and tooling guides. |
 | `integrations/` | Boundaries with Superpowers, Ponytail, and Directed Development. |
-| `agent-assets/` | Local upstream registry for skills, rules, commands, and bundles. |
+| `public-agent-assets/` | Public promotion surface for reviewed skills, rules, commands, and bundles. |
 
-The full checkout contains Yuanfei's private and mirrored third-party agent
-assets. The public npm tarball intentionally excludes those bodies.
+Maintainer checkouts may also have a local-only `agent-assets/` tree. It is
+ignored by Git and must be promoted into `public-agent-assets/` only after an
+explicit public-release review.
 
 ## For Contributors
 

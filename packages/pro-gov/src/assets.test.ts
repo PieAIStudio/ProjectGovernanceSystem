@@ -7,11 +7,18 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import { listAssets } from './assets';
+import { loadAgentAssetBundles } from './asset-bundles/bundles';
+import { loadAgentAssetRegistry } from './asset-registry/loader';
 
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
-const agentAssetRegistry = JSON.parse(
-  readFileSync(join(packageRoot, '..', '..', 'agent-assets', 'registry.json'), 'utf8'),
-) as { assets: Array<{ id: string; visibility: string }> };
+const loadedAgentAssets = loadAgentAssetRegistry();
+const agentAssetRegistry = loadedAgentAssets.registry as {
+  assets: ReadonlyArray<{ id: string; visibility: string }>;
+};
+const agentAssetBundles = loadAgentAssetBundles(loadedAgentAssets.agentAssetsDir);
+const availableBundleIds = new Set(agentAssetBundles.map((bundle) => bundle.id));
+const hasBaseGovernanceBundle = availableBundleIds.has('base-governance');
+const hasProjectLensBundle = availableBundleIds.has('project-lens');
 
 test('asset inventory includes reusable project-governance assets', () => {
   const paths = listAssets().map((asset) => asset.path);
@@ -91,10 +98,10 @@ test('assets list --json prints the agent asset registry', () => {
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
   assert.equal(parsed.count, agentAssetRegistry.assets.length);
-  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/novel-creator'));
-  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'pie-skills/screenwalk'));
-  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/agent-browser'));
-  assert.ok(parsed.assets.some((asset: { id: string }) => asset.id === 'npx-skills/yao-meta-skill'));
+  assert.deepEqual(
+    parsed.assets.map((asset: { id: string }) => asset.id).sort(),
+    agentAssetRegistry.assets.map((asset) => asset.id).sort(),
+  );
 });
 
 test('assets list --visibility filters registry assets', () => {
@@ -184,7 +191,7 @@ test('assets discover treats Gemini CLI AGENTS config as an agent adapter', () =
   assert.equal(parsed.hasAgentEntry, true);
 });
 
-test('assets plan --json creates a dry-run plan without writing target files', () => {
+test('assets plan --json creates a dry-run plan without writing target files', { skip: !hasBaseGovernanceBundle }, () => {
   const targetDir = createTempTargetDir();
 
   const result = spawnSync(
@@ -213,7 +220,7 @@ test('assets plan --json creates a dry-run plan without writing target files', (
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
 });
 
-test('assets plan --out writes a plan artifact for a non-Codex host without applying it', () => {
+test('assets plan --out writes a plan artifact for a non-Codex host without applying it', { skip: !hasProjectLensBundle }, () => {
   const targetDir = createTempTargetDir();
   const outPath = join(targetDir, 'asset-plan.json');
 
@@ -251,7 +258,7 @@ test('assets plan --out writes a plan artifact for a non-Codex host without appl
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
 });
 
-test('assets apply and check complete a managed install flow', () => {
+test('assets apply and check complete a managed install flow', { skip: !hasProjectLensBundle }, () => {
   const targetDir = createTempTargetDir();
   const outPath = join(targetDir, 'asset-plan.json');
 

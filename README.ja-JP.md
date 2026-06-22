@@ -260,10 +260,10 @@ PGS は次を行いません。
 | `docs/policy/` | PGS 自身の開発・導入方針。 |
 | `docs/reference/adoption/` | 移行、関係、公開、ツールのガイド。 |
 | `integrations/` | Superpowers、Ponytail、Directed Development との境界。 |
-| `agent-assets/` | スキル、ルール、コマンド、bundle のローカル上流レジストリ。 |
+| `public-agent-assets/` | 公開レビュー済みのスキル、ルール、コマンド、bundle の公開面。 |
 
-完全な checkout には Yuanfei の非公開資産とミラーされた第三者資産があります。
-公開 npm tarball はそれらの本文を意図的に除外します。
+メンテナーの checkout にはローカル専用の `agent-assets/` ツリーが存在する場合があります。
+これは Git で無視され、明示的な公開レビュー後にのみ `public-agent-assets/` へ昇格します。
 
 ## コントリビューター向け
 

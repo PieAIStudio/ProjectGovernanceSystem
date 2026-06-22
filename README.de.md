@@ -277,10 +277,10 @@ kommt vor dem Schreiben, damit Governance nicht selbst Schaden verursacht.
 | `docs/policy/` | Eigene Entwicklungs- und Einführungsrichtlinien. |
 | `docs/reference/adoption/` | Migrations-, Beziehungs-, Release- und Werkzeugleitfäden. |
 | `integrations/` | Grenzen zu Superpowers, Ponytail und Directed Development. |
-| `agent-assets/` | Lokales Upstream-Register für Skills, Regeln, Befehle und Bundles. |
+| `public-agent-assets/` | Öffentliche Oberfläche für geprüfte Skills, Regeln, Befehle und Bundles. |
 
-Der vollständige Checkout enthält Yuanfeis private und gespiegelte fremde
-Agent-Assets. Das öffentliche npm-Tarball schließt deren Inhalte bewusst aus.
+Maintainer-Checkouts können einen lokalen `agent-assets/`-Baum enthalten. Er
+wird von Git ignoriert; nur geprüfte öffentliche Inhalte gehören nach `public-agent-assets/`.
 
 ## Für Mitwirkende
 
