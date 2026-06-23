@@ -143,8 +143,8 @@ function checkHostFolder(
 ): AssetCheckIssue | undefined {
   if (kind !== 'skill') return undefined;
 
-  const expectedPrefix = expectedSkillTargetPrefix(host);
-  if (!expectedPrefix) {
+  const expectedPrefixes = expectedSkillTargetPrefixes(host);
+  if (!expectedPrefixes) {
     return {
       type: 'unsupported-host-folder',
       id,
@@ -153,22 +153,22 @@ function checkHostFolder(
     };
   }
 
-  if (!targetPath.startsWith(expectedPrefix)) {
+  if (!expectedPrefixes.some((prefix) => targetPath.startsWith(prefix))) {
     return {
       type: 'unsupported-host-folder',
       id,
       targetPath,
-      message: `Managed skill target ${targetPath} does not match host ${host}; expected ${expectedPrefix}`,
+      message: `Managed skill target ${targetPath} does not match host ${host}; expected ${expectedPrefixes.join(' or ')}`,
     };
   }
 
   return undefined;
 }
 
-function expectedSkillTargetPrefix(host: string | undefined): string | undefined {
-  if (host === 'claude-code') return '.claude/skills/';
+function expectedSkillTargetPrefixes(host: string | undefined): string[] | undefined {
+  if (host === 'claude-code') return ['.claude/skills/'];
   if (host === 'codex' || host === 'gemini-cli' || host === 'antigravity') {
-    return '.agents/skills/';
+    return ['.agents/skills/', '.agents/manual-skills/'];
   }
   return undefined;
 }

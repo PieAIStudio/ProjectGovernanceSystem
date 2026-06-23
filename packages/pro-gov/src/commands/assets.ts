@@ -7,7 +7,7 @@ import { loadAgentAssetRegistry } from '../asset-registry/loader';
 import { applyAssetInstallPlan } from '../asset-targets/apply';
 import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
-import type { AssetInstallPlan } from '../asset-targets/install-plan';
+import type { AssetInstallPlan, AssetSkillPlacement } from '../asset-targets/install-plan';
 import { discoverTargetSignals, recommendBundlesForTarget } from '../asset-targets/recommend';
 import type {
   AgentAssetRegistryEntry,
@@ -211,6 +211,7 @@ function runAssetsPlan(args: string[]): number {
       bundles: loadAgentAssetBundles(loaded.agentAssetsDir),
       bundleIds: options.value.bundleIds,
       host: options.value.host,
+      placement: options.value.placement,
     });
 
     if (options.value.json) {
@@ -218,6 +219,7 @@ function runAssetsPlan(args: string[]): number {
     } else {
       console.log(`target: ${plan.targetDir}`);
       console.log(`host: ${plan.host}`);
+      console.log(`placement: ${plan.placement}`);
       console.log(`bundles: ${plan.bundleIds.join(', ')}`);
       console.log(`assets: ${plan.assetIds.length}`);
       console.log(`actions: ${plan.actions.length}`);
@@ -255,6 +257,7 @@ interface TargetJsonOptions {
 interface PlanOptions extends TargetJsonOptions {
   bundleIds: string[];
   host: AssetRegistryHost;
+  placement: AssetSkillPlacement;
   outPath?: string;
 }
 
@@ -343,6 +346,7 @@ function parsePlanOptions(args: string[]): PlanParseResult {
     json: false,
     bundleIds: [],
     host: 'codex',
+    placement: 'auto',
   };
 
   for (let index = 0; index < args.length; index += 1) {
@@ -366,6 +370,16 @@ function parsePlanOptions(args: string[]): PlanParseResult {
         };
       }
       options.host = host;
+      index += 1;
+    } else if (arg === '--placement') {
+      const placement = args[index + 1];
+      if (!isSkillPlacement(placement)) {
+        return {
+          ok: false,
+          error: 'Expected --placement auto|manual',
+        };
+      }
+      options.placement = placement;
       index += 1;
     } else if (arg === '--out') {
       const outPath = args[index + 1];
@@ -496,12 +510,16 @@ function isHost(value: string | undefined): value is AssetRegistryHost {
   );
 }
 
+function isSkillPlacement(value: string | undefined): value is AssetSkillPlacement {
+  return value === 'auto' || value === 'manual';
+}
+
 function printUsage(): void {
   console.error('Usage:');
   console.error('  pro-gov assets list [--registry] [--json] [--visibility public|private|third-party|all]');
   console.error('  pro-gov assets discover [--target <path>] [--json]');
   console.error('  pro-gov assets recommend [--target <path>] [--json]');
-  console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--out <path>] [--json]');
+  console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--placement auto|manual] [--out <path>] [--json]');
   console.error('  pro-gov assets apply --plan <path>');
   console.error('  pro-gov assets check [--target <path>] [--json]');
   console.error('  pro-gov assets npx add <source> [--skill <name>] --plan [--root <path>]');

@@ -220,6 +220,40 @@ test('assets plan --json creates a dry-run plan without writing target files', {
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
 });
 
+test('assets plan --placement manual targets codex manual skills', { skip: !hasBaseGovernanceBundle }, () => {
+  const targetDir = createTempTargetDir();
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'assets',
+      'plan',
+      '--target',
+      targetDir,
+      '--bundle',
+      'base-governance',
+      '--placement',
+      'manual',
+      '--json',
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.placement, 'manual');
+  assert.ok(
+    parsed.actions.some(
+      (action: { type: string; targetPath: string }) =>
+        action.type === 'symlink' && action.targetPath === '.agents/manual-skills/doc-cross-validator',
+    ),
+  );
+});
+
 test('assets plan --out writes a plan artifact for a non-Codex host without applying it', { skip: !hasProjectLensBundle }, () => {
   const targetDir = createTempTargetDir();
   const outPath = join(targetDir, 'asset-plan.json');

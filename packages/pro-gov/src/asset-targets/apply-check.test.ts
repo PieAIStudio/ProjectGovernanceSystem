@@ -61,6 +61,18 @@ test('applyAssetInstallPlan creates absolute symlinks and managed metadata', () 
   assert.equal(existsSync(join(targetDir, '.pro-gov/assets.lock.json')), true);
 });
 
+test('applyAssetInstallPlan creates codex manual skill symlinks that pass checks', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  const plan = createPlan(agentAssetsDir, targetDir, 'manual');
+
+  applyAssetInstallPlan(plan);
+
+  const skillLink = join(targetDir, '.agents/manual-skills/example');
+  assert.equal(existsSync(skillLink), true);
+  assert.equal(resolve(readlinkSync(skillLink)), join(agentAssetsDir, 'skills/pie-skills/example'));
+  assert.deepEqual(checkInstalledAssets({ targetDir, agentAssetsDir, registry }).issues, []);
+});
+
 test('applyAssetInstallPlan refuses unmanaged target conflicts', () => {
   const { agentAssetsDir, targetDir } = createFixture();
   mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
@@ -104,7 +116,7 @@ test('checkInstalledAssets reports managed skill targets in unsupported host fol
   assert.ok(result.issues.some((issue) => issue.type === 'unsupported-host-folder'));
 });
 
-function createPlan(agentAssetsDir: string, targetDir: string) {
+function createPlan(agentAssetsDir: string, targetDir: string, placement: 'auto' | 'manual' = 'auto') {
   return createAssetInstallPlan({
     targetDir,
     agentAssetsDir,
@@ -112,6 +124,7 @@ function createPlan(agentAssetsDir: string, targetDir: string) {
     bundles,
     bundleIds: ['base-governance'],
     host: 'codex',
+    placement,
   });
 }
 

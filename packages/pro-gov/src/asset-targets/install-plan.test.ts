@@ -140,6 +140,35 @@ test('createAssetInstallPlan maps supported hosts to exact skill directories', (
   );
 });
 
+test('createAssetInstallPlan maps codex manual placement to manual skill directory', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+
+  const plan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [
+      {
+        id: 'base-governance',
+        title: 'Base Governance',
+        description: 'Base',
+        assets: ['pie-skills/example'],
+      },
+    ],
+    bundleIds: ['base-governance'],
+    host: 'codex',
+    placement: 'manual',
+  });
+
+  assert.equal(plan.placement, 'manual');
+  assert.deepEqual(skillTargetPaths(plan), ['.agents/manual-skills/example']);
+  assert.ok(
+    plan.actions.some(
+      (action) => action.type === 'create-dir' && action.targetPath === '.agents/manual-skills',
+    ),
+  );
+});
+
 test('createAssetInstallPlan reports unsupported hosts and missing asset ids', () => {
   const { agentAssetsDir, targetDir } = createFixture();
 

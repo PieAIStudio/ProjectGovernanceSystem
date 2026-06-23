@@ -9,7 +9,6 @@ import { basename, join, relative } from 'node:path';
 
 export type AssetSourceFamily =
   | 'pie-skills'
-  | 'dokobot'
   | 'npx-skills'
   | 'pie-rules'
   | 'pie-commands';
@@ -27,7 +26,6 @@ export type InventoryIssueType =
 export interface AgentAssetSourceConfig {
   projectSkillsRoot?: string;
   globalSkillsRoot?: string;
-  dokobotRoot?: string;
   npxRoot?: string;
   ruleRoots?: string[];
   commandRoots?: string[];
@@ -61,7 +59,6 @@ interface NpxLock {
 
 const emptyCounts: Record<AssetSourceFamily, number> = {
   'pie-skills': 0,
-  dokobot: 0,
   'npx-skills': 0,
   'pie-rules': 0,
   'pie-commands': 0,
@@ -74,7 +71,6 @@ const skippedSkillRootNames = new Set([
   '_npx_skills',
   '_packages',
   '_shared',
-  'dokobot',
   'node_modules',
   'skills',
 ]);
@@ -111,16 +107,6 @@ export function scanAgentAssetSources(config: AgentAssetSourceConfig): AgentAsse
         continue;
       }
       addAsset(makeAsset(entry.name, source.family, 'skill', absolutePath, source.root));
-    }
-  }
-
-  if (config.dokobotRoot && existsSync(config.dokobotRoot)) {
-    collectDanglingSymlinks(config.dokobotRoot, 'dokobot', issues);
-    for (const entry of safeReadDir(config.dokobotRoot)) {
-      if (!entry.isDirectory() || entry.name.startsWith('.') || entry.name.startsWith('_')) continue;
-      const absolutePath = join(config.dokobotRoot, entry.name);
-      if (!existsSync(join(absolutePath, 'SKILL.md'))) continue;
-      addAsset(makeAsset(entry.name, 'dokobot', 'skill', absolutePath, config.dokobotRoot));
     }
   }
 

@@ -112,9 +112,9 @@ a review is too risky.
 ## Local Agent Asset Registry
 
 `agent-assets/` is the local-only upstream registry for Yuanfei's skills,
-Dokobot skills, npx-installed skills, rules, commands, bundles, and ProjectLens
-skills. It is ignored by Git in the public repository. Reviewed, publishable
-agent assets are promoted into `public-agent-assets/`.
+npx-installed skills, non-npx third-party skill packs, rules, commands, bundles,
+and ProjectLens skills. It is ignored by Git in the public repository. Reviewed,
+publishable agent assets are promoted into `public-agent-assets/`.
 
 This keeps two concerns separate:
 
@@ -131,6 +131,16 @@ pro-gov assets plan --target /path/to/project --bundle base-governance --host co
 pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
 pro-gov assets check --target /path/to/project
 ```
+
+For manual-only skills, keep the same plan-gated flow and choose manual
+placement:
+
+```bash
+pro-gov assets plan --target /path/to/project --bundle <bundle-id> --host codex --placement manual --out /tmp/pro-gov-asset-plan.json
+```
+
+This writes managed symlinks under `.agents/manual-skills/` so broad or
+meta-level skills stay explicit instead of auto-discoverable.
 
 Do not run `npx skills` inside every target project. Maintainers may keep a
 native npx root in local `agent-assets/skills/npx-skills/` through

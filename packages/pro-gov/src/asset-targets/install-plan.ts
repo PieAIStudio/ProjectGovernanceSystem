@@ -33,10 +33,13 @@ export interface AssetInstallPlan {
   dryRun: true;
   targetDir: string;
   host: AssetRegistryHost;
+  placement: AssetSkillPlacement;
   bundleIds: string[];
   assetIds: string[];
   actions: AssetInstallAction[];
 }
+
+export type AssetSkillPlacement = 'auto' | 'manual';
 
 export interface CreateAssetInstallPlanOptions {
   targetDir: string;
@@ -45,9 +48,11 @@ export interface CreateAssetInstallPlanOptions {
   bundles: readonly AgentAssetBundle[];
   bundleIds: readonly string[];
   host: AssetRegistryHost;
+  placement?: AssetSkillPlacement;
 }
 
 export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): AssetInstallPlan {
+  const placement = options.placement ?? 'auto';
   const assetsById = new Map(options.registry.assets.map((asset) => [asset.id, asset]));
   const bundlesById = new Map(options.bundles.map((bundle) => [bundle.id, bundle]));
   const assetIds = resolveBundleAssetIds(options.bundleIds, bundlesById);
@@ -62,17 +67,19 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
   const lockEntries = createAgentAssetLockEntries(options.registry, options.agentAssetsDir, assetIds);
   const managedTargets = readManagedTargets(options.targetDir);
   const assetActions = assets.map((asset) =>
-    createAssetAction(asset, options.agentAssetsDir, options.targetDir, options.host, managedTargets),
+    createAssetAction(asset, options.agentAssetsDir, options.targetDir, options.host, placement, managedTargets),
   );
   const manifest = {
     schemaVersion: 1,
     host: options.host,
+    placement,
     bundleIds: [...options.bundleIds],
     assetIds,
   };
   const lockfile = {
     schemaVersion: 1,
     host: options.host,
+    placement,
     bundleIds: [...options.bundleIds],
     assets: lockEntries.map((entry) => {
       const action = assetActions.find((candidate) => 'assetId' in candidate && candidate.assetId === entry.id);
@@ -100,6 +107,7 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
     dryRun: true,
     targetDir: options.targetDir,
     host: options.host,
+    placement,
     bundleIds: [...options.bundleIds],
     assetIds,
     actions: [...createDirectoryActions([...assetActions, ...writeActions]), ...assetActions, ...writeActions],
@@ -126,10 +134,11 @@ function createAssetAction(
   agentAssetsDir: string,
   targetDir: string,
   host: AssetRegistryHost,
+  placement: AssetSkillPlacement,
   managedTargets: ReadonlySet<string>,
 ): AssetInstallAction {
   const sourcePath = join(agentAssetsDir, asset.sourcePath);
-  const targetPath = resolveHostTargetPath(asset, host);
+  const targetPath = resolveHostTargetPath(asset, host, placement);
   const targetAbsolutePath = join(targetDir, targetPath);
   const targetExists = pathExistsEvenIfDanglingSymlink(targetAbsolutePath);
 
@@ -154,10 +163,20 @@ function createAssetAction(
   };
 }
 
-function resolveHostTargetPath(asset: AgentAssetRegistryEntry, host: AssetRegistryHost): string {
+function resolveHostTargetPath(
+  asset: AgentAssetRegistryEntry,
+  host: AssetRegistryHost,
+  placement: AssetSkillPlacement,
+): string {
   if (asset.kind === 'skill') {
     if (host === 'claude-code') {
+      if (placement === 'manual') {
+        throw new Error('Manual skill placement is only supported for .agents hosts');
+      }
       return `.claude/skills/${basename(asset.sourcePath)}`;
+    }
+    if (placement === 'manual') {
+      return `.agents/manual-skills/${basename(asset.sourcePath)}`;
     }
     return `.agents/skills/${basename(asset.sourcePath)}`;
   }

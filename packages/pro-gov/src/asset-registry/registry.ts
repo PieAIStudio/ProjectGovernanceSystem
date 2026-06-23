@@ -4,7 +4,6 @@ import { isAbsolute, join, posix } from 'node:path';
 export type AssetRegistryVisibility = 'public' | 'private' | 'third-party';
 export type AssetRegistryFamily =
   | 'pie-skills'
-  | 'dokobot'
   | 'npx-skills'
   | 'pie-rules'
   | 'pie-commands';
@@ -55,7 +54,6 @@ export interface AssetRegistryValidationOptions {
 
 const supportedFamilies = new Set<AssetRegistryFamily>([
   'pie-skills',
-  'dokobot',
   'npx-skills',
   'pie-rules',
   'pie-commands',

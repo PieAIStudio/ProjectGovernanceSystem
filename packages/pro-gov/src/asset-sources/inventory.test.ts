@@ -19,18 +19,16 @@ function writeSkill(root: string, name: string): void {
   );
 }
 
-test('scanAgentAssetSources classifies pie, dokobot, npx, rules, and commands', () => {
+test('scanAgentAssetSources classifies pie, npx, rules, and commands', () => {
   const root = makeTempRoot();
   const projectSkills = join(root, 'MyProjectSkills');
   const globalSkills = join(root, 'MyGlobalSkills');
-  const dokobot = join(projectSkills, 'dokobot');
   const npxRoot = join(projectSkills, '_npx_skills');
   const globalRules = join(root, 'MyGlobalRules');
   const projectCommands = join(root, 'MyProjectCommands');
 
   writeSkill(projectSkills, 'screenwalk');
   writeSkill(globalSkills, 'my-skills-manager');
-  writeSkill(dokobot, 'deep-research');
   writeSkill(join(npxRoot, '.agents', 'skills'), 'frontend-design');
   mkdirSync(globalRules, { recursive: true });
   writeFileSync(join(globalRules, 'rule-evolution-methodology.md'), '# Rule\n');
@@ -53,7 +51,6 @@ test('scanAgentAssetSources classifies pie, dokobot, npx, rules, and commands', 
   const report = scanAgentAssetSources({
     projectSkillsRoot: projectSkills,
     globalSkillsRoot: globalSkills,
-    dokobotRoot: dokobot,
     npxRoot,
     ruleRoots: [globalRules],
     commandRoots: [projectCommands],
@@ -62,7 +59,6 @@ test('scanAgentAssetSources classifies pie, dokobot, npx, rules, and commands', 
   assert.deepEqual(
     report.assets.map((asset) => `${asset.family}:${asset.kind}:${asset.name}`).sort(),
     [
-      'dokobot:skill:deep-research',
       'npx-skills:skill:frontend-design',
       'pie-commands:command:publish-founder-log',
       'pie-rules:rule:rule-evolution-methodology',
