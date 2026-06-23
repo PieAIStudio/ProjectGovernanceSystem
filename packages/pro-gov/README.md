@@ -75,6 +75,16 @@ pro-gov assets check --target .
 pro-gov assets npx update --plan
 ```
 
+Use `--placement manual` for broad or meta-level skills that should stay
+explicitly invoked instead of auto-discoverable:
+
+```bash
+pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
+```
+
+Codex manual placement writes managed skill links under
+`.agents/manual-skills/` instead of `.agents/skills/`.
+
 The plan is the safety gate. `apply` may update managed targets described by the
 plan; it must not overwrite an unrelated unmanaged file.
 

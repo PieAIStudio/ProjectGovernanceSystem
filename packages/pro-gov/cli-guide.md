@@ -32,6 +32,7 @@ Full upstream-checkout commands:
 ```bash
 pro-gov assets list --json
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
+pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
 pro-gov assets check --target .
 pro-gov assets npx add <source> --plan
@@ -41,6 +42,8 @@ pro-gov assets npx update --plan
 These commands use a maintainer-local `agent-assets/` registry when local-only
 assets are present. Publicly reviewed assets live under `public-agent-assets/`;
 the public npm package excludes unpublished asset bodies by design.
+Use manual placement for skills that should live under `.agents/manual-skills/`
+and be loaded only when explicitly requested.
 
 ## Typical Adoption Flow
 
