@@ -28,7 +28,7 @@ const frontendPackages = new Set([
   'vue',
 ]);
 
-const agentEntryCandidates = ['AGENTS.md', 'CLAUDE.md', '.gemini/settings.json', 'GEMINI.md'] as const;
+const agentEntryCandidates = ['AGENTS.md', 'CLAUDE.md'] as const;
 
 export function discoverTargetSignals(targetDir: string): TargetSignals {
   const packageJson = readJson(join(targetDir, 'package.json')) as

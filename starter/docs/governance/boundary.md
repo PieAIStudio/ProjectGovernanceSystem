@@ -5,8 +5,8 @@ type: reference
 status: stable
 canonical: true
 owner: project
-created: YYYY-MM-DD
-last_reviewed: YYYY-MM-DD
+created: 2026-05-08
+last_reviewed: 2026-05-08
 domain: doc-governance
 tags:
   - doc-gov

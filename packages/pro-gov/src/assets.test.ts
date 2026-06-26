@@ -8,7 +8,7 @@ import test from 'node:test';
 
 import { listAssets } from './assets';
 import { loadAgentAssetBundles } from './asset-bundles/bundles';
-import { loadAgentAssetRegistry } from './asset-registry/loader';
+import { hashAssetPathContent, loadAgentAssetRegistry } from './asset-registry/loader';
 
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const loadedAgentAssets = loadAgentAssetRegistry();
@@ -24,7 +24,7 @@ test('asset inventory includes reusable project-governance assets', () => {
   const paths = listAssets().map((asset) => asset.path);
 
   assert.ok(paths.includes('starter/AGENTS.template.md'));
-  assert.ok(paths.includes('starter/.gemini/settings.json'));
+  assert.equal(paths.includes('starter/.gemini/settings.json'), false);
   assert.ok(paths.includes('starter/lefthook.template.yml'));
   assert.ok(paths.includes('profiles/engineering-runtime/profile.md'));
   assert.ok(paths.includes('profiles/doc-only/profile.md'));
@@ -169,13 +169,14 @@ test('assets discover --json returns local target signals', () => {
   assert.ok(parsed.researchSignals.includes('docs/research'));
 });
 
-test('assets discover treats Gemini CLI AGENTS config as an agent adapter', () => {
+test('assets discover ignores retired Gemini adapter files', () => {
   const targetDir = createTempTargetDir();
   mkdirSync(join(targetDir, '.gemini'), { recursive: true });
   writeFileSync(
     join(targetDir, '.gemini/settings.json'),
     `${JSON.stringify({ context: { fileName: ['AGENTS.md'] } }, null, 2)}\n`,
   );
+  writeFileSync(join(targetDir, 'GEMINI.md'), '# Gemini\n');
 
   const result = spawnSync(
     process.execPath,
@@ -188,7 +189,7 @@ test('assets discover treats Gemini CLI AGENTS config as an agent adapter', () =
 
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
-  assert.equal(parsed.hasAgentEntry, true);
+  assert.equal(parsed.hasAgentEntry, false);
 });
 
 test('assets plan --json creates a dry-run plan without writing target files', { skip: !hasBaseGovernanceBundle }, () => {
@@ -362,6 +363,75 @@ test('assets npx update --help does not touch or validate the npx root', () => {
   assert.match(result.stdout, /pro-gov assets npx/);
 });
 
+test('assets public-check verifies promoted public assets against private sources', () => {
+  const rootDir = createTempTargetDir();
+  const privateRoot = join(rootDir, 'agent-assets');
+  const publicRoot = join(rootDir, 'public-agent-assets');
+  mkdirSync(join(privateRoot, 'skills/pie-skills/example'), { recursive: true });
+  mkdirSync(join(publicRoot, 'skills/pie-skills/example'), { recursive: true });
+  writeFileSync(join(privateRoot, 'skills/pie-skills/example/SKILL.md'), '# Private\n');
+  writeFileSync(join(publicRoot, 'skills/pie-skills/example/SKILL.md'), '# Public\n');
+  const privateHash = hashAssetPathContent(join(privateRoot, 'skills/pie-skills/example'));
+  const publicHash = hashAssetPathContent(join(publicRoot, 'skills/pie-skills/example'));
+  writeFileSync(
+    join(publicRoot, 'registry.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        assets: [
+          {
+            id: 'pie-skills/example',
+            title: 'Example',
+            family: 'pie-skills',
+            kind: 'skill',
+            visibility: 'public',
+            sourceKind: 'local',
+            sourcePath: 'skills/pie-skills/example',
+            hosts: ['codex'],
+            tags: ['skill'],
+            publishable: true,
+            origin: 'Promoted from private source.',
+            notes: 'Public reviewed copy.',
+            promotion: {
+              privateSourcePath: 'skills/pie-skills/example',
+              privateSourceHash: privateHash,
+              publicHash,
+              sanitized: true,
+              lastReviewed: '2026-06-25',
+              reviewNotes: 'Removed maintainer-only details.',
+            },
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'assets',
+      'public-check',
+      '--public-root',
+      publicRoot,
+      '--private-root',
+      privateRoot,
+      '--json',
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.checked, 1);
+  assert.deepEqual(parsed.issues, []);
+});
+
 test('lens scan --json returns a local evidence packet', () => {
   const targetDir = createTempTargetDir();
   writeFileSync(join(targetDir, 'package.json'), JSON.stringify({ scripts: { test: 'node --test' } }));
@@ -388,6 +458,7 @@ test('lens inspect --format json returns the same local evidence shape', () => {
   writeFileSync(join(targetDir, 'CLAUDE.md'), '# Claude\n');
   mkdirSync(join(targetDir, '.gemini'), { recursive: true });
   writeFileSync(join(targetDir, '.gemini/settings.json'), '{"context":{"fileName":["AGENTS.md"]}}\n');
+  writeFileSync(join(targetDir, 'GEMINI.md'), '# Gemini\n');
 
   const result = spawnSync(
     process.execPath,
@@ -401,13 +472,13 @@ test('lens inspect --format json returns the same local evidence shape', () => {
   assert.equal(result.status, 0);
   const parsed = JSON.parse(result.stdout);
   assert.deepEqual(parsed.aiEntryFiles, ['CLAUDE.md']);
-  assert.deepEqual(parsed.aiConfigFiles, ['.gemini/settings.json']);
+  assert.deepEqual(parsed.aiConfigFiles, []);
 });
 
 test('lens report writes a markdown evidence report', () => {
   const targetDir = createTempTargetDir();
   const reportPath = join(targetDir, 'reports/lens.md');
-  writeFileSync(join(targetDir, 'GEMINI.md'), '# Gemini\n');
+  writeFileSync(join(targetDir, 'AGENTS.md'), '# Agents\n');
 
   const result = spawnSync(
     process.execPath,
@@ -429,7 +500,8 @@ test('lens report writes a markdown evidence report', () => {
   assert.equal(result.status, 0);
   const markdown = readFileSync(reportPath, 'utf8');
   assert.match(markdown, /# Project Lens Evidence Report/);
-  assert.match(markdown, /GEMINI\.md/);
+  assert.match(markdown, /AGENTS\.md/);
+  assert.doesNotMatch(markdown, /GEMINI\.md/);
   assert.match(markdown, /AI Config Adapters/);
   assert.match(markdown, /## Review Notes/);
 });

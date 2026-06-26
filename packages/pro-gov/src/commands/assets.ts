@@ -1,9 +1,10 @@
 import { listAssets } from '../assets';
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 import { loadAgentAssetBundles } from '../asset-bundles/bundles';
 import { createNpxSkillsMaintenancePlan } from '../asset-npx/maintenance';
 import { loadAgentAssetRegistry } from '../asset-registry/loader';
+import { checkPublicAssetPromotions } from '../asset-registry/public-promotion';
 import { applyAssetInstallPlan } from '../asset-targets/apply';
 import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
@@ -37,12 +38,60 @@ export function runAssets(args: string[]): number {
   if (subcommand === 'check') {
     return runAssetsCheck(rest);
   }
+  if (subcommand === 'public-check') {
+    return runAssetsPublicCheck(rest);
+  }
   if (subcommand === 'npx') {
     return runAssetsNpx(rest);
   }
 
   printUsage();
   return 1;
+}
+
+function runAssetsPublicCheck(args: string[]): number {
+  const options = parsePublicCheckOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+
+  const registryLoad = loadAgentAssetRegistry({ agentAssetsDir: options.value.publicRoot });
+  if (registryLoad.issues.length > 0) {
+    for (const issue of registryLoad.issues) {
+      console.error(`${issue.type}: ${issue.message}`);
+    }
+    return 1;
+  }
+
+  const result = checkPublicAssetPromotions({
+    publicAgentAssetsDir: options.value.publicRoot,
+    privateAgentAssetsDir: options.value.privateRoot,
+    registry: registryLoad.registry,
+  });
+
+  if (options.value.json) {
+    console.log(
+      JSON.stringify(
+        {
+          publicRoot: options.value.publicRoot,
+          privateRoot: options.value.privateRoot,
+          ...result,
+        },
+        null,
+        2,
+      ),
+    );
+  } else if (result.issues.length === 0) {
+    console.log(`public assets check passed (${result.checked} checked)`);
+  } else {
+    for (const issue of result.issues) {
+      console.log(`${issue.type}: ${issue.message}`);
+    }
+  }
+
+  return result.issues.length === 0 ? 0 : 1;
 }
 
 function runAssetsNpx(args: string[]): number {
@@ -283,8 +332,18 @@ interface NpxOptions {
   skill?: string;
 }
 
+interface PublicCheckOptions {
+  publicRoot: string;
+  privateRoot: string;
+  json: boolean;
+}
+
 type NpxParseResult =
   | { ok: true; value: NpxOptions }
+  | { ok: false; error: string };
+
+type PublicCheckParseResult =
+  | { ok: true; value: PublicCheckOptions }
   | { ok: false; error: string };
 
 function parseListOptions(args: string[]): ParseResult {
@@ -457,6 +516,58 @@ function parseNpxOptions(operation: 'add' | 'update', args: string[]): NpxParseR
   return { ok: true, value: options };
 }
 
+function parsePublicCheckOptions(args: string[]): PublicCheckParseResult {
+  const defaults = getDefaultPublicCheckRoots();
+  const options: PublicCheckOptions = {
+    publicRoot: defaults.publicRoot,
+    privateRoot: defaults.privateRoot,
+    json: false,
+  };
+
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (arg === '--public-root') {
+      const publicRoot = args[index + 1];
+      if (!publicRoot) return { ok: false, error: 'Expected --public-root <path>' };
+      options.publicRoot = publicRoot;
+      index += 1;
+    } else if (arg === '--private-root') {
+      const privateRoot = args[index + 1];
+      if (!privateRoot) return { ok: false, error: 'Expected --private-root <path>' };
+      options.privateRoot = privateRoot;
+      index += 1;
+    } else if (arg === '--json') {
+      options.json = true;
+    } else {
+      return { ok: false, error: `Unknown assets public-check option: ${arg}` };
+    }
+  }
+
+  if (!existsSync(options.publicRoot)) {
+    return { ok: false, error: `Public agent assets root does not exist: ${options.publicRoot}` };
+  }
+  if (!existsSync(options.privateRoot)) {
+    return { ok: false, error: `Private agent assets root does not exist: ${options.privateRoot}` };
+  }
+
+  return { ok: true, value: options };
+}
+
+function getDefaultPublicCheckRoots(): { publicRoot: string; privateRoot: string } {
+  const defaultRegistryRoot = loadAgentAssetRegistry().agentAssetsDir;
+  if (defaultRegistryRoot.endsWith('public-agent-assets')) {
+    return {
+      privateRoot: join(dirname(defaultRegistryRoot), 'agent-assets'),
+      publicRoot: defaultRegistryRoot,
+    };
+  }
+
+  return {
+    privateRoot: defaultRegistryRoot,
+    publicRoot: join(dirname(defaultRegistryRoot), 'public-agent-assets'),
+  };
+}
+
 function listRegistryAssets(options: AssetListOptions): number {
   const loaded = loadAgentAssetRegistry();
   if (loaded.issues.length > 0) {
@@ -522,6 +633,7 @@ function printUsage(): void {
   console.error('  pro-gov assets plan --bundle <bundle-id> [--bundle <bundle-id>] [--target <path>] [--host codex|claude-code|gemini-cli|antigravity] [--placement auto|manual] [--out <path>] [--json]');
   console.error('  pro-gov assets apply --plan <path>');
   console.error('  pro-gov assets check [--target <path>] [--json]');
+  console.error('  pro-gov assets public-check [--public-root <path>] [--private-root <path>] [--json]');
   console.error('  pro-gov assets npx add <source> [--skill <name>] --plan [--root <path>]');
   console.error('  pro-gov assets npx update [--skill <name>] --plan [--root <path>]');
 }

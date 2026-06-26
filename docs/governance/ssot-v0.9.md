@@ -71,7 +71,7 @@ Extra governed roots are allowed only when a project explicitly opts in.
 
 Before changing docs, look for project-local guidance in this order:
 
-1. `AGENTS.md`, `CLAUDE.md`, `.gemini/settings.json`, or equivalent AI router/config adapter.
+1. `AGENTS.md`, `CLAUDE.md`, or equivalent AI router/config adapter.
 2. `docs/governance/boundary.md`.
 3. `docs/governance/ssot-v0.9.md`.
 4. `docs/governance/agents-routing/` and the project's selected agents-routing file.
@@ -100,7 +100,7 @@ works for governed docs:
 
 | Need | Usually belongs in |
 | --- | --- |
-| AI entry and startup routing | `AGENTS.md` plus thin host-specific adapters such as `CLAUDE.md` and `.gemini/settings.json` |
+| AI entry and startup routing | `AGENTS.md` plus thin host-specific adapters such as `CLAUDE.md` |
 | Agents-routing rules | `docs/governance/agents-routing/` |
 | Doc-system rules, templates, and manifest | `docs/governance/` |
 | Project AI/development policy | `docs/policy/` |

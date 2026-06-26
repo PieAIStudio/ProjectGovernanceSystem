@@ -52,10 +52,10 @@ export function scanProjectLensTarget(
 
   return {
     targetDir,
-    aiEntryFiles: ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md'].filter((file) =>
+    aiEntryFiles: ['AGENTS.md', 'CLAUDE.md'].filter((file) =>
       existsSync(join(targetDir, file)),
     ),
-    aiConfigFiles: ['.gemini/settings.json'].filter((file) => existsSync(join(targetDir, file))),
+    aiConfigFiles: [],
     packageJson,
     docs: {
       hasDocsDirectory: existsSync(join(targetDir, 'docs')),

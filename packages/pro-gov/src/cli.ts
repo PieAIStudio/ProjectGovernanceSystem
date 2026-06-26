@@ -11,6 +11,7 @@ const COMMANDS = [
   'assets plan --bundle <bundle-id> [--target <path>] [--json]',
   'assets apply --plan <path>',
   'assets check [--target <path>] [--json]',
+  'assets public-check [--public-root <path>] [--private-root <path>] [--json]',
   'assets npx add|update ... --plan',
   'lens scan [--target <path>] [--json]',
   'lens inspect [--target <path>] [--format text|json]',

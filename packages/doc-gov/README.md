@@ -45,7 +45,7 @@ pnpm doc-gov migrate --profile engineering-runtime --check
 By default, Project Governance System governs:
 
 - `docs/**`
-- AI entry files/config adapters such as `AGENTS.md`, `CLAUDE.md`, and `.gemini/settings.json`
+- AI entry files/config adapters such as `AGENTS.md` and `CLAUDE.md`
 - documentation-governance templates, manifest, and agents-routing files
 
 It does not try to swallow product artifacts, prompts, generated media,

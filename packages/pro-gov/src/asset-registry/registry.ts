@@ -24,6 +24,16 @@ export interface AgentAssetRegistryEntry {
   publishable: boolean;
   origin: string;
   notes: string;
+  promotion?: AgentAssetPromotionMetadata;
+}
+
+export interface AgentAssetPromotionMetadata {
+  privateSourcePath: string;
+  privateSourceHash: string;
+  publicHash: string;
+  sanitized: boolean;
+  lastReviewed: string;
+  reviewNotes: string;
 }
 
 export interface AgentAssetRegistry {

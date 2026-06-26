@@ -35,6 +35,7 @@ pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-pla
 pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
 pro-gov assets check --target .
+pro-gov assets public-check --json
 pro-gov assets npx add <source> --plan
 pro-gov assets npx update --plan
 ```
@@ -42,6 +43,8 @@ pro-gov assets npx update --plan
 These commands use a maintainer-local `agent-assets/` registry when local-only
 assets are present. Publicly reviewed assets live under `public-agent-assets/`;
 the public npm package excludes unpublished asset bodies by design.
+`public-check` is the maintainer drift check for the promotion receipt recorded
+in `public-agent-assets/registry.json`.
 Use manual placement for skills that should live under `.agents/manual-skills/`
 and be loaded only when explicitly requested.
 

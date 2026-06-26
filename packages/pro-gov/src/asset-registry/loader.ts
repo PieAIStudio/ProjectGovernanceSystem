@@ -67,7 +67,10 @@ export function hashAgentAssetContent(
   asset: AgentAssetRegistryEntry,
   agentAssetsDir: string,
 ): string {
-  const sourceAbsolutePath = join(agentAssetsDir, asset.sourcePath);
+  return hashAssetPathContent(join(agentAssetsDir, asset.sourcePath));
+}
+
+export function hashAssetPathContent(sourceAbsolutePath: string): string {
   const hash = createHash('sha256');
 
   for (const filePath of listFiles(sourceAbsolutePath)) {

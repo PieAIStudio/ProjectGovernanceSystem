@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-21
+last_reviewed: 2026-06-25
 domain: adoption
 tags:
   - downstream
@@ -47,13 +47,14 @@ downstream projects.
 
 ## Current Downstream Projects
 
-The current downstream set was checked on 2026-06-21.
+The current downstream set was checked on 2026-06-25.
 
 | Project | Local path | Profile | Installed doc-gov | Installed pro-gov | Health snapshot | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | Anvil | `/Users/yuanfei/PieAI/Anvil` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `787d37a`. `docs:check`, `typecheck`, `test`, and `lint` pass. Existing unrelated local writing work was preserved. |
 | Collapse | `/Users/yuanfei/PieAI/Collapse` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `2e220df`. `docs:check`, `test`, and `build` pass. |
 | Non-Heroes | `/Users/yuanfei/PieAI/Non-Heroes` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `f3b9b02`. `docs:check`, `typecheck`, `test`, and `build` pass after refreshing pnpm workspace links. |
+| OwnMySpace | `/Users/yuanfei/PieAI/OwnMySpace` | `engineering-runtime` | `0.3.5` | `0.3.5` | Governance healthy / planning-only | Adopted on 2026-06-25. `docs:check`, central-checkout `pro-gov assets check --target /Users/yuanfei/PieAI/OwnMySpace`, and `git diff --check` pass. Runtime code is intentionally absent; MVP build remains deferred until explicit owner decision. |
 | PieAIStudio-Site | `/Users/yuanfei/PieAI/PieAIStudio-Site` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `5501c84`. `docs:check`, `typecheck`, `lint`, and `build` pass after clearing stale `.next` generated types. Existing unrelated local site docs were preserved. |
 | PieHQ | `/Users/yuanfei/PieAI/PieHQ` | `doc-only` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `0a58cd7`. `docs:check` passes with 0 warnings. Existing unrelated local FounderLogs and `.DS_Store` changes were preserved. |
 | Sea | `/Users/yuanfei/PieAI/Sea` | `engineering-runtime` | `0.3.5` | `0.3.5` | Governance healthy / project test warning | Synchronized at commit `0d95bd52b`. `docs:check` and `build:packages` pass. Full `test` still has unrelated business test failures in shell sidebar CSS expectations and workspace drawer mocks. Existing unrelated shared-rule deletion was preserved. |
@@ -61,6 +62,27 @@ The current downstream set was checked on 2026-06-21.
 | SupaLuv | `/Users/yuanfei/PieAI/SupaLuv` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `23c5b0c`. `docs:check`, `typecheck`, `test`, and `build` pass. Existing unrelated local skill and vendored-tool cleanup work was preserved. |
 | YaZu | `/Users/yuanfei/PieAI/YaZu` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `9a40f1f`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
 | TuringPact | `/Users/yuanfei/PieAI/TuringPact` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `93bcf9c`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
+
+## 2026-06-25 Follow-Up Audit Notes
+
+All registered downstream projects have `@pieai/doc-gov` and `@pieai/pro-gov`
+at `0.3.5`, and all have a `docs:check` script.
+
+Minor starter drift remains in older adopters:
+
+- `docs/governance/boundary.md` still has `YYYY-MM-DD` date placeholders:
+  Anvil, Collapse, PieAIStudio-Site, Show, SupaLuv, and TuringPact.
+- Anvil has no `docs/policy/shared-rules/` symlink folder yet. This may be
+  acceptable for a writing-focused workspace, but it should be reviewed before
+  the next governance refresh.
+- Missing `.pro-gov/assets.lock.json`: Anvil, Collapse, Non-Heroes,
+  PieAIStudio-Site, Sea, Show, SupaLuv, and YaZu. These projects predate the
+  managed agent-asset lock workflow, so their package versions are current but
+  their local skill/rule symlinks are not yet drift-checked by `pro-gov assets
+  check`.
+
+These are governance polish gaps, not package-version gaps. Refresh them in the
+next downstream sync rather than treating the installed packages as stale.
 
 ## Representative Examples
 

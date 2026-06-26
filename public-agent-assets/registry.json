@@ -22,7 +22,15 @@
       ],
       "publishable": true,
       "origin": "Promoted from the PGS shared-rule source.",
-      "notes": "Public rule for choosing evidence lanes and requiring fresh verification before completion."
+      "notes": "Public rule for choosing evidence lanes and requiring fresh verification before completion.",
+      "promotion": {
+        "privateSourcePath": "rules/pie-rules/ai-in-the-loop.md",
+        "privateSourceHash": "sha256:045f9dcd0b1425155a89c863d24ba1509dee4e1e572f23f27fb7fe6f201874ec",
+        "publicHash": "sha256:911702baf6ea1d724e41ea1876d23d80f4de8dfaaadbf1399a40c982c810224c",
+        "sanitized": true,
+        "lastReviewed": "2026-06-25",
+        "reviewNotes": "Public copy keeps the evidence-loop method while removing private wording and local-only assumptions."
+      }
     },
     {
       "id": "pie-rules/rule-evolution-methodology",
@@ -45,7 +53,15 @@
       ],
       "publishable": true,
       "origin": "Promoted from the PGS shared-rule source.",
-      "notes": "Public method for keeping shared rules short, specific, and useful."
+      "notes": "Public method for keeping shared rules short, specific, and useful.",
+      "promotion": {
+        "privateSourcePath": "rules/pie-rules/rule-evolution-methodology.md",
+        "privateSourceHash": "sha256:694758a2f3ce15ffc9f38c5a0e6fe6696bfb8128b952afec6c0963cc803f5b9c",
+        "publicHash": "sha256:497b885a61e14bf0b016ba39c2eb1eff7ef5b1c5000e83ae099bd11d2b58279e",
+        "sanitized": true,
+        "lastReviewed": "2026-06-25",
+        "reviewNotes": "Public copy keeps the rule-evolution method while using repo-neutral language."
+      }
     },
     {
       "id": "pie-skills/beginner-friendly-docs",
@@ -68,7 +84,15 @@
       ],
       "publishable": true,
       "origin": "Promoted from maintainer-authored PGS local skills after public review.",
-      "notes": "Public skill for writing teaching-oriented documentation with stories, analogies, diagrams, and examples."
+      "notes": "Public skill for writing teaching-oriented documentation with stories, analogies, diagrams, and examples.",
+      "promotion": {
+        "privateSourcePath": "skills/pie-skills/beginner-friendly-docs",
+        "privateSourceHash": "sha256:0098a81bf811f4044a62cbc4ddae30728c219be19df9006df593a2f7b610912e",
+        "publicHash": "sha256:0098a81bf811f4044a62cbc4ddae30728c219be19df9006df593a2f7b610912e",
+        "sanitized": false,
+        "lastReviewed": "2026-06-25",
+        "reviewNotes": "Public copy is byte-for-byte aligned with the private source at review time."
+      }
     },
     {
       "id": "pie-skills/doc-cross-validator",
@@ -92,7 +116,15 @@
       ],
       "publishable": true,
       "origin": "Promoted from maintainer-authored PGS local skills after public review.",
-      "notes": "Public skill for checking documentation claims against source code, config, data structures, and command output."
+      "notes": "Public skill for checking documentation claims against source code, config, data structures, and command output.",
+      "promotion": {
+        "privateSourcePath": "skills/pie-skills/doc-cross-validator",
+        "privateSourceHash": "sha256:8aadfc76f9c660ca42ac1dc2c2b25119f8f8328fcf759adb35f9106969411ab4",
+        "publicHash": "sha256:46bd797682876c3973ae6abf757bfc90fcbb3c451ace493eb091ea86e2b2ee0e",
+        "sanitized": true,
+        "lastReviewed": "2026-06-25",
+        "reviewNotes": "Public copy keeps the validation workflow while removing private checkout wording."
+      }
     }
   ]
 }

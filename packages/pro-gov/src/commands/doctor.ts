@@ -7,7 +7,6 @@ import { listAssets } from '../assets';
 
 const REQUIRED_ASSETS = [
   'starter/AGENTS.template.md',
-  'starter/.gemini/settings.json',
   'starter/docs/governance/ssot-v0.9.md',
   'starter/docs/governance/agents-routing/engineering-runtime-v0.9.md',
   'starter/docs/governance/agents-routing/doc-only-v0.9.md',

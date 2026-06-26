@@ -129,6 +129,17 @@ The plan file is the safety gate. Review it before applying. It creates managed
 symlinks and `.pro-gov/assets.lock.json`; it should not overwrite unmanaged
 project files.
 
+When a maintainer promotes a private asset into `public-agent-assets/`, the
+public registry must record the private-source hash and the public-copy hash.
+Run this in the upstream checkout before publishing:
+
+```bash
+pro-gov assets public-check --json
+```
+
+Downstream projects do not need the private `agent-assets/` tree for normal
+package-based adoption.
+
 ## Step 4: Add Starter Structure
 
 Use `starter/` as the reference, but keep local facts local.

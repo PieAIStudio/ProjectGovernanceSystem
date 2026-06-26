@@ -72,6 +72,7 @@ agent-asset registry through reviewed plans:
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
 pro-gov assets check --target .
+pro-gov assets public-check --json
 pro-gov assets npx update --plan
 ```
 
@@ -91,6 +92,8 @@ plan; it must not overwrite an unrelated unmanaged file.
 These checkout-only workflows depend on a maintainer-local `agent-assets/`
 registry when local-only assets are being used. The public repository and npm
 package use `public-agent-assets/` as the reviewed promotion surface.
+`assets public-check` verifies that every publishable public asset still matches
+the private-source and public-copy hashes recorded during promotion.
 
 ## Package Boundary
 

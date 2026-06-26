@@ -116,6 +116,24 @@ npx-installed skills, non-npx third-party skill packs, rules, commands, bundles,
 and ProjectLens skills. It is ignored by Git in the public repository. Reviewed,
 publishable agent assets are promoted into `public-agent-assets/`.
 
+`public-agent-assets/` is not a second private source of truth. It is the
+reviewed public release surface. A public asset may be byte-for-byte identical
+to its private source, or it may be a cleaned-up version with machine-local
+paths, private wording, and non-redistributable material removed.
+
+Every publishable public asset must record its promotion metadata in
+`public-agent-assets/registry.json`: private source path, private source hash,
+public hash, whether it was sanitized, review date, and review notes. Maintainer
+checkouts should run:
+
+```bash
+pro-gov assets public-check --json
+```
+
+Beginner version: `agent-assets/` is the workbench; `public-agent-assets/` is
+the clean display shelf. The registry receipt proves which workbench item the
+display item came from and whether either side changed after review.
+
 This keeps two concerns separate:
 
 | Surface | Contains |
