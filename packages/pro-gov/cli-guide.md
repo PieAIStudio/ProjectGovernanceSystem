@@ -36,7 +36,7 @@ pro-gov assets list --json
 pro-gov portfolio check --config /path/to/control-repo/.pro-gov/portfolio.json --json
 pro-gov portfolio plan --config /path/to/control-repo/.pro-gov/portfolio.json --target web-app --json
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
-pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --out /tmp/loop-library-plan.json
+pro-gov assets plan --bundle project-lens --target /path/to/project --host codex --placement manual --out /tmp/project-lens-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
 pro-gov assets check --target .
 pro-gov assets public-check --json

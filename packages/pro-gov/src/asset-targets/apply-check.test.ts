@@ -36,6 +36,22 @@ const registry: AgentAssetRegistry = {
       origin: 'test',
       notes: 'test',
     },
+    {
+      id: 'pie-skills/user-example',
+      title: 'User Example',
+      family: 'pie-skills',
+      kind: 'skill',
+      visibility: 'private',
+      sourceKind: 'local',
+      sourcePath: 'skills/pie-skills/user-example',
+      hosts: ['codex'],
+      tags: ['skill'],
+      defaultPlacement: 'auto',
+      defaultScope: 'user',
+      publishable: false,
+      origin: 'test',
+      notes: 'test',
+    },
   ],
 };
 
@@ -167,6 +183,41 @@ test('checkInstalledAssets reports registry placement drift', () => {
   assert.ok(result.issues.some((issue) => issue.type === 'skill-placement-drift'));
 });
 
+test('checkInstalledAssets reports user-scoped skills still locked into a project', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  symlinkSync(
+    join(agentAssetsDir, 'skills/pie-skills/user-example'),
+    join(targetDir, '.agents/skills/user-example'),
+  );
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        placement: 'registry',
+        bundleIds: ['user-tools'],
+        assets: [
+          {
+            id: 'pie-skills/user-example',
+            sourcePath: 'skills/pie-skills/user-example',
+            targetPath: '.agents/skills/user-example',
+            contentHash: 'sha256:test',
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
+
+  assert.ok(result.issues.some((issue) => issue.type === 'user-scoped-asset-in-project-lock'));
+});
+
 function createPlan(agentAssetsDir: string, targetDir: string, placement: 'auto' | 'manual' = 'auto') {
   return createAssetInstallPlan({
     targetDir,
@@ -184,7 +235,9 @@ function createFixture(): { agentAssetsDir: string; targetDir: string } {
   const agentAssetsDir = join(baseDir, 'agent-assets');
   const targetDir = join(baseDir, 'target');
   mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true });
+  mkdirSync(join(agentAssetsDir, 'skills/pie-skills/user-example'), { recursive: true });
   mkdirSync(targetDir, { recursive: true });
   writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/SKILL.md'), '# Example\n');
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/user-example/SKILL.md'), '# User\n');
   return { agentAssetsDir, targetDir };
 }

@@ -143,6 +143,12 @@ function createAssetAction(
   placement: AssetInstallPlacement,
   managedTargets: ReadonlySet<string>,
 ): AssetInstallAction {
+  if (asset.kind === 'skill' && asset.defaultScope === 'user') {
+    throw new Error(
+      `User-scoped asset ${asset.id} must be linked at the user level, not installed into a project target.`,
+    );
+  }
+
   const sourcePath = join(agentAssetsDir, asset.sourcePath);
   const targetPath = resolveHostTargetPath(asset, host, placement);
   const targetAbsolutePath = join(targetDir, targetPath);

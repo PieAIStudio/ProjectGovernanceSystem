@@ -41,6 +41,22 @@ const registry: AgentAssetRegistry = {
       notes: 'test',
     },
     {
+      id: 'pie-skills/user-example',
+      title: 'User Example',
+      family: 'pie-skills',
+      kind: 'skill',
+      visibility: 'private',
+      sourceKind: 'local',
+      sourcePath: 'skills/pie-skills/user-example',
+      hosts: ['codex', 'claude-code'],
+      tags: ['skill'],
+      defaultPlacement: 'auto',
+      defaultScope: 'user',
+      publishable: false,
+      origin: 'test',
+      notes: 'test',
+    },
+    {
       id: 'pie-rules/example-rule',
       title: 'Example Rule',
       family: 'pie-rules',
@@ -228,6 +244,30 @@ test('createAssetInstallPlan reports unsupported hosts and missing asset ids', (
   );
 });
 
+test('createAssetInstallPlan rejects user-scoped skills in project install plans', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+
+  assert.throws(
+    () =>
+      createAssetInstallPlan({
+        targetDir,
+        agentAssetsDir,
+        registry,
+        bundles: [
+          {
+            id: 'user-tools',
+            title: 'User Tools',
+            description: 'User tools',
+            assets: ['pie-skills/user-example'],
+          },
+        ],
+        bundleIds: ['user-tools'],
+        host: 'codex',
+      }),
+    /User-scoped asset pie-skills\/user-example must be linked at the user level/,
+  );
+});
+
 test('createAssetInstallPlan refuses unmanaged existing targets', () => {
   const { agentAssetsDir, targetDir } = createFixture();
   mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
@@ -304,10 +344,12 @@ function createFixture(): { agentAssetsDir: string; targetDir: string } {
   const targetDir = join(baseDir, 'target');
   mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true });
   mkdirSync(join(agentAssetsDir, 'skills/pie-skills/manual-example'), { recursive: true });
+  mkdirSync(join(agentAssetsDir, 'skills/pie-skills/user-example'), { recursive: true });
   mkdirSync(join(agentAssetsDir, 'rules/pie-rules'), { recursive: true });
   mkdirSync(targetDir, { recursive: true });
   writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/SKILL.md'), '# Example\n');
   writeFileSync(join(agentAssetsDir, 'skills/pie-skills/manual-example/SKILL.md'), '# Manual\n');
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/user-example/SKILL.md'), '# User\n');
   writeFileSync(join(agentAssetsDir, 'rules/pie-rules/example-rule.md'), '# Rule\n');
   return { agentAssetsDir, targetDir };
 }

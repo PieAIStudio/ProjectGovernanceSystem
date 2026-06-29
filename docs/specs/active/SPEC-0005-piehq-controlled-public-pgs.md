@@ -141,22 +141,30 @@ Gemini-related host strings may remain in historical private asset metadata only
 where needed to describe imported legacy assets. They must not drive new starter
 files or downstream initialization.
 
-### 6. Make Skill Placement A Registry SSOT
+### 6. Make Skill Scope And Placement A Registry SSOT
 
-Skill placement must be decided once in the asset registry, not separately in
-each target project.
+Skill scope and placement must be decided once in the asset registry, not
+separately in each target project.
 
-Add one placement field for skill assets:
+Add one scope field and one placement field for skill assets:
 
 ```json
 {
   "id": "npx-skills/loop-library",
   "kind": "skill",
-  "defaultPlacement": "manual"
+  "defaultScope": "user",
+  "defaultPlacement": "auto"
 }
 ```
 
-Allowed values:
+Allowed scope values:
+
+| Value | Meaning |
+| --- | --- |
+| `project` | The skill belongs to a target repository and is managed through project asset plans. |
+| `user` | The skill belongs to the user's global skill roots and must not be locked into a target repository. |
+
+Allowed placement values for project-scoped Codex skills:
 
 | Value | Target | Meaning |
 | --- | --- | --- |
@@ -164,7 +172,9 @@ Allowed values:
 | `manual` | `.agents/manual-skills/<name>` | The skill is broad, meta-level, heavy, or should be invoked explicitly. |
 
 Bundles should list assets only. They should not decide placement. The planner
-derives each target path from the asset registry.
+derives each target path from the asset registry. User-scoped skills are linked
+once under user skill roots, such as `/Users/yuanfei/.agents/skills` for Codex
+and `/Users/yuanfei/.claude/skills` for Claude Code compatibility.
 
 The current global `--placement` option should become a migration override, not
 the normal path. Normal installs should use per-asset placement. Checks should
@@ -172,12 +182,14 @@ report:
 
 - the same skill linked under both `.agents/skills` and `.agents/manual-skills`;
 - registry-managed skills installed in the wrong placement;
+- user-scoped skills still recorded in a project `.pro-gov/assets.lock.json`;
 - dangling links;
 - unmanaged PGS-looking skill links not recorded in `.pro-gov/assets.lock.json`.
 
 Beginner version: `.agents/skills` is the workbench. `.agents/manual-skills` is
-the labeled cabinet. The tool registry should say where each tool belongs, so
-each room does not invent a different shelf.
+the labeled cabinet. User-level skills are the tool belt you carry between
+rooms. The registry should say whether a tool belongs to a room or to the tool
+belt, so each room does not invent a different shelf.
 
 ### 7. Clarify The Two Skill-Management Skills
 

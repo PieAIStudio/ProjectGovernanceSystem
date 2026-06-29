@@ -81,15 +81,17 @@ pro-gov assets npx update --plan
 ```
 
 Skill placement normally comes from the asset registry. Use `--placement
-manual` only as an explicit migration override for broad or meta-level skills
-that should stay explicitly invoked instead of auto-discoverable:
+manual` only as an explicit migration override for project-scoped skills that
+should stay explicitly invoked instead of auto-discoverable:
 
 ```bash
-pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
+pro-gov assets plan --bundle project-lens --target /path/to/project --host codex --placement manual --out /tmp/project-lens-plan.json
 ```
 
 Codex manual placement writes managed skill links under
 `.agents/manual-skills/` instead of `.agents/skills/`.
+User-scoped skills, such as a personal loop library, are not installed into
+project targets; link them once under the user's skill roots instead.
 
 The plan is the safety gate. `apply` may update managed targets described by the
 plan; it must not overwrite an unrelated unmanaged file.

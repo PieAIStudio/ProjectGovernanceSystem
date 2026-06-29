@@ -32,6 +32,15 @@ test('validateAssetRegistry accepts a minimal safe registry', () => {
   assert.deepEqual(issues, []);
 });
 
+test('validateAssetRegistry accepts user-scoped skill assets', () => {
+  const issues = validateAssetRegistry({
+    schemaVersion: 1,
+    assets: [{ ...baseAsset, defaultScope: 'user' }],
+  });
+
+  assert.deepEqual(issues, []);
+});
+
 test('validateAssetRegistry reports duplicate asset ids', () => {
   const issues = validateAssetRegistry({
     schemaVersion: 1,
@@ -94,6 +103,24 @@ test('validateAssetRegistry requires supported default placement for skill asset
       .map((issue) => issue.id)
       .sort(),
     ['bad-placement', 'screenwalk'],
+  );
+});
+
+test('validateAssetRegistry requires supported default scope for skill assets', () => {
+  const issues = validateAssetRegistry({
+    schemaVersion: 1,
+    assets: [
+      { ...baseAsset, id: 'bad-scope', defaultScope: 'workspace' as never },
+      { ...baseAsset, id: 'rule-scope', kind: 'rule', sourcePath: 'rules/pie-rules/rule.md', defaultScope: 'user' as never },
+    ],
+  });
+
+  assert.deepEqual(
+    issues
+      .filter((issue) => issue.type === 'unsupported-skill-scope')
+      .map((issue) => issue.id)
+      .sort(),
+    ['bad-scope', 'rule-scope'],
   );
 });
 

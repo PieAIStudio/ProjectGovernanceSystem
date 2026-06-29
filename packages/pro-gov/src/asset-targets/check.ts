@@ -14,7 +14,8 @@ export type AssetCheckIssueType =
   | 'unknown-asset'
   | 'unsupported-host-folder'
   | 'duplicate-skill-placement'
-  | 'skill-placement-drift';
+  | 'skill-placement-drift'
+  | 'user-scoped-asset-in-project-lock';
 
 export interface AssetCheckIssue {
   type: AssetCheckIssueType;
@@ -76,6 +77,15 @@ export function checkInstalledAssets(options: {
         message: `Lockfile references unknown asset: ${entry.id}`,
       });
       continue;
+    }
+
+    if (asset.kind === 'skill' && asset.defaultScope === 'user') {
+      issues.push({
+        type: 'user-scoped-asset-in-project-lock',
+        id: entry.id,
+        targetPath: entry.targetPath,
+        message: `User-scoped skill is still locked into this project; move it to the user skill roots: ${entry.id}`,
+      });
     }
 
     const hostFolderIssue = checkHostFolder(lockfile.host, asset.kind, entry.targetPath, entry.id);

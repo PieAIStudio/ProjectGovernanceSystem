@@ -152,8 +152,8 @@ pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
 pro-gov assets check --target /path/to/project
 ```
 
-For manual-only skills, keep the same plan-gated flow and choose manual
-placement:
+For manual-only project-scoped skills, keep the same plan-gated flow and choose
+manual placement:
 
 ```bash
 pro-gov assets plan --target /path/to/project --bundle <bundle-id> --host codex --placement manual --out /tmp/pro-gov-asset-plan.json
@@ -161,6 +161,10 @@ pro-gov assets plan --target /path/to/project --bundle <bundle-id> --host codex 
 
 This writes managed symlinks under `.agents/manual-skills/` so broad or
 meta-level skills stay explicit instead of auto-discoverable.
+
+For user-scoped skills such as a personal loop library, do not add a managed
+project symlink. Link the canonical source once under the user's supported skill
+roots and let every project discover the same user-level tool.
 
 Do not run `npx skills` inside every target project. Maintainers may keep a
 native npx root in local `agent-assets/skills/npx-skills/` through

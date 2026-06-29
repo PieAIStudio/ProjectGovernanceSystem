@@ -11,6 +11,7 @@ export type AssetRegistryKind = 'skill' | 'rule' | 'command';
 export type AssetRegistrySourceKind = 'local' | 'local-pack' | 'npx';
 export type AssetRegistryHost = 'codex' | 'claude-code' | 'gemini-cli' | 'antigravity';
 export type AssetRegistrySkillPlacement = 'auto' | 'manual';
+export type AssetRegistrySkillScope = 'project' | 'user';
 
 export interface AgentAssetRegistryEntry {
   id: string;
@@ -23,6 +24,7 @@ export interface AgentAssetRegistryEntry {
   hosts: readonly AssetRegistryHost[];
   tags: readonly string[];
   defaultPlacement?: AssetRegistrySkillPlacement;
+  defaultScope?: AssetRegistrySkillScope;
   publishable: boolean;
   origin: string;
   notes: string;
@@ -52,6 +54,7 @@ export type AssetRegistryIssueType =
   | 'missing-source-path'
   | 'missing-skill-file'
   | 'unsupported-skill-placement'
+  | 'unsupported-skill-scope'
   | 'internal-npx-compatibility-layer';
 
 export interface AssetRegistryIssue {
@@ -79,6 +82,7 @@ const supportedVisibilities = new Set<AssetRegistryVisibility>([
 ]);
 const supportedSourceKinds = new Set<AssetRegistrySourceKind>(['local', 'local-pack', 'npx']);
 const supportedSkillPlacements = new Set<AssetRegistrySkillPlacement>(['auto', 'manual']);
+const supportedSkillScopes = new Set<AssetRegistrySkillScope>(['project', 'user']);
 const supportedHosts = new Set<AssetRegistryHost>([
   'codex',
   'claude-code',
@@ -153,6 +157,19 @@ export function validateAssetRegistry(
         type: 'unsupported-skill-placement',
         id: asset.id,
         message: `Skill asset must declare defaultPlacement auto or manual: ${asset.id}`,
+      });
+    }
+
+    if (
+      (asset.defaultScope && asset.kind !== 'skill') ||
+      (asset.kind === 'skill' &&
+        asset.defaultScope &&
+        !supportedSkillScopes.has(asset.defaultScope as AssetRegistrySkillScope))
+    ) {
+      issues.push({
+        type: 'unsupported-skill-scope',
+        id: asset.id,
+        message: `Skill asset defaultScope must be project or user: ${asset.id}`,
       });
     }
 
