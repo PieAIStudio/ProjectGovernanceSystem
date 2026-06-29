@@ -1,7 +1,7 @@
 {
   "name": "pro-gov",
   "private": true,
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Central upstream for PieAI project documentation governance, agents routing, and workflow profiles.",
   "packageManager": "pnpm@11.9.0",
   "type": "module",
