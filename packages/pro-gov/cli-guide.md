@@ -16,6 +16,8 @@ Public package-safe commands:
 pro-gov assets list
 pro-gov assets discover --target .
 pro-gov assets recommend --target .
+pro-gov portfolio check --config /path/to/portfolio.json
+pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov init --profile engineering-runtime --dry-run
@@ -31,8 +33,10 @@ Full upstream-checkout commands:
 
 ```bash
 pro-gov assets list --json
+pro-gov portfolio check --config /path/to/control-repo/.pro-gov/portfolio.json --json
+pro-gov portfolio plan --config /path/to/control-repo/.pro-gov/portfolio.json --target web-app --json
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
-pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
+pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --out /tmp/loop-library-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
 pro-gov assets check --target .
 pro-gov assets public-check --json
@@ -45,8 +49,13 @@ assets are present. Publicly reviewed assets live under `public-agent-assets/`;
 the public npm package excludes unpublished asset bodies by design.
 `public-check` is the maintainer drift check for the promotion receipt recorded
 in `public-agent-assets/registry.json`.
-Use manual placement for skills that should live under `.agents/manual-skills/`
-and be loaded only when explicitly requested.
+Skill placement normally comes from the asset registry. Use `--placement
+auto|manual` only as a migration override when deliberately moving an existing
+target.
+
+Portfolio manifests are external configuration files owned by a user or
+organization's control repository. PGS provides the format and commands; it does
+not publish a real user's private downstream project list.
 
 ## Typical Adoption Flow
 

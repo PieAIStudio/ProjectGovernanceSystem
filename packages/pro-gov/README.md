@@ -42,6 +42,8 @@ Optional project scripts:
 pro-gov assets list
 pro-gov assets discover --target .
 pro-gov assets recommend --target .
+pro-gov portfolio check --config /path/to/portfolio.json
+pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov init --profile engineering-runtime --dry-run
@@ -57,6 +59,8 @@ What these commands do:
 | `assets list` | Shows packaged assets and public registry metadata. | No |
 | `assets discover` | Detects local project signals. | No |
 | `assets recommend` | Suggests relevant asset bundles with reasons. | No |
+| `portfolio check` | Validates an external portfolio manifest owned by the user's control repo. | No |
+| `portfolio plan` | Builds dry-run asset plans for manifest targets. | No |
 | `lens inspect` | Produces ProjectLens-style local evidence. | No |
 | `lens report` | Writes the requested report file. | Only the explicit output |
 | `init --dry-run` | Shows starter/profile files that would be needed. | No |
@@ -76,8 +80,9 @@ pro-gov assets public-check --json
 pro-gov assets npx update --plan
 ```
 
-Use `--placement manual` for broad or meta-level skills that should stay
-explicitly invoked instead of auto-discoverable:
+Skill placement normally comes from the asset registry. Use `--placement
+manual` only as an explicit migration override for broad or meta-level skills
+that should stay explicitly invoked instead of auto-discoverable:
 
 ```bash
 pro-gov assets plan --bundle loop-library --target /path/to/project --host codex --placement manual --out /tmp/loop-library-plan.json
@@ -100,6 +105,9 @@ the private-source and public-copy hashes recorded during promotion.
 - `pro-gov` distributes starter, profile, integration, and adoption assets.
 - `pro-gov assets discover|recommend` provides read-only project evidence and
   deterministic recommendations.
+- `pro-gov portfolio check|plan` reads an external portfolio manifest. Real
+  downstream project lists belong in the user's control repository, not in this
+  public package.
 - `pro-gov assets plan|apply|check` manages local assets only from an explicit,
   reviewable plan in a full upstream checkout.
 - `pro-gov lens inspect|report` provides read-only inspection and an explicit

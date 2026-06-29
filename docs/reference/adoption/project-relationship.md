@@ -31,10 +31,10 @@ The central repo owns the **engine**. Each project owns its **local product cont
 | Thing | Owner |
 | --- | --- |
 | Status lifecycle, document types, SSOT, agents routing, CLI checks, templates | Project Governance System upstream repository |
-| Non-Heroes product plans, runtime canon, product rules | Non-Heroes |
-| TuringPact product truth, game runtime, commercial Gates | TuringPact |
-| ProjectLens audit evidence and observer workflow | ProjectLens |
-| Current downstream adoption list and health snapshot | `docs/reference/adoption/downstream-project-registry.md` |
+| Target-project product plans, runtime canon, product rules | The target project |
+| Target-project audit evidence and current implementation facts | The target project |
+| Reusable inspection commands and ProjectLens-style protocol | Project Governance System `pro-gov lens` |
+| Generic portfolio manifest contract | `docs/reference/adoption/downstream-project-registry.md` |
 
 ## Naming And Checkout Paths
 
@@ -60,7 +60,9 @@ and keep it out of reusable router text.
 Not yet automatically.
 
 Known downstream projects are listed in
-`docs/reference/adoption/downstream-project-registry.md`.
+the user's external portfolio manifest. See
+`docs/reference/adoption/downstream-project-registry.md` for the public
+manifest contract.
 
 Early downstream projects had local working copies because the system was born
 inside active projects. This central repo is now the upstream source, and

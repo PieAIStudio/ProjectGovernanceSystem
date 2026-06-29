@@ -1,109 +1,112 @@
 ---
 id: REF-DOWNSTREAM-PROJECT-REGISTRY
-title: Downstream Project Registry
+title: Portfolio Manifest Guide
 type: reference
 status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-25
+last_reviewed: 2026-06-29
 domain: adoption
 tags:
   - downstream
   - adoption
   - registry
+  - portfolio
 pinned: false
 related:
   - REF-PROJECT-RELATIONSHIP
   - POLICY-SYNC-STRATEGY
+  - SPEC-0005
 ---
 
-# Downstream Project Registry
+# Portfolio Manifest Guide
 
-This registry is the central Project Governance System ledger for known local
-projects that have adopted this system.
+Project Governance System is a public execution engine. It does not keep a
+real user's private downstream repository list in this repository or in the npm
+package.
 
-It records governance adoption state, not product truth. Product plans, runtime
-details, IP canon, audit outputs, and project-specific policies remain in the
-downstream projects.
+Use an external portfolio manifest when one control repository needs PGS to
+inspect or plan changes across multiple target repositories.
 
-## Registry Rules
+Beginner version: PGS is the public tool. The portfolio manifest is your private
+dispatch sheet. PGS can read the dispatch sheet, but the public toolbox should
+not ship one user's private project map.
 
-- Update this file when a project adopts, leaves, renames, or changes profile.
-- Keep only projects that currently exist and are expected to receive future
-  governance updates. Remove deleted or superseded projects instead of keeping
-  stale health rows.
-- Treat package versions as the versions installed in the downstream project's
-  `package.json`. Record both packages when the project has completed
-  package-based adoption.
-- Treat health as a snapshot. A project can be on the latest version but still
-  have local working-tree cleanup in progress.
-- Do not add a project-specific profile here unless at least two projects need
-  the same reusable profile.
-- Do not use this registry to freeze the upstream local checkout path. The
-  current local upstream folder may be `ProjectGovernanceSystem`, but downstream
-  governed docs should prefer `@pieai/doc-gov`, `@pieai/pro-gov`, and "Project
-  Governance System upstream repository" wording over machine-local paths.
+## Manifest Location
 
-## Current Downstream Projects
+Each organization or user chooses where to store their private manifest.
 
-The current downstream set was checked on 2026-06-25.
+Recommended shape:
 
-| Project | Local path | Profile | Installed doc-gov | Installed pro-gov | Health snapshot | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| Anvil | `/Users/yuanfei/PieAI/Anvil` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `787d37a`. `docs:check`, `typecheck`, `test`, and `lint` pass. Existing unrelated local writing work was preserved. |
-| Collapse | `/Users/yuanfei/PieAI/Collapse` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `2e220df`. `docs:check`, `test`, and `build` pass. |
-| Non-Heroes | `/Users/yuanfei/PieAI/Non-Heroes` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `f3b9b02`. `docs:check`, `typecheck`, `test`, and `build` pass after refreshing pnpm workspace links. |
-| OwnMySpace | `/Users/yuanfei/PieAI/OwnMySpace` | `engineering-runtime` | `0.3.5` | `0.3.5` | Governance healthy / planning-only | Adopted on 2026-06-25. `docs:check`, central-checkout `pro-gov assets check --target /Users/yuanfei/PieAI/OwnMySpace`, and `git diff --check` pass. Runtime code is intentionally absent; MVP build remains deferred until explicit owner decision. |
-| PieAIStudio-Site | `/Users/yuanfei/PieAI/PieAIStudio-Site` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `5501c84`. `docs:check`, `typecheck`, `lint`, and `build` pass after clearing stale `.next` generated types. Existing unrelated local site docs were preserved. |
-| PieHQ | `/Users/yuanfei/PieAI/PieHQ` | `doc-only` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `0a58cd7`. `docs:check` passes with 0 warnings. Existing unrelated local FounderLogs and `.DS_Store` changes were preserved. |
-| Sea | `/Users/yuanfei/PieAI/Sea` | `engineering-runtime` | `0.3.5` | `0.3.5` | Governance healthy / project test warning | Synchronized at commit `0d95bd52b`. `docs:check` and `build:packages` pass. Full `test` still has unrelated business test failures in shell sidebar CSS expectations and workspace drawer mocks. Existing unrelated shared-rule deletion was preserved. |
-| Show | `/Users/yuanfei/PieAI/Show` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `c7eda40`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. Existing unrelated local MCP/shared-rule changes were preserved. |
-| SupaLuv | `/Users/yuanfei/PieAI/SupaLuv` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `23c5b0c`. `docs:check`, `typecheck`, `test`, and `build` pass. Existing unrelated local skill and vendored-tool cleanup work was preserved. |
-| YaZu | `/Users/yuanfei/PieAI/YaZu` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `9a40f1f`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
-| TuringPact | `/Users/yuanfei/PieAI/TuringPact` | `engineering-runtime` | `0.3.5` | `0.3.5` | Healthy | Synchronized at commit `93bcf9c`. `docs:check`, `typecheck`, `test`, `lint`, and `build` pass. |
+```text
+<control-plane repo>/
+  .pro-gov/
+    portfolio.json
+```
 
-## 2026-06-25 Follow-Up Audit Notes
+For Yuanfei's PieAI workspace, PieHQ is the private control-plane instance. That
+instance is intentionally not copied into this public PGS reference.
 
-All registered downstream projects have `@pieai/doc-gov` and `@pieai/pro-gov`
-at `0.3.5`, and all have a `docs:check` script.
+## Minimal Example
 
-Minor starter drift remains in older adopters:
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "controlPlane": {
+    "id": "headquarters",
+    "path": "/path/to/headquarters"
+  },
+  "executionEngine": {
+    "id": "project-governance-system",
+    "path": "/path/to/ProjectGovernanceSystem"
+  },
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance", "frontend-app"],
+      "sharedRules": ["organization-technology-stack"]
+    }
+  ]
+}
+```
 
-- `docs/governance/boundary.md` still has `YYYY-MM-DD` date placeholders:
-  Anvil, Collapse, PieAIStudio-Site, Show, SupaLuv, and TuringPact.
-- Anvil has no `docs/policy/shared-rules/` symlink folder yet. This may be
-  acceptable for a writing-focused workspace, but it should be reviewed before
-  the next governance refresh.
-- Missing `.pro-gov/assets.lock.json`: Anvil, Collapse, Non-Heroes,
-  PieAIStudio-Site, Sea, Show, SupaLuv, and YaZu. These projects predate the
-  managed agent-asset lock workflow, so their package versions are current but
-  their local skill/rule symlinks are not yet drift-checked by `pro-gov assets
-  check`.
+## Fields
 
-These are governance polish gaps, not package-version gaps. Refresh them in the
-next downstream sync rather than treating the installed packages as stale.
+| Field | Meaning |
+| --- | --- |
+| `schemaVersion` | Manifest format version. Current value is `1`. |
+| `portfolioId` | Short identifier for this user's portfolio. |
+| `controlPlane` | The private coordination repository. It is metadata, not a default downstream target. |
+| `executionEngine` | The PGS checkout or package source used to run commands. It is metadata, not a default downstream target. |
+| `targets` | Repositories PGS may inspect, check, or plan for by default. |
+| `assetBundles` | PGS asset bundles to plan for that target. |
+| `sharedRules` | Optional names of external shared rules that the control plane expects the target to use. |
 
-## Representative Examples
+## Commands
 
-The `examples/` directory is not the full registry. It contains representative
-case studies:
+```bash
+pro-gov portfolio check --config /path/to/portfolio.json
+pro-gov portfolio check --config /path/to/portfolio.json --json
+pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
+```
 
-- `examples/non-heroes/example.md` for an engineering-runtime product.
+`check` validates the manifest and local paths.
 
-Add a new example only when a project teaches a reusable adoption pattern that
-the existing examples do not cover.
+`plan` creates dry-run target asset plans. It does not write files. If a target
+already has unmanaged files or symlinks at a planned destination, the plan fails
+instead of guessing whether it is safe to overwrite.
 
-## Removal / Rename Notes
+## Public Boundary
 
-- `Supa` is no longer tracked here because that project was renamed/replaced by
-  `Non-Heroes`.
-- `story-creator` is no longer tracked because the repository was renamed and
-  replaced by `Anvil`.
-- `PieFlow` and `PieIP` were removed from the current registry on 2026-06-14
-  because those projects were deleted.
-- GitNexus is intentionally absent. It has been removed from the central system
-  and should not be reintroduced through downstream policy links.
-- ProjectLens is no longer tracked as a downstream repository because
-  `/Users/yuanfei/PieAI/ProjectLens` no longer exists locally. Its reusable
-  inspection capability now lives in this repository's `pro-gov lens` surface.
+Do not commit real user portfolio manifests into the public PGS package unless
+they are sanitized examples.
+
+Public examples should use placeholder paths such as `/path/to/web-app`, not
+machine-local paths like `/Users/name/company/private-project`.
+
+Private portfolio status, health snapshots, exact local paths, and target
+project cleanup reports belong in the user's control-plane repository.

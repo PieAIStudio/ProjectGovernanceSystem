@@ -82,9 +82,11 @@ pnpm doc-gov check
 ```
 
 This is now the preferred direction for new adoption work and for projects that
-can update scripts, local hooks, and CI in one deliberate change. Record adopted
-projects in `docs/reference/adoption/downstream-project-registry.md`. Do not
-switch only the package command while leaving old guardrails behind; that
+can update scripts, local hooks, and CI in one deliberate change. Public PGS
+does not record a maintainer's private downstream project list. If a control
+repository manages multiple targets, record that private instance in an external
+portfolio manifest and validate it with `pro-gov portfolio check --config`.
+Do not switch only the package command while leaving old guardrails behind; that
 creates a half-migrated project.
 
 ## Package Naming Model
