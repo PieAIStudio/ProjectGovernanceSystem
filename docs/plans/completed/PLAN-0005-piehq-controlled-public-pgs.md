@@ -2,7 +2,7 @@
 id: PLAN-0005
 title: PieHQ-Controlled Public PGS Implementation
 type: plan
-status: active
+status: completed
 canonical: true
 owner: ai-assisted
 created: 2026-06-29
@@ -26,7 +26,7 @@ related:
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use
 > superpowers:subagent-driven-development or superpowers:executing-plans to
-> implement this plan task by task. Steps use checkbox (`- [ ]`) syntax for
+> implement this plan task by task. Steps use checkbox (`- [x]`) syntax for
 > tracking.
 
 ## Goal
@@ -105,24 +105,24 @@ outgrows the small in-repo validators.
 ## Task 0: Baseline And Branch
 
 - [x] Create implementation branch `codex/piehq-controlled-pgs`.
-- [ ] Run `git status --short`.
+- [x] Run `git status --short`.
   Expected: no uncommitted changes except this plan while planning.
-- [ ] Run `pnpm typecheck`.
+- [x] Run `pnpm typecheck`.
   Expected: pass before implementation.
-- [ ] Run `pnpm test`.
+- [x] Run `pnpm test`.
   Expected: pass before implementation.
 
 ## Task 1: Commit This Plan
 
-- [ ] Write this plan to
+- [x] Write this plan to
   `docs/plans/active/PLAN-0005-piehq-controlled-public-pgs.md`.
-- [ ] Run `pnpm doc-gov check`.
+- [x] Run `pnpm doc-gov check`.
   Expected: pass.
-- [ ] Run `pnpm doc-gov scan --check`.
+- [x] Run `pnpm doc-gov scan --check`.
   Expected: if manifest drift is reported, run `pnpm doc-gov scan` and repeat.
-- [ ] Run `git diff --check`.
+- [x] Run `git diff --check`.
   Expected: pass.
-- [ ] Commit with:
+- [x] Commit with:
 
 ```bash
 git add docs/plans/active/PLAN-0005-piehq-controlled-public-pgs.md docs/governance/MANIFEST.yml
@@ -131,14 +131,14 @@ git commit -m "docs: plan PieHQ-controlled PGS implementation"
 
 ## Task 2: Harden The Public Package Boundary
 
-- [ ] Add a failing test in `packages/pro-gov/src/assets.test.ts` proving packed
+- [x] Add a failing test in `packages/pro-gov/src/assets.test.ts` proving packed
   assets do not include:
   - `/Users/yuanfei/PieAI/`
   - `PieHQ`
   - `docs/reference/adoption/downstream-project-registry.md`
   - `GEMINI.md`
   - `.gemini/`
-- [ ] Run:
+- [x] Run:
 
 ```bash
 pnpm --filter @pieai/pro-gov test -- assets.test.ts
@@ -146,25 +146,25 @@ pnpm --filter @pieai/pro-gov test -- assets.test.ts
 
 Expected: fail because current package still exposes adoption registry assets.
 
-- [ ] Update `packages/pro-gov/scripts/copy-assets.mjs` and related asset
+- [x] Update `packages/pro-gov/scripts/copy-assets.mjs` and related asset
   discovery so public package assets include generic docs only.
-- [ ] Replace public-facing downstream registry docs with either a generic
+- [x] Replace public-facing downstream registry docs with either a generic
   example or a note that private portfolio registries live outside PGS.
-- [ ] Run the same test again.
+- [x] Run the same test again.
   Expected: pass.
-- [ ] Run `pnpm --filter @pieai/pro-gov pack --dry-run`.
+- [x] Run `pnpm --filter @pieai/pro-gov pack --dry-run`.
   Expected: no private adoption registry or retired Gemini assets.
 
 ## Task 3: Add Portfolio Manifest Validation
 
-- [ ] Create failing tests in
+- [x] Create failing tests in
   `packages/pro-gov/src/portfolio/manifest.test.ts` for:
   - valid manifest loads;
   - duplicate target IDs fail;
   - missing target path fails;
   - control plane and execution engine are not default bulk targets;
   - `assetBundles` must be an array of strings when present.
-- [ ] Run:
+- [x] Run:
 
 ```bash
 pnpm --filter @pieai/pro-gov test -- portfolio/manifest.test.ts
@@ -172,49 +172,49 @@ pnpm --filter @pieai/pro-gov test -- portfolio/manifest.test.ts
 
 Expected: fail because the module does not exist.
 
-- [ ] Create `packages/pro-gov/src/portfolio/manifest.ts` with small
+- [x] Create `packages/pro-gov/src/portfolio/manifest.ts` with small
   TypeScript validators using `JSON.parse` and `node:fs`.
-- [ ] Re-run the test.
+- [x] Re-run the test.
   Expected: pass.
 
 ## Task 4: Add `pro-gov portfolio`
 
-- [ ] Add failing CLI tests for:
+- [x] Add failing CLI tests for:
   - `portfolio check --config <path> --json`;
   - `portfolio check` without `--config` fails clearly;
   - `portfolio plan --config <path> --target <id> --json` returns dry-run asset
     plans for the selected target.
-- [ ] Run the CLI tests.
+- [x] Run the CLI tests.
   Expected: fail because the command is not routed.
-- [ ] Create `packages/pro-gov/src/commands/portfolio.ts`.
-- [ ] Modify `packages/pro-gov/src/cli.ts` help and routing.
-- [ ] Re-run the CLI tests.
+- [x] Create `packages/pro-gov/src/commands/portfolio.ts`.
+- [x] Modify `packages/pro-gov/src/cli.ts` help and routing.
+- [x] Re-run the CLI tests.
   Expected: pass.
 
 ## Task 5: Move Skill Placement Into The Registry
 
-- [ ] Add failing tests in `packages/pro-gov/src/asset-registry/registry.test.ts`
+- [x] Add failing tests in `packages/pro-gov/src/asset-registry/registry.test.ts`
   proving every skill asset has `defaultPlacement: "auto" | "manual"`.
-- [ ] Add failing tests in
+- [x] Add failing tests in
   `packages/pro-gov/src/asset-targets/install-plan.test.ts` proving mixed
   bundles can place one skill under `.agents/skills` and another under
   `.agents/manual-skills` without a global `--placement`.
-- [ ] Add failing tests in
+- [x] Add failing tests in
   `packages/pro-gov/src/asset-targets/apply-check.test.ts` proving check reports
   duplicate auto/manual symlinks and placement drift.
-- [ ] Update registry types and validators.
-- [ ] Mechanically add `defaultPlacement` to skill entries in:
+- [x] Update registry types and validators.
+- [x] Mechanically add `defaultPlacement` to skill entries in:
   - `agent-assets/registry.json`;
   - `public-agent-assets/registry.json`.
-- [ ] Update install plan creation and lockfile shape while preserving backward
+- [x] Update install plan creation and lockfile shape while preserving backward
   compatibility for existing lockfiles.
-- [ ] Update asset check logic.
-- [ ] Re-run focused tests.
+- [x] Update asset check logic.
+- [x] Re-run focused tests.
   Expected: pass.
 
 ## Task 6: Clarify `my-skills-manager`
 
-- [ ] Update
+- [x] Update
   `agent-assets/skills/pie-skills/my-skills-manager/SKILL.md` to state:
   - `skill-installer` is for acquisition from supported public sources;
   - `my-skills-manager` is the SSOT for Yuanfei/PGS local governance;
@@ -222,7 +222,7 @@ Expected: fail because the module does not exist.
   - `.agents/skills` is the workbench and `.agents/manual-skills` is the
     explicit cabinet;
   - bulk rewrites still require inspection and a plan.
-- [ ] Run:
+- [x] Run:
 
 ```bash
 pnpm --filter @pieai/pro-gov test -- asset-registry/registry.test.ts
@@ -232,12 +232,12 @@ Expected: pass, proving the edited skill still validates as a registered asset.
 
 ## Task 7: Add PieHQ Private Portfolio Manifest
 
-- [ ] Create `/Users/yuanfei/PieAI/PieHQ/.pro-gov/portfolio.json` from
+- [x] Create `/Users/yuanfei/PieAI/PieHQ/.pro-gov/portfolio.json` from
   `/Users/yuanfei/PieAI/PieHQ/docs/canon/pie-managed-repositories.md`.
-- [ ] Keep `piehq` as `controlPlane`.
-- [ ] Keep `project-governance-system` as `executionEngine`.
-- [ ] Put ordinary managed repos in `targets`.
-- [ ] Run:
+- [x] Keep `piehq` as `controlPlane`.
+- [x] Keep `project-governance-system` as `executionEngine`.
+- [x] Put ordinary managed repos in `targets`.
+- [x] Run:
 
 ```bash
 node packages/pro-gov/dist/cli.js portfolio check --config /Users/yuanfei/PieAI/PieHQ/.pro-gov/portfolio.json --json
@@ -245,22 +245,22 @@ node packages/pro-gov/dist/cli.js portfolio check --config /Users/yuanfei/PieAI/
 
 Expected: pass after PGS build.
 
-- [ ] Update PieHQ docs and scripts so JSON is execution SSOT and Markdown is
+- [x] Update PieHQ docs and scripts so JSON is execution SSOT and Markdown is
   human explanation.
 
 ## Task 8: Align PGS SSOT Docs
 
-- [ ] Update `docs/policy/sync-strategy.md` so private downstream registries no
+- [x] Update `docs/policy/sync-strategy.md` so private downstream registries no
   longer belong in public PGS adoption docs.
-- [ ] Update `docs/policy/upstreaming-policy.md` if needed to mention external
+- [x] Update `docs/policy/upstreaming-policy.md` if needed to mention external
   portfolio manifests.
-- [ ] Update `docs/reference/adoption/downstream-project-registry.md` by moving
+- [x] Update `docs/reference/adoption/downstream-project-registry.md` by moving
   private content out of the public path or replacing it with a generic example.
-- [ ] Update `packages/pro-gov/README.md` and `packages/pro-gov/cli-guide.md`
+- [x] Update `packages/pro-gov/README.md` and `packages/pro-gov/cli-guide.md`
   with the `portfolio` command and public/private boundary.
-- [ ] Archive obsolete docs only when they are actively misleading; otherwise
+- [x] Archive obsolete docs only when they are actively misleading; otherwise
   shorten and point to the new SSOT.
-- [ ] Run:
+- [x] Run:
 
 ```bash
 pnpm doc-gov check
@@ -272,24 +272,24 @@ Expected: pass.
 
 ## Task 9: Downstream Cleanup
 
-- [ ] Build PGS.
-- [ ] Use the PieHQ manifest to list target projects.
-- [ ] For each target, inspect:
+- [x] Build PGS.
+- [x] Use the PieHQ manifest to list target projects.
+- [x] For each target, inspect:
   - `GEMINI.md`;
   - `.gemini/`;
   - `.agents/skills`;
   - `.agents/manual-skills`;
   - `.pro-gov/assets.lock.json`.
-- [ ] Remove retired Gemini files and folders.
-- [ ] Use PGS asset checks to identify placement drift before changing symlinks.
-- [ ] Move or relink skills only when the registry and lockfile prove the
+- [x] Remove retired Gemini files and folders.
+- [x] Use PGS asset checks to identify placement drift before changing symlinks.
+- [x] Move or relink skills only when the registry and lockfile prove the
   intended target.
-- [ ] Produce a cleanup report with project name, removed files, symlink
+- [x] Produce a cleanup report with project name, removed files, symlink
   changes, and verification command result.
 
 ## Task 10: Final Verification
 
-- [ ] Run:
+- [x] Run:
 
 ```bash
 pnpm typecheck
@@ -308,7 +308,7 @@ git diff --check
 
 Expected: pass.
 
-- [ ] Inspect packed PGS assets for private leakage:
+- [x] Inspect packed PGS assets for private leakage:
 
 ```bash
 tmp="$(mktemp -d)"
@@ -321,21 +321,21 @@ Expected: no matches.
 
 ## Task 11: User-Facing Change Report
 
-- [ ] Explain what changed for using PGS:
+- [x] Explain what changed for using PGS:
   - where public commands live;
   - how `portfolio check` works;
   - what is no longer packaged;
   - how skill placement is decided.
-- [ ] Explain what changed for using PieHQ:
+- [x] Explain what changed for using PieHQ:
   - where `.pro-gov/portfolio.json` lives;
   - how PieHQ controls PGS without containing PGS;
   - how to verify the connection.
-- [ ] Explain downstream cleanup:
+- [x] Explain downstream cleanup:
   - which projects changed;
   - which `GEMINI.md` or `.gemini/` files were removed;
   - which skill symlinks moved;
   - which projects need follow-up.
-- [ ] Use beginner-friendly examples:
+- [x] Use beginner-friendly examples:
   - PieHQ as the dispatch office;
   - PGS as the public tool;
   - `portfolio.json` as the machine-readable dispatch sheet;
