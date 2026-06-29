@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-29T14:46:42.509Z
+generated_at: 2026-06-29T15:02:15.981Z
 generator_version: doc-gov@0.3.5
-docs_count: 27
+docs_count: 28
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -32,6 +32,13 @@ docs:
     canonical: true
     last_reviewed: 2026-05-09
     pinned: true
+  - id: PLAN-0005
+    path: docs/plans/active/PLAN-0005-piehq-controlled-public-pgs.md
+    type: plan
+    status: active
+    canonical: true
+    last_reviewed: 2026-06-29
+    pinned: false
   - id: PLAN-0001
     path: docs/plans/completed/PLAN-0001-pro-gov-project-package.md
     type: plan
