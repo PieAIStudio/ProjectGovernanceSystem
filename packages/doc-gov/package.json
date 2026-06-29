@@ -36,18 +36,18 @@
   },
   "scripts": {
     "dev": "tsx src/cli.ts",
-    "build": "node node_modules/esbuild/bin/esbuild src/cli.ts --bundle --platform=node --format=esm --target=node22 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
+    "build": "esbuild src/cli.ts --bundle --platform=node --format=esm --target=node24 --banner:js=\"#!/usr/bin/env node\" --outfile=dist/cli.js && chmod +x dist/cli.js",
     "prepack": "pnpm build",
     "test": "tsx --test src/**/*.test.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "@types/node": "25.0.0",
+    "@types/node": "24.13.2",
     "esbuild": "0.27.7",
     "tsx": "4.21.0",
     "typescript": "6.0.3"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=24 <25"
   }
 }

@@ -3,7 +3,11 @@
   "private": true,
   "version": "0.3.5",
   "description": "Central upstream for PieAI project documentation governance, agents routing, and workflow profiles.",
+  "packageManager": "pnpm@11.9.0",
   "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "doc-gov": "node packages/doc-gov/dist/cli.js",
     "pro-gov": "node packages/pro-gov/dist/cli.js",

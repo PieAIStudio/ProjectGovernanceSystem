@@ -6,6 +6,7 @@ coverage/
 tmp/
 temp/
 .worktrees/
+.agents/
 packages/pro-gov/assets/
 agent-assets/
 .devspace-visual/
