@@ -1,8 +1,8 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { basename, join } from 'node:path';
 
 import { hashAgentAssetContent } from '../asset-registry/loader';
-import type { AgentAssetRegistry } from '../asset-registry/registry';
+import type { AgentAssetRegistry, AgentAssetRegistryEntry } from '../asset-registry/registry';
 
 export type AssetCheckIssueType =
   | 'missing-lock'
@@ -12,7 +12,9 @@ export type AssetCheckIssueType =
   | 'missing-source'
   | 'hash-drift'
   | 'unknown-asset'
-  | 'unsupported-host-folder';
+  | 'unsupported-host-folder'
+  | 'duplicate-skill-placement'
+  | 'skill-placement-drift';
 
 export interface AssetCheckIssue {
   type: AssetCheckIssueType;
@@ -28,6 +30,7 @@ export interface AssetCheckResult {
 
 interface AssetLockfile {
   host?: string;
+  placement?: string;
   assets?: AssetLockEntry[];
 }
 
@@ -78,6 +81,11 @@ export function checkInstalledAssets(options: {
     const hostFolderIssue = checkHostFolder(lockfile.host, asset.kind, entry.targetPath, entry.id);
     if (hostFolderIssue) {
       issues.push(hostFolderIssue);
+    }
+
+    const placementDriftIssue = checkRegistryPlacement(lockfile, asset, entry.targetPath);
+    if (placementDriftIssue) {
+      issues.push(placementDriftIssue);
     }
 
     if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) {
@@ -132,7 +140,51 @@ export function checkInstalledAssets(options: {
     }
   }
 
+  issues.push(...checkDuplicateSkillPlacements(options.targetDir, options.registry));
+
   return { targetDir: options.targetDir, issues };
+}
+
+function checkRegistryPlacement(
+  lockfile: AssetLockfile,
+  asset: AgentAssetRegistryEntry,
+  targetPath: string,
+): AssetCheckIssue | undefined {
+  if (lockfile.placement !== 'registry') return undefined;
+  if (asset.kind !== 'skill') return undefined;
+  const expectedPath = expectedRegistrySkillTargetPath(lockfile.host, asset.sourcePath, asset.defaultPlacement);
+  if (!expectedPath || targetPath === expectedPath) return undefined;
+  return {
+    type: 'skill-placement-drift',
+    id: asset.id,
+    targetPath,
+    message: `Managed skill target ${targetPath} does not match registry placement; expected ${expectedPath}`,
+  };
+}
+
+function checkDuplicateSkillPlacements(
+  targetDir: string,
+  registry: AgentAssetRegistry,
+): AssetCheckIssue[] {
+  const issues: AssetCheckIssue[] = [];
+  for (const asset of registry.assets) {
+    if (asset.kind !== 'skill') continue;
+    const skillName = basename(asset.sourcePath);
+    const autoPath = `.agents/skills/${skillName}`;
+    const manualPath = `.agents/manual-skills/${skillName}`;
+    if (
+      pathExistsEvenIfDanglingSymlink(join(targetDir, autoPath)) &&
+      pathExistsEvenIfDanglingSymlink(join(targetDir, manualPath))
+    ) {
+      issues.push({
+        type: 'duplicate-skill-placement',
+        id: asset.id,
+        targetPath: `${autoPath} + ${manualPath}`,
+        message: `Skill is linked in both auto and manual locations: ${skillName}`,
+      });
+    }
+  }
+  return issues;
 }
 
 function checkHostFolder(
@@ -169,6 +221,23 @@ function expectedSkillTargetPrefixes(host: string | undefined): string[] | undef
   if (host === 'claude-code') return ['.claude/skills/'];
   if (host === 'codex' || host === 'gemini-cli' || host === 'antigravity') {
     return ['.agents/skills/', '.agents/manual-skills/'];
+  }
+  return undefined;
+}
+
+function expectedRegistrySkillTargetPath(
+  host: string | undefined,
+  sourcePath: string,
+  placement: string | undefined,
+): string | undefined {
+  const skillName = basename(sourcePath);
+  if (host === 'claude-code') {
+    return placement === 'manual' ? undefined : `.claude/skills/${skillName}`;
+  }
+  if (host === 'codex' || host === 'gemini-cli' || host === 'antigravity') {
+    return placement === 'manual'
+      ? `.agents/manual-skills/${skillName}`
+      : `.agents/skills/${skillName}`;
   }
   return undefined;
 }

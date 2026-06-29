@@ -92,7 +92,8 @@
         "sanitized": false,
         "lastReviewed": "2026-06-25",
         "reviewNotes": "Public copy is byte-for-byte aligned with the private source at review time."
-      }
+      },
+      "defaultPlacement": "auto"
     },
     {
       "id": "pie-skills/doc-cross-validator",
@@ -124,7 +125,8 @@
         "sanitized": true,
         "lastReviewed": "2026-06-25",
         "reviewNotes": "Public copy keeps the validation workflow while removing private checkout wording."
-      }
+      },
+      "defaultPlacement": "auto"
     }
   ]
 }

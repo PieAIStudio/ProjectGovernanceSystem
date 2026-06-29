@@ -1,6 +1,15 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -68,6 +77,40 @@ test('packed package dependencies use registry-installable ranges', () => {
 
     assert.equal(docGovRange?.startsWith('workspace:'), false);
     assert.match(docGovRange ?? '', /^\^\d+\.\d+\.\d+$/);
+  } finally {
+    rmSync(targetDir, { recursive: true, force: true });
+  }
+});
+
+test('packed package does not expose private portfolio or retired Gemini assets', () => {
+  const targetDir = mkdtempSync(join(tmpdir(), 'pro-gov-private-leak-'));
+  const tarballPath = join(targetDir, 'pro-gov.tgz');
+
+  try {
+    const pack = spawnSync('pnpm', ['pack', '--out', tarballPath], {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    });
+    assert.equal(pack.status, 0, pack.stderr || pack.stdout);
+
+    const list = spawnSync('tar', ['-tzf', tarballPath], { encoding: 'utf8' });
+    assert.equal(list.status, 0, list.stderr || list.stdout);
+    assert.doesNotMatch(list.stdout, /downstream-project-registry\.md/);
+    assert.doesNotMatch(list.stdout, /GEMINI\.md/);
+    assert.doesNotMatch(list.stdout, /\.gemini\//);
+
+    const extractDir = join(targetDir, 'extract');
+    mkdirSync(extractDir);
+    const extract = spawnSync('tar', ['-xzf', tarballPath, '-C', extractDir], { encoding: 'utf8' });
+    assert.equal(extract.status, 0, extract.stderr || extract.stdout);
+
+    const packedText = listFiles(join(extractDir, 'package'))
+      .filter((path) => statSync(path).isFile())
+      .map((path) => readFileSync(path, 'utf8'))
+      .join('\n');
+
+    assert.doesNotMatch(packedText, /\/Users\/yuanfei\/PieAI\//);
+    assert.doesNotMatch(packedText, /\bPieHQ\b/);
   } finally {
     rmSync(targetDir, { recursive: true, force: true });
   }
@@ -326,7 +369,7 @@ test('assets apply and check complete a managed install flow', { skip: !hasProje
     },
   );
   assert.equal(applyResult.status, 0);
-  assert.equal(existsSync(join(targetDir, '.agents/skills/project-architecture-lens')), true);
+  assert.equal(existsSync(join(targetDir, '.agents/manual-skills/project-architecture-lens')), true);
 
   const checkResult = spawnSync(
     process.execPath,
@@ -389,6 +432,7 @@ test('assets public-check verifies promoted public assets against private source
             sourcePath: 'skills/pie-skills/example',
             hosts: ['codex'],
             tags: ['skill'],
+            defaultPlacement: 'auto',
             publishable: true,
             origin: 'Promoted from private source.',
             notes: 'Public reviewed copy.',
@@ -510,4 +554,17 @@ function createTempTargetDir(): string {
   const targetDir = join(tmpdir(), `pro-gov-cli-target-${Date.now()}-${Math.random().toString(16).slice(2)}`);
   mkdirSync(targetDir, { recursive: true });
   return targetDir;
+}
+
+function listFiles(dir: string): string[] {
+  const files: string[] = [];
+  for (const entry of readdirSync(dir)) {
+    const absolutePath = join(dir, entry);
+    if (statSync(absolutePath).isDirectory()) {
+      files.push(...listFiles(absolutePath));
+    } else {
+      files.push(absolutePath);
+    }
+  }
+  return files.sort();
 }

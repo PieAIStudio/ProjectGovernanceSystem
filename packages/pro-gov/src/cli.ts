@@ -2,6 +2,7 @@ import { runAssets } from './commands/assets';
 import { runDoctor } from './commands/doctor';
 import { runInit } from './commands/init';
 import { runLens } from './commands/lens';
+import { runPortfolio } from './commands/portfolio';
 import { runSync } from './commands/sync';
 
 const COMMANDS = [
@@ -13,6 +14,8 @@ const COMMANDS = [
   'assets check [--target <path>] [--json]',
   'assets public-check [--public-root <path>] [--private-root <path>] [--json]',
   'assets npx add|update ... --plan',
+  'portfolio check --config <path> [--json]',
+  'portfolio plan --config <path> [--target <id|all>] [--json]',
   'lens scan [--target <path>] [--json]',
   'lens inspect [--target <path>] [--format text|json]',
   'lens report --target <path> --out <path>',
@@ -30,6 +33,8 @@ if (!command || command === '--help' || command === '-h') {
   process.exitCode = runAssets(process.argv.slice(3));
 } else if (command === 'lens') {
   process.exitCode = runLens(process.argv.slice(3));
+} else if (command === 'portfolio') {
+  process.exitCode = runPortfolio(process.argv.slice(3));
 } else if (command === 'init') {
   process.exitCode = runInit(process.argv.slice(3));
 } else if (command === 'sync') {

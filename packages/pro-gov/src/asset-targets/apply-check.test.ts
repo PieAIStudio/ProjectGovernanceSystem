@@ -31,6 +31,7 @@ const registry: AgentAssetRegistry = {
       sourcePath: 'skills/pie-skills/example',
       hosts: ['codex'],
       tags: ['skill'],
+      defaultPlacement: 'auto',
       publishable: false,
       origin: 'test',
       notes: 'test',
@@ -114,6 +115,56 @@ test('checkInstalledAssets reports managed skill targets in unsupported host fol
 
   const result = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
   assert.ok(result.issues.some((issue) => issue.type === 'unsupported-host-folder'));
+});
+
+test('checkInstalledAssets reports duplicate auto and manual skill links', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  applyAssetInstallPlan(createPlan(agentAssetsDir, targetDir));
+  mkdirSync(join(targetDir, '.agents/manual-skills'), { recursive: true });
+  symlinkSync(
+    join(agentAssetsDir, 'skills/pie-skills/example'),
+    join(targetDir, '.agents/manual-skills/example'),
+  );
+
+  const result = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
+
+  assert.ok(result.issues.some((issue) => issue.type === 'duplicate-skill-placement'));
+});
+
+test('checkInstalledAssets reports registry placement drift', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  const manualRegistry: AgentAssetRegistry = {
+    schemaVersion: 1,
+    assets: [{ ...registry.assets[0], defaultPlacement: 'manual' }],
+  };
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  symlinkSync(join(agentAssetsDir, 'skills/pie-skills/example'), join(targetDir, '.agents/skills/example'));
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        placement: 'registry',
+        bundleIds: ['base-governance'],
+        assets: [
+          {
+            id: 'pie-skills/example',
+            sourcePath: 'skills/pie-skills/example',
+            targetPath: '.agents/skills/example',
+            contentHash: 'sha256:test',
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = checkInstalledAssets({ targetDir, agentAssetsDir, registry: manualRegistry });
+
+  assert.ok(result.issues.some((issue) => issue.type === 'skill-placement-drift'));
 });
 
 function createPlan(agentAssetsDir: string, targetDir: string, placement: 'auto' | 'manual' = 'auto') {

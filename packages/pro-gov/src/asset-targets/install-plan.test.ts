@@ -20,6 +20,22 @@ const registry: AgentAssetRegistry = {
       sourcePath: 'skills/pie-skills/example',
       hosts: ['codex', 'claude-code', 'gemini-cli', 'antigravity'],
       tags: ['skill'],
+      defaultPlacement: 'auto',
+      publishable: false,
+      origin: 'test',
+      notes: 'test',
+    },
+    {
+      id: 'pie-skills/manual-example',
+      title: 'Manual Example',
+      family: 'pie-skills',
+      kind: 'skill',
+      visibility: 'private',
+      sourceKind: 'local',
+      sourcePath: 'skills/pie-skills/manual-example',
+      hosts: ['codex', 'claude-code', 'gemini-cli', 'antigravity'],
+      tags: ['skill'],
+      defaultPlacement: 'manual',
       publishable: false,
       origin: 'test',
       notes: 'test',
@@ -169,6 +185,32 @@ test('createAssetInstallPlan maps codex manual placement to manual skill directo
   );
 });
 
+test('createAssetInstallPlan uses per-skill registry placement by default', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+
+  const plan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [
+      {
+        id: 'mixed-placement',
+        title: 'Mixed Placement',
+        description: 'Mixed',
+        assets: ['pie-skills/example', 'pie-skills/manual-example'],
+      },
+    ],
+    bundleIds: ['mixed-placement'],
+    host: 'codex',
+  });
+
+  assert.equal(plan.placement, 'registry');
+  assert.deepEqual(skillTargetPaths(plan), [
+    '.agents/manual-skills/manual-example',
+    '.agents/skills/example',
+  ]);
+});
+
 test('createAssetInstallPlan reports unsupported hosts and missing asset ids', () => {
   const { agentAssetsDir, targetDir } = createFixture();
 
@@ -261,9 +303,11 @@ function createFixture(): { agentAssetsDir: string; targetDir: string } {
   const agentAssetsDir = join(baseDir, 'agent-assets');
   const targetDir = join(baseDir, 'target');
   mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true });
+  mkdirSync(join(agentAssetsDir, 'skills/pie-skills/manual-example'), { recursive: true });
   mkdirSync(join(agentAssetsDir, 'rules/pie-rules'), { recursive: true });
   mkdirSync(targetDir, { recursive: true });
   writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/SKILL.md'), '# Example\n');
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/manual-example/SKILL.md'), '# Manual\n');
   writeFileSync(join(agentAssetsDir, 'rules/pie-rules/example-rule.md'), '# Rule\n');
   return { agentAssetsDir, targetDir };
 }

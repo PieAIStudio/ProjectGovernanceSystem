@@ -1,0 +1,100 @@
+import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { fileURLToPath } from 'node:url';
+import test from 'node:test';
+
+const packageRoot = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
+
+test('portfolio check requires an explicit config path', () => {
+  const result = spawnSync(process.execPath, [join(packageRoot, 'dist/cli.js'), 'portfolio', 'check'], {
+    cwd: packageRoot,
+    encoding: 'utf8',
+  });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /Expected --config <path>/);
+});
+
+test('portfolio check --json validates a manifest', () => {
+  const fixture = createPortfolioFixture();
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'portfolio', 'check', '--config', fixture.configPath, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.ok, true);
+  assert.deepEqual(parsed.targetIds, ['ownmyspace']);
+});
+
+test('portfolio plan --target --json returns dry-run asset plans for one target', () => {
+  const fixture = createPortfolioFixture();
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'portfolio',
+      'plan',
+      '--config',
+      fixture.configPath,
+      '--target',
+      'ownmyspace',
+      '--json',
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.targets.length, 1);
+  assert.equal(parsed.targets[0].id, 'ownmyspace');
+  assert.equal(parsed.targets[0].plan.dryRun, true);
+  assert.deepEqual(parsed.targets[0].plan.bundleIds, ['base-governance']);
+});
+
+function createPortfolioFixture(): { configPath: string } {
+  const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-cli-'));
+  const controlPlane = join(rootDir, 'PieHQ');
+  const executionEngine = join(rootDir, 'ProjectGovernanceSystem');
+  const target = join(rootDir, 'OwnMySpace');
+  mkdirSync(controlPlane);
+  mkdirSync(executionEngine);
+  mkdirSync(target);
+  const configPath = join(rootDir, 'portfolio.json');
+  writeFileSync(
+    configPath,
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        portfolioId: 'pieai',
+        controlPlane: { id: 'piehq', path: controlPlane },
+        executionEngine: { id: 'project-governance-system', path: executionEngine },
+        targets: [
+          {
+            id: 'ownmyspace',
+            path: target,
+            profile: 'engineering-runtime',
+            assetBundles: ['base-governance'],
+            sharedRules: ['pie-product-technology-stack'],
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+  return { configPath };
+}

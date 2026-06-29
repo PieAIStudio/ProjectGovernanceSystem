@@ -26,7 +26,7 @@ for (const assetRoot of assetRoots) {
   cpSync(join(repoRoot, assetRoot), join(assetsRoot, assetRoot), {
     dereference: false,
     errorOnExist: false,
-    filter: (source) => !isPlatformMetadata(basename(source)),
+    filter: (source) => !isPlatformMetadata(basename(source)) && !isPrivateAdoptionRegistry(source),
     force: true,
     recursive: true,
   });
@@ -34,4 +34,8 @@ for (const assetRoot of assetRoots) {
 
 function isPlatformMetadata(name) {
   return name === '.DS_Store' || name === 'Thumbs.db' || name.startsWith('._');
+}
+
+function isPrivateAdoptionRegistry(source) {
+  return source.endsWith('docs/reference/adoption/downstream-project-registry.md');
 }

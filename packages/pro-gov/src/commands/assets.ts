@@ -306,7 +306,7 @@ interface TargetJsonOptions {
 interface PlanOptions extends TargetJsonOptions {
   bundleIds: string[];
   host: AssetRegistryHost;
-  placement: AssetSkillPlacement;
+  placement?: AssetSkillPlacement;
   outPath?: string;
 }
 
@@ -405,7 +405,6 @@ function parsePlanOptions(args: string[]): PlanParseResult {
     json: false,
     bundleIds: [],
     host: 'codex',
-    placement: 'auto',
   };
 
   for (let index = 0; index < args.length; index += 1) {

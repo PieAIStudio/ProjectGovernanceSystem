@@ -17,6 +17,7 @@ const baseAsset = {
   sourcePath: 'skills/pie-skills/screenwalk',
   hosts: ['codex'],
   tags: ['ui'],
+  defaultPlacement: 'auto',
   publishable: false,
   origin: 'OneDrive/MyProjectSkills/screenwalk',
   notes: 'Imported from Yuanfei custom skills.',
@@ -74,6 +75,26 @@ test('validateAssetRegistry reports unsupported hosts', () => {
   });
 
   assert.ok(issues.some((issue) => issue.type === 'unsupported-host' && issue.id === 'screenwalk'));
+});
+
+test('validateAssetRegistry requires supported default placement for skill assets', () => {
+  const { defaultPlacement: _removed, ...withoutPlacement } = baseAsset;
+
+  const issues = validateAssetRegistry({
+    schemaVersion: 1,
+    assets: [
+      withoutPlacement,
+      { ...baseAsset, id: 'bad-placement', defaultPlacement: 'sideways' as never },
+    ],
+  });
+
+  assert.deepEqual(
+    issues
+      .filter((issue) => issue.type === 'unsupported-skill-placement')
+      .map((issue) => issue.id)
+      .sort(),
+    ['bad-placement', 'screenwalk'],
+  );
 });
 
 test('validateAssetRegistry reports missing source paths and missing skill files', () => {

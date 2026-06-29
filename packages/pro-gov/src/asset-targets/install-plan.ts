@@ -2,7 +2,12 @@ import { existsSync, lstatSync, readFileSync } from 'node:fs';
 import { basename, dirname, join } from 'node:path';
 
 import { createAgentAssetLockEntries } from '../asset-registry/loader';
-import type { AgentAssetRegistry, AgentAssetRegistryEntry, AssetRegistryHost } from '../asset-registry/registry';
+import type {
+  AgentAssetRegistry,
+  AgentAssetRegistryEntry,
+  AssetRegistryHost,
+  AssetRegistrySkillPlacement,
+} from '../asset-registry/registry';
 import type { AgentAssetBundle } from '../asset-bundles/bundles';
 
 export type AssetInstallAction =
@@ -33,13 +38,14 @@ export interface AssetInstallPlan {
   dryRun: true;
   targetDir: string;
   host: AssetRegistryHost;
-  placement: AssetSkillPlacement;
+  placement: AssetInstallPlacement;
   bundleIds: string[];
   assetIds: string[];
   actions: AssetInstallAction[];
 }
 
 export type AssetSkillPlacement = 'auto' | 'manual';
+export type AssetInstallPlacement = AssetSkillPlacement | 'registry';
 
 export interface CreateAssetInstallPlanOptions {
   targetDir: string;
@@ -52,7 +58,7 @@ export interface CreateAssetInstallPlanOptions {
 }
 
 export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): AssetInstallPlan {
-  const placement = options.placement ?? 'auto';
+  const placement: AssetInstallPlacement = options.placement ?? 'registry';
   const assetsById = new Map(options.registry.assets.map((asset) => [asset.id, asset]));
   const bundlesById = new Map(options.bundles.map((bundle) => [bundle.id, bundle]));
   const assetIds = resolveBundleAssetIds(options.bundleIds, bundlesById);
@@ -134,7 +140,7 @@ function createAssetAction(
   agentAssetsDir: string,
   targetDir: string,
   host: AssetRegistryHost,
-  placement: AssetSkillPlacement,
+  placement: AssetInstallPlacement,
   managedTargets: ReadonlySet<string>,
 ): AssetInstallAction {
   const sourcePath = join(agentAssetsDir, asset.sourcePath);
@@ -166,16 +172,17 @@ function createAssetAction(
 function resolveHostTargetPath(
   asset: AgentAssetRegistryEntry,
   host: AssetRegistryHost,
-  placement: AssetSkillPlacement,
+  placement: AssetInstallPlacement,
 ): string {
   if (asset.kind === 'skill') {
+    const effectivePlacement = resolveSkillPlacement(asset, placement);
     if (host === 'claude-code') {
       if (placement === 'manual') {
         throw new Error('Manual skill placement is only supported for .agents hosts');
       }
       return `.claude/skills/${basename(asset.sourcePath)}`;
     }
-    if (placement === 'manual') {
+    if (effectivePlacement === 'manual') {
       return `.agents/manual-skills/${basename(asset.sourcePath)}`;
     }
     return `.agents/skills/${basename(asset.sourcePath)}`;
@@ -184,6 +191,14 @@ function resolveHostTargetPath(
     return `.pro-gov/agent-assets/rules/${basename(asset.sourcePath)}`;
   }
   return `.pro-gov/agent-assets/commands/${basename(asset.sourcePath)}`;
+}
+
+function resolveSkillPlacement(
+  asset: AgentAssetRegistryEntry,
+  placement: AssetInstallPlacement,
+): AssetRegistrySkillPlacement {
+  if (placement !== 'registry') return placement;
+  return asset.defaultPlacement ?? 'auto';
 }
 
 function createDirectoryActions(actions: readonly AssetInstallAction[]): AssetInstallAction[] {

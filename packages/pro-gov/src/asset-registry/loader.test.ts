@@ -20,6 +20,7 @@ const baseAsset = {
   sourcePath: 'skills/pie-skills/example',
   hosts: ['codex'],
   tags: ['skill'],
+  defaultPlacement: 'auto',
   publishable: false,
   origin: 'test',
   notes: 'test',

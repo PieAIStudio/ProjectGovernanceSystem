@@ -10,6 +10,7 @@ export type AssetRegistryFamily =
 export type AssetRegistryKind = 'skill' | 'rule' | 'command';
 export type AssetRegistrySourceKind = 'local' | 'local-pack' | 'npx';
 export type AssetRegistryHost = 'codex' | 'claude-code' | 'gemini-cli' | 'antigravity';
+export type AssetRegistrySkillPlacement = 'auto' | 'manual';
 
 export interface AgentAssetRegistryEntry {
   id: string;
@@ -21,6 +22,7 @@ export interface AgentAssetRegistryEntry {
   sourcePath: string;
   hosts: readonly AssetRegistryHost[];
   tags: readonly string[];
+  defaultPlacement?: AssetRegistrySkillPlacement;
   publishable: boolean;
   origin: string;
   notes: string;
@@ -49,6 +51,7 @@ export type AssetRegistryIssueType =
   | 'unsupported-enum'
   | 'missing-source-path'
   | 'missing-skill-file'
+  | 'unsupported-skill-placement'
   | 'internal-npx-compatibility-layer';
 
 export interface AssetRegistryIssue {
@@ -75,6 +78,7 @@ const supportedVisibilities = new Set<AssetRegistryVisibility>([
   'third-party',
 ]);
 const supportedSourceKinds = new Set<AssetRegistrySourceKind>(['local', 'local-pack', 'npx']);
+const supportedSkillPlacements = new Set<AssetRegistrySkillPlacement>(['auto', 'manual']);
 const supportedHosts = new Set<AssetRegistryHost>([
   'codex',
   'claude-code',
@@ -139,6 +143,17 @@ export function validateAssetRegistry(
           message: `Unsupported asset host: ${host}`,
         });
       }
+    }
+
+    if (
+      asset.kind === 'skill' &&
+      !supportedSkillPlacements.has(asset.defaultPlacement as AssetRegistrySkillPlacement)
+    ) {
+      issues.push({
+        type: 'unsupported-skill-placement',
+        id: asset.id,
+        message: `Skill asset must declare defaultPlacement auto or manual: ${asset.id}`,
+      });
     }
 
     if (!isSafeRegistrySourcePath(asset.sourcePath)) {
