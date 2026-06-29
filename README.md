@@ -200,7 +200,7 @@ assets.
 
 You can inspect PGS without allowing it to overwrite a project.
 
-Requires Node.js `22.12.0` or newer.
+Requires Node.js `24.x`.
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list

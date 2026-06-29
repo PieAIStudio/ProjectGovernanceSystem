@@ -19,7 +19,7 @@ router or local truth.
 
 ## Install
 
-Requires Node.js `22.12.0` or newer.
+Requires Node.js `24.x`.
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
