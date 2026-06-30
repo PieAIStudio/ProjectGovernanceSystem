@@ -64,6 +64,21 @@ test('hashAgentAssetContent produces stable content hashes and changes on conten
   assert.notEqual(firstHash, editedHash);
 });
 
+test('hashAgentAssetContent ignores generated local cache noise', () => {
+  const agentAssetsDir = createTempAgentAssetsDir();
+  mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example/scripts'), { recursive: true });
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/SKILL.md'), '# Example\n');
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/scripts/tool.py'), 'print("ok")\n');
+
+  const cleanHash = hashAgentAssetContent(baseAsset, agentAssetsDir);
+
+  mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example/scripts/__pycache__'), { recursive: true });
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/scripts/__pycache__/tool.cpython-314.pyc'), 'cache\n');
+  writeFileSync(join(agentAssetsDir, 'skills/pie-skills/example/.DS_Store'), 'finder\n');
+
+  assert.equal(hashAgentAssetContent(baseAsset, agentAssetsDir), cleanHash);
+});
+
 test('createAgentAssetLockEntries creates sorted lock entries with hashes', () => {
   const agentAssetsDir = createTempAgentAssetsDir();
   mkdirSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true });

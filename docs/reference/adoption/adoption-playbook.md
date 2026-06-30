@@ -129,6 +129,12 @@ The plan file is the safety gate. Review it before applying. It creates managed
 symlinks and `.pro-gov/assets.lock.json`; it should not overwrite unmanaged
 project files.
 
+Managed symlinks are relative by default. A target project's normal
+`assets check` validates the local lock and linked content without requiring the
+public package to know a maintainer's private registry. Maintainers can add
+`--strict-registry`, or run `pro-gov portfolio assets-check --config
+/path/to/portfolio.json`, when they need central private-registry validation.
+
 When a maintainer promotes a private asset into `public-agent-assets/`, the
 public registry must record the private-source hash and the public-copy hash.
 Run this in the upstream checkout before publishing:

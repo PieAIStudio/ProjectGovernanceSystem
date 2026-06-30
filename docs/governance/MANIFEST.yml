@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-30T02:41:59.970Z
-generator_version: doc-gov@0.3.6
+generated_at: 2026-06-30T03:15:40.475Z
+generator_version: doc-gov@0.3.7
 docs_count: 28
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9

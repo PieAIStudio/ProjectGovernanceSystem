@@ -67,8 +67,7 @@ instance is intentionally not copied into this public PGS reference.
       "id": "web-app",
       "path": "/path/to/web-app",
       "profile": "engineering-runtime",
-      "assetBundles": ["base-governance", "frontend-app"],
-      "sharedRules": ["organization-technology-stack"]
+      "assetBundles": ["base-governance", "frontend-app"]
     }
   ]
 }
@@ -83,8 +82,12 @@ instance is intentionally not copied into this public PGS reference.
 | `controlPlane` | The private coordination repository. It is metadata, not a default downstream target. |
 | `executionEngine` | The PGS checkout or package source used to run commands. It is metadata, not a default downstream target. |
 | `targets` | Repositories PGS may inspect, check, or plan for by default. |
+| `profile` | Optional target profile. Current values are `engineering-runtime` and `doc-only`. |
 | `assetBundles` | PGS asset bundles to plan for that target. |
-| `sharedRules` | Optional names of external shared rules that the control plane expects the target to use. |
+
+Do not add `sharedRules` to the manifest yet. Shared rules are real, but this
+manifest does not plan, apply, or check them today; keeping a field for them
+would create a false sense of management.
 
 ## Commands
 
@@ -92,6 +95,7 @@ instance is intentionally not copied into this public PGS reference.
 pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio check --config /path/to/portfolio.json --json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
+pro-gov portfolio assets-check --config /path/to/portfolio.json --json
 ```
 
 `check` validates the manifest and local paths.
@@ -99,6 +103,11 @@ pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 `plan` creates dry-run target asset plans. It does not write files. If a target
 already has unmanaged files or symlinks at a planned destination, the plan fails
 instead of guessing whether it is safe to overwrite.
+
+`assets-check` runs central strict asset verification for the selected targets.
+It uses `executionEngine.path/agent-assets` when that private registry exists,
+so a control repository can validate private skill ids and placement without
+bundling those private assets into the public npm package.
 
 ## Public Boundary
 

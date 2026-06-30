@@ -1,7 +1,7 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 import { basename, join } from 'node:path';
 
-import { hashAgentAssetContent } from '../asset-registry/loader';
+import { hashAgentAssetContent, hashAssetPathContent } from '../asset-registry/loader';
 import type { AgentAssetRegistry, AgentAssetRegistryEntry } from '../asset-registry/registry';
 
 export type AssetCheckIssueType =
@@ -46,6 +46,7 @@ export function checkInstalledAssets(options: {
   targetDir: string;
   agentAssetsDir: string;
   registry: AgentAssetRegistry;
+  strictRegistry?: boolean;
 }): AssetCheckResult {
   const lockfilePath = join(options.targetDir, '.pro-gov/assets.lock.json');
   if (!existsSync(lockfilePath)) {
@@ -63,23 +64,22 @@ export function checkInstalledAssets(options: {
   const registryById = new Map(options.registry.assets.map((asset) => [asset.id, asset]));
   const lockfile = JSON.parse(readFileSync(lockfilePath, 'utf8')) as AssetLockfile;
   const issues: AssetCheckIssue[] = [];
+  const strictRegistry = options.strictRegistry ?? false;
 
   for (const entry of lockfile.assets ?? []) {
     const asset = registryById.get(entry.id);
     const targetAbsolutePath = join(options.targetDir, entry.targetPath);
-    const sourceAbsolutePath = join(options.agentAssetsDir, entry.sourcePath);
 
-    if (!asset) {
+    if (!asset && strictRegistry) {
       issues.push({
         type: 'unknown-asset',
         id: entry.id,
         targetPath: entry.targetPath,
         message: `Lockfile references unknown asset: ${entry.id}`,
       });
-      continue;
     }
 
-    if (asset.kind === 'skill' && asset.defaultScope === 'user') {
+    if (asset?.kind === 'skill' && asset.defaultScope === 'user') {
       issues.push({
         type: 'user-scoped-asset-in-project-lock',
         id: entry.id,
@@ -88,14 +88,16 @@ export function checkInstalledAssets(options: {
       });
     }
 
-    const hostFolderIssue = checkHostFolder(lockfile.host, asset.kind, entry.targetPath, entry.id);
-    if (hostFolderIssue) {
-      issues.push(hostFolderIssue);
-    }
+    if (asset) {
+      const hostFolderIssue = checkHostFolder(lockfile.host, asset.kind, entry.targetPath, entry.id);
+      if (hostFolderIssue) {
+        issues.push(hostFolderIssue);
+      }
 
-    const placementDriftIssue = checkRegistryPlacement(lockfile, asset, entry.targetPath);
-    if (placementDriftIssue) {
-      issues.push(placementDriftIssue);
+      const placementDriftIssue = checkRegistryPlacement(lockfile, asset, entry.targetPath);
+      if (placementDriftIssue) {
+        issues.push(placementDriftIssue);
+      }
     }
 
     if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) {
@@ -129,6 +131,20 @@ export function checkInstalledAssets(options: {
       continue;
     }
 
+    const currentTargetHash = hashAssetPathContent(targetAbsolutePath);
+    const targetHashMatchesLock = currentTargetHash === entry.contentHash;
+    if (!targetHashMatchesLock) {
+      issues.push({
+        type: 'hash-drift',
+        id: entry.id,
+        targetPath: entry.targetPath,
+        message: `Managed asset hash drifted: ${entry.id}`,
+      });
+    }
+
+    if (!asset || !strictRegistry) continue;
+
+    const sourceAbsolutePath = join(options.agentAssetsDir, asset.sourcePath);
     if (!existsSync(sourceAbsolutePath)) {
       issues.push({
         type: 'missing-source',
@@ -139,8 +155,8 @@ export function checkInstalledAssets(options: {
       continue;
     }
 
-    const currentHash = hashAgentAssetContent(asset, options.agentAssetsDir);
-    if (currentHash !== entry.contentHash) {
+    const currentSourceHash = hashAgentAssetContent(asset, options.agentAssetsDir);
+    if (targetHashMatchesLock && currentSourceHash !== entry.contentHash) {
       issues.push({
         type: 'hash-drift',
         id: entry.id,

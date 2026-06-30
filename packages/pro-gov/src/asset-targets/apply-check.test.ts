@@ -8,13 +8,14 @@ import {
   symlinkSync,
   writeFileSync,
 } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import test from 'node:test';
 
 import { applyAssetInstallPlan } from './apply';
 import { checkInstalledAssets } from './check';
 import { createAssetInstallPlan } from './install-plan';
+import { hashAssetPathContent } from '../asset-registry/loader';
 import type { AgentAssetRegistry } from '../asset-registry/registry';
 import type { AgentAssetBundle } from '../asset-bundles/bundles';
 
@@ -64,7 +65,7 @@ const bundles: AgentAssetBundle[] = [
   },
 ];
 
-test('applyAssetInstallPlan creates absolute symlinks and managed metadata', () => {
+test('applyAssetInstallPlan creates relative symlinks and managed metadata', () => {
   const { agentAssetsDir, targetDir } = createFixture();
   const plan = createPlan(agentAssetsDir, targetDir);
 
@@ -73,7 +74,8 @@ test('applyAssetInstallPlan creates absolute symlinks and managed metadata', () 
   assert.deepEqual(result.appliedActions, plan.actions.map((action) => action.type));
   const skillLink = join(targetDir, '.agents/skills/example');
   assert.equal(existsSync(skillLink), true);
-  assert.equal(resolve(readlinkSync(skillLink)), join(agentAssetsDir, 'skills/pie-skills/example'));
+  assert.equal(isAbsolute(readlinkSync(skillLink)), false);
+  assert.equal(resolve(dirname(skillLink), readlinkSync(skillLink)), join(agentAssetsDir, 'skills/pie-skills/example'));
   assert.equal(existsSync(join(targetDir, '.pro-gov/assets.json')), true);
   assert.equal(existsSync(join(targetDir, '.pro-gov/assets.lock.json')), true);
 });
@@ -86,7 +88,8 @@ test('applyAssetInstallPlan creates codex manual skill symlinks that pass checks
 
   const skillLink = join(targetDir, '.agents/manual-skills/example');
   assert.equal(existsSync(skillLink), true);
-  assert.equal(resolve(readlinkSync(skillLink)), join(agentAssetsDir, 'skills/pie-skills/example'));
+  assert.equal(isAbsolute(readlinkSync(skillLink)), false);
+  assert.equal(resolve(dirname(skillLink), readlinkSync(skillLink)), join(agentAssetsDir, 'skills/pie-skills/example'));
   assert.deepEqual(checkInstalledAssets({ targetDir, agentAssetsDir, registry }).issues, []);
 });
 
@@ -111,6 +114,81 @@ test('checkInstalledAssets reports clean install, hash drift, and dangling symli
   rmSync(join(agentAssetsDir, 'skills/pie-skills/example'), { recursive: true, force: true });
   const dangling = checkInstalledAssets({ targetDir, agentAssetsDir, registry });
   assert.ok(dangling.issues.some((issue) => issue.type === 'dangling-symlink'));
+});
+
+test('checkInstalledAssets portable mode accepts locked symlink content without registry knowledge', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  const sourcePath = join(agentAssetsDir, 'skills/pie-skills/example');
+  symlinkSync(sourcePath, join(targetDir, '.agents/skills/example'));
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        placement: 'registry',
+        bundleIds: ['base-governance'],
+        assets: [
+          {
+            id: 'private-skills/example',
+            sourcePath: 'skills/private-skills/example',
+            targetPath: '.agents/skills/example',
+            contentHash: hashAssetPathContent(sourcePath),
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = checkInstalledAssets({
+    targetDir,
+    agentAssetsDir: join(agentAssetsDir, 'public-agent-assets'),
+    registry: { schemaVersion: 1, assets: [] },
+  });
+
+  assert.deepEqual(result.issues, []);
+});
+
+test('checkInstalledAssets strict registry mode reports unknown locked assets', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  const sourcePath = join(agentAssetsDir, 'skills/pie-skills/example');
+  symlinkSync(sourcePath, join(targetDir, '.agents/skills/example'));
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        placement: 'registry',
+        bundleIds: ['base-governance'],
+        assets: [
+          {
+            id: 'private-skills/example',
+            sourcePath: 'skills/private-skills/example',
+            targetPath: '.agents/skills/example',
+            contentHash: hashAssetPathContent(sourcePath),
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = checkInstalledAssets({
+    targetDir,
+    agentAssetsDir,
+    registry: { schemaVersion: 1, assets: [] },
+    strictRegistry: true,
+  });
+
+  assert.ok(result.issues.some((issue) => issue.type === 'unknown-asset'));
 });
 
 test('checkInstalledAssets reports managed skill targets in unsupported host folders', () => {

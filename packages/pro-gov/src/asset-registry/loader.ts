@@ -121,6 +121,7 @@ function listFiles(absolutePath: string): string[] {
 
   const files: string[] = [];
   for (const entry of readdirSync(absolutePath, { withFileTypes: true })) {
+    if (shouldIgnoreAssetHashEntry(entry.name)) continue;
     const entryPath = join(absolutePath, entry.name);
     if (entry.isDirectory()) {
       files.push(...listFiles(entryPath));
@@ -130,6 +131,17 @@ function listFiles(absolutePath: string): string[] {
   }
 
   return files.sort();
+}
+
+function shouldIgnoreAssetHashEntry(name: string): boolean {
+  return (
+    name === '__pycache__' ||
+    name === '.DS_Store' ||
+    name === 'Thumbs.db' ||
+    name === 'node_modules' ||
+    name.endsWith('.pyc') ||
+    name.endsWith('.pyo')
+  );
 }
 
 function toUnixPath(path: string): string {

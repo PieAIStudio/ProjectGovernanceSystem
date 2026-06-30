@@ -89,8 +89,7 @@ Initial shape:
       "id": "ownmyspace",
       "path": "/Users/yuanfei/PieAI/OwnMySpace",
       "profile": "engineering-runtime",
-      "assetBundles": ["web-3d"],
-      "sharedRules": ["pie-product-technology-stack"]
+      "assetBundles": ["web-3d"]
     }
   ]
 }
@@ -123,10 +122,15 @@ PGS commands that operate across projects must accept an external config path:
 ```bash
 pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio plan --config /path/to/portfolio.json --target ownmyspace
+pro-gov portfolio assets-check --config /path/to/portfolio.json
 ```
 
 PGS may ship a generic example manifest and schema notes. It must not ship the
 real PieHQ/PieAI project list inside the npm package.
+
+The manifest must stay limited to fields PGS actually validates. For now,
+`sharedRules` is intentionally not accepted because PGS does not yet plan,
+apply, or check shared-rule placement from the portfolio manifest.
 
 The existing PGS downstream-project registry should either move to PieHQ or be
 replaced in public package assets by a generic example. Public package checks

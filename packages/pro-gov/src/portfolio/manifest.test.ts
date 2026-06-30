@@ -33,7 +33,6 @@ test('loadPortfolioManifest loads a valid portfolio manifest', () => {
             path: target,
             profile: 'engineering-runtime',
             assetBundles: ['base-governance'],
-            sharedRules: ['pie-product-technology-stack'],
           },
         ],
       },
@@ -96,6 +95,63 @@ test('validatePortfolioManifest rejects non-array assetBundles', () => {
   });
 
   assert.ok(issues.some((issue) => issue.type === 'invalid-field' && issue.field === 'assetBundles'));
+});
+
+test('validatePortfolioManifest rejects unknown profiles', () => {
+  const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
+  mkdirSync(join(rootDir, 'Target'));
+
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'pieai',
+    targets: [
+      {
+        id: 'target',
+        path: join(rootDir, 'Target'),
+        profile: 'enginering-runtim',
+      },
+    ],
+  });
+
+  assert.ok(issues.some((issue) => issue.type === 'invalid-field' && issue.field === 'profile'));
+});
+
+test('validatePortfolioManifest rejects sharedRules until they are managed by plan and check', () => {
+  const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
+  mkdirSync(join(rootDir, 'Target'));
+
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'pieai',
+    targets: [
+      {
+        id: 'target',
+        path: join(rootDir, 'Target'),
+        sharedRules: ['pie-product-technology-stack'],
+      },
+    ],
+  });
+
+  assert.ok(issues.some((issue) => issue.type === 'invalid-field' && issue.field === 'sharedRules'));
+});
+
+test('validatePortfolioManifest rejects unknown target fields', () => {
+  const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
+  mkdirSync(join(rootDir, 'Target'));
+
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'pieai',
+    targets: [
+      {
+        id: 'target',
+        path: join(rootDir, 'Target'),
+        assetBundle: ['base-governance'],
+      },
+    ],
+  });
+
+  assert.ok(issues.some((issue) => issue.type === 'invalid-field' && issue.field === 'assetBundle'));
 });
 
 test('getDefaultPortfolioTargets excludes controlPlane and executionEngine metadata', () => {

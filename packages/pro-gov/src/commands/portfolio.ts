@@ -1,5 +1,9 @@
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { loadAgentAssetBundles } from '../asset-bundles/bundles';
 import { loadAgentAssetRegistry } from '../asset-registry/loader';
+import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
 import { getDefaultPortfolioTargets, loadPortfolioManifest } from '../portfolio/manifest';
 import type { AssetRegistryHost } from '../asset-registry/registry';
@@ -8,6 +12,7 @@ export function runPortfolio(args: string[]): number {
   const [subcommand, ...rest] = args;
   if (subcommand === 'check') return runPortfolioCheck(rest);
   if (subcommand === 'plan') return runPortfolioPlan(rest);
+  if (subcommand === 'assets-check') return runPortfolioAssetsCheck(rest);
   printUsage();
   return 1;
 }
@@ -71,7 +76,9 @@ function runPortfolioPlan(args: string[]): number {
     return 1;
   }
 
-  const loadedAssets = loadAgentAssetRegistry();
+  const loadedAssets = loadAgentAssetRegistry({
+    agentAssetsDir: findPortfolioAgentAssetsDir(loaded.manifest),
+  });
   if (loadedAssets.issues.length > 0) {
     for (const issue of loadedAssets.issues) {
       console.error(`${issue.type}: ${issue.message}`);
@@ -125,6 +132,113 @@ function runPortfolioPlan(args: string[]): number {
   }
 }
 
+function runPortfolioAssetsCheck(args: string[]): number {
+  const options = parsePortfolioOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+
+  const loaded = loadPortfolioManifest(options.value.configPath);
+  if (loaded.issues.length > 0 || !loaded.manifest) {
+    if (options.value.json) {
+      console.log(
+        JSON.stringify(
+          {
+            ok: false,
+            configPath: loaded.configPath,
+            issues: loaded.issues,
+            targets: [],
+          },
+          null,
+          2,
+        ),
+      );
+    } else {
+      for (const issue of loaded.issues) {
+        console.error(`${issue.type}: ${issue.message}`);
+      }
+    }
+    return 1;
+  }
+
+  const targets = getDefaultPortfolioTargets(loaded.manifest).filter(
+    (target) => !options.value.targetId || options.value.targetId === 'all' || target.id === options.value.targetId,
+  );
+  if (targets.length === 0) {
+    console.error(`Unknown portfolio target: ${options.value.targetId}`);
+    return 1;
+  }
+
+  const loadedAssets = loadAgentAssetRegistry({
+    agentAssetsDir: findPortfolioAgentAssetsDir(loaded.manifest),
+  });
+  if (loadedAssets.issues.length > 0) {
+    if (options.value.json) {
+      console.log(
+        JSON.stringify(
+          {
+            ok: false,
+            configPath: loaded.configPath,
+            portfolioId: loaded.manifest.portfolioId,
+            registryIssues: loadedAssets.issues,
+            targets: [],
+          },
+          null,
+          2,
+        ),
+      );
+    } else {
+      for (const issue of loadedAssets.issues) {
+        console.error(`${issue.type}: ${issue.message}`);
+      }
+    }
+    return 1;
+  }
+
+  const targetResults = targets.map((target) => {
+    const result = checkInstalledAssets({
+      targetDir: target.path,
+      agentAssetsDir: loadedAssets.agentAssetsDir,
+      registry: loadedAssets.registry,
+      strictRegistry: true,
+    });
+    return {
+      id: target.id,
+      path: target.path,
+      issues: result.issues,
+    };
+  });
+  const ok = targetResults.every((target) => target.issues.length === 0);
+
+  if (options.value.json) {
+    console.log(
+      JSON.stringify(
+        {
+          ok,
+          configPath: loaded.configPath,
+          portfolioId: loaded.manifest.portfolioId,
+          agentAssetsDir: loadedAssets.agentAssetsDir,
+          targets: targetResults,
+        },
+        null,
+        2,
+      ),
+    );
+  } else if (ok) {
+    console.log(`portfolio assets check passed (${targetResults.length} targets)`);
+  } else {
+    for (const target of targetResults) {
+      for (const issue of target.issues) {
+        console.log(`${target.id}\t${issue.type}: ${issue.message}`);
+      }
+    }
+  }
+
+  return ok ? 0 : 1;
+}
+
 interface PortfolioOptions {
   configPath: string;
   targetId?: string;
@@ -175,8 +289,16 @@ function isHost(value: string | undefined): value is AssetRegistryHost {
   return value === 'codex' || value === 'claude-code' || value === 'gemini-cli' || value === 'antigravity';
 }
 
+function findPortfolioAgentAssetsDir(manifest: { executionEngine?: { path: string } } | undefined): string | undefined {
+  const agentAssetsDir = manifest?.executionEngine?.path
+    ? join(manifest.executionEngine.path, 'agent-assets')
+    : undefined;
+  return agentAssetsDir && existsSync(join(agentAssetsDir, 'registry.json')) ? agentAssetsDir : undefined;
+}
+
 function printUsage(): void {
   console.error('Usage:');
   console.error('  pro-gov portfolio check --config <path> [--json]');
   console.error('  pro-gov portfolio plan --config <path> [--target <id|all>] [--host codex|claude-code|gemini-cli|antigravity] [--json]');
+  console.error('  pro-gov portfolio assets-check --config <path> [--target <id|all>] [--json]');
 }

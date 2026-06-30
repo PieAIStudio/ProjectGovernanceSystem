@@ -160,6 +160,7 @@ function runAssetsCheck(args: string[]): number {
     targetDir: options.value.targetDir,
     agentAssetsDir: loaded.agentAssetsDir,
     registry: loaded.registry,
+    strictRegistry: options.value.strictRegistry,
   });
 
   if (options.value.json) {
@@ -301,6 +302,7 @@ type ParseResult =
 interface TargetJsonOptions {
   targetDir: string;
   json: boolean;
+  strictRegistry?: boolean;
 }
 
 interface PlanOptions extends TargetJsonOptions {
@@ -389,6 +391,8 @@ function parseTargetJsonOptions(args: string[]): TargetJsonParseResult {
       if (!targetDir) return { ok: false, error: 'Expected --target <path>' };
       options.targetDir = targetDir;
       index += 1;
+    } else if (arg === '--strict-registry') {
+      options.strictRegistry = true;
     } else if (arg === '--json') {
       options.json = true;
     } else {

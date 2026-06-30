@@ -1,5 +1,5 @@
-import { existsSync, lstatSync, mkdirSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
+import { existsSync, lstatSync, mkdirSync, realpathSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
+import { dirname, join, relative, resolve } from 'node:path';
 
 import type { AssetInstallAction, AssetInstallPlan } from './install-plan';
 
@@ -34,17 +34,18 @@ function applyAction(targetDir: string, action: AssetInstallAction): void {
 
   mkdirSync(dirname(targetAbsolutePath), { recursive: true });
   const sourceAbsolutePath = resolve(action.sourcePath);
+  const symlinkTarget = relative(realpathSync(dirname(targetAbsolutePath)), realpathSync(sourceAbsolutePath)) || '.';
 
   if (action.type === 'symlink') {
     if (pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) {
       throw new Error(`Refusing to overwrite unmanaged target: ${action.targetPath}`);
     }
-    symlinkSync(sourceAbsolutePath, targetAbsolutePath);
+    symlinkSync(symlinkTarget, targetAbsolutePath);
     return;
   }
 
   if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) {
-    symlinkSync(sourceAbsolutePath, targetAbsolutePath);
+    symlinkSync(symlinkTarget, targetAbsolutePath);
     return;
   }
 
@@ -53,7 +54,7 @@ function applyAction(targetDir: string, action: AssetInstallAction): void {
     throw new Error(`Refusing to overwrite unmanaged target: ${action.targetPath}`);
   }
   unlinkSync(targetAbsolutePath);
-  symlinkSync(sourceAbsolutePath, targetAbsolutePath);
+  symlinkSync(symlinkTarget, targetAbsolutePath);
 }
 
 function pathExistsEvenIfDanglingSymlink(path: string): boolean {

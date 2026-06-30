@@ -152,6 +152,24 @@ pro-gov assets apply --plan /tmp/pro-gov-asset-plan.json
 pro-gov assets check --target /path/to/project
 ```
 
+`assets check` is portable by default: it validates the target project's
+`.pro-gov/assets.lock.json`, managed symlinks, dangling links, and locked
+content hashes without requiring the checker to know the maintainer's private
+asset registry. Maintainer/control-plane checkouts that need to verify asset
+ids, registry placement, user-scoped leaks, and private source drift should run
+strict checks:
+
+```bash
+pro-gov assets check --target /path/to/project --strict-registry
+pro-gov portfolio assets-check --config /path/to/portfolio.json
+```
+
+Managed project symlinks are written as relative links by default. This keeps a
+sibling workspace movable as one folder and avoids committing machine-local
+absolute paths such as `/Users/name/...` into target repositories. If a future
+project needs untracked local-only links, add that as an explicit bootstrap mode
+instead of weakening the default tracked-private-workspace path.
+
 For manual-only project-scoped skills, keep the same plan-gated flow and choose
 manual placement:
 

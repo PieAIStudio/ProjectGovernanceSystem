@@ -8,6 +8,7 @@ import {
   readFileSync,
   rmSync,
   statSync,
+  symlinkSync,
   writeFileSync,
 } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -382,6 +383,48 @@ test('assets apply and check complete a managed install flow', { skip: !hasProje
   assert.equal(checkResult.status, 0);
   const parsed = JSON.parse(checkResult.stdout);
   assert.deepEqual(parsed.issues, []);
+});
+
+test('assets check --strict-registry reports unknown locked assets', () => {
+  const targetDir = createTempTargetDir();
+  const sourcePath = join(loadedAgentAssets.agentAssetsDir, 'skills/pie-skills/doc-cross-validator');
+  mkdirSync(join(targetDir, '.agents/skills'), { recursive: true });
+  mkdirSync(join(targetDir, '.pro-gov'), { recursive: true });
+  symlinkSync(sourcePath, join(targetDir, '.agents/skills/unknown-private-skill'));
+  writeFileSync(
+    join(targetDir, '.pro-gov/assets.lock.json'),
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        host: 'codex',
+        placement: 'registry',
+        bundleIds: ['private-test'],
+        assets: [
+          {
+            id: 'private-skills/unknown-private-skill',
+            sourcePath: 'skills/private-skills/unknown-private-skill',
+            targetPath: '.agents/skills/unknown-private-skill',
+            contentHash: hashAssetPathContent(sourcePath),
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'assets', 'check', '--target', targetDir, '--strict-registry', '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.ok(parsed.issues.some((issue: { type: string }) => issue.type === 'unknown-asset'));
 });
 
 test('assets npx update --help does not touch or validate the npx root', () => {

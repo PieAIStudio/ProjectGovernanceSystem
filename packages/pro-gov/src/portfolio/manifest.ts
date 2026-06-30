@@ -1,5 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 
+import { isValidProfile } from '../assets';
+
 export interface PortfolioManifest {
   schemaVersion: 1;
   portfolioId: string;
@@ -14,9 +16,8 @@ export interface PortfolioEndpoint {
 }
 
 export interface PortfolioTarget extends PortfolioEndpoint {
-  profile?: 'engineering-runtime' | 'doc-only' | string;
+  profile?: 'engineering-runtime' | 'doc-only';
   assetBundles?: string[];
-  sharedRules?: string[];
 }
 
 export type PortfolioManifestIssueType =
@@ -89,6 +90,7 @@ export function validatePortfolioManifest(value: unknown): PortfolioManifestIssu
     });
   }
 
+  validateAllowedFields(value, 'root', ['schemaVersion', 'portfolioId', 'controlPlane', 'executionEngine', 'targets'], issues);
   validateEndpoint(value.controlPlane, 'controlPlane', issues);
   validateEndpoint(value.executionEngine, 'executionEngine', issues);
 
@@ -113,6 +115,7 @@ export function validatePortfolioManifest(value: unknown): PortfolioManifestIssu
     }
 
     validateEndpoint(target, 'targets', issues);
+    validateAllowedFields(target, 'target', ['id', 'path', 'profile', 'assetBundles'], issues);
     if (typeof target.id === 'string') {
       if (seenTargetIds.has(target.id)) {
         issues.push({
@@ -124,8 +127,23 @@ export function validatePortfolioManifest(value: unknown): PortfolioManifestIssu
       seenTargetIds.add(target.id);
     }
 
+    if (target.profile !== undefined && (typeof target.profile !== 'string' || !isValidProfile(target.profile))) {
+      issues.push({
+        type: 'invalid-field',
+        id: typeof target.id === 'string' ? target.id : undefined,
+        field: 'profile',
+        message: 'Portfolio target profile must be engineering-runtime or doc-only.',
+      });
+    }
     validateOptionalStringArray(target.assetBundles, target.id, 'assetBundles', issues);
-    validateOptionalStringArray(target.sharedRules, target.id, 'sharedRules', issues);
+    if ('sharedRules' in target) {
+      issues.push({
+        type: 'invalid-field',
+        id: typeof target.id === 'string' ? target.id : undefined,
+        field: 'sharedRules',
+        message: 'Portfolio target sharedRules is not managed yet; remove it until plan/check supports it.',
+      });
+    }
   }
 
   return issues;
@@ -135,6 +153,24 @@ export function getDefaultPortfolioTargets(
   manifest: PortfolioManifest | undefined,
 ): PortfolioTarget[] {
   return manifest?.targets ?? [];
+}
+
+function validateAllowedFields(
+  value: Record<string, unknown>,
+  location: string,
+  allowedFields: readonly string[],
+  issues: PortfolioManifestIssue[],
+): void {
+  const allowed = new Set(allowedFields);
+  for (const field of Object.keys(value)) {
+    if (allowed.has(field)) continue;
+    issues.push({
+      type: 'invalid-field',
+      id: typeof value.id === 'string' ? value.id : undefined,
+      field,
+      message: `Unknown portfolio ${location} field: ${field}`,
+    });
+  }
 }
 
 function validateEndpoint(

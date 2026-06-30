@@ -65,6 +65,25 @@ test('portfolio plan --target --json returns dry-run asset plans for one target'
   assert.deepEqual(parsed.targets[0].plan.bundleIds, ['base-governance']);
 });
 
+test('portfolio assets-check --json reports per-target asset issues', () => {
+  const fixture = createPortfolioFixture();
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'portfolio', 'assets-check', '--config', fixture.configPath, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.ok, false);
+  assert.equal(parsed.targets[0].id, 'ownmyspace');
+  assert.ok(parsed.targets[0].issues.some((issue: { type: string }) => issue.type === 'missing-lock'));
+});
+
 function createPortfolioFixture(): { configPath: string } {
   const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-cli-'));
   const controlPlane = join(rootDir, 'PieHQ');
@@ -88,7 +107,6 @@ function createPortfolioFixture(): { configPath: string } {
             path: target,
             profile: 'engineering-runtime',
             assetBundles: ['base-governance'],
-            sharedRules: ['pie-product-technology-stack'],
           },
         ],
       },
