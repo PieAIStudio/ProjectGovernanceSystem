@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-06-04
-last_reviewed: 2026-06-21
+last_reviewed: 2026-06-30
 domain: adoption
 tags:
   - release
@@ -58,6 +58,29 @@ git diff --check
 ```
 
 ## npm Publish Checklist
+
+### AI Release Rule
+
+The only supported release path for this repository is GitHub Actions Trusted
+Publishing:
+
+1. Verify both package versions are aligned and all local checks pass.
+2. Commit and push the release-ready state to `main`.
+3. Run `gh workflow run npm-publish.yml --ref main`.
+4. Monitor the workflow to completion.
+5. Confirm both versions from the official registry with `npm view`.
+
+Do not run `npm publish` locally and do not create or reuse a long-lived npm
+write token for this repository. Since December 2025, `npm login` creates a
+short-lived session (currently two hours), not a durable release credential.
+Local `npm whoami` therefore tests only local token authentication; it does not
+report whether GitHub OIDC Trusted Publishing is configured or healthy.
+
+Beginner version: pushing `main` makes the approved code available to the
+release workflow, but it does not publish automatically. The explicit
+`gh workflow run` command is the final safety switch. GitHub then proves the
+workflow identity to npm and obtains a short-lived credential for that one
+release.
 
 Before publishing:
 

@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-29T15:39:53.984Z
-generator_version: doc-gov@0.3.5
+generated_at: 2026-06-30T02:41:59.970Z
+generator_version: doc-gov@0.3.6
 docs_count: 28
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
@@ -128,7 +128,7 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-21
+    last_reviewed: 2026-06-30
     pinned: false
   - id: REF-RECOMMENDED-AGENT-TOOLING
     path: docs/reference/adoption/recommended-agent-tooling.md

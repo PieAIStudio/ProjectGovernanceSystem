@@ -28,6 +28,9 @@ profiles.
    - `integrations/directed-development.md`
    - `profiles/engineering-runtime/`
    - `profiles/doc-only/`
+7. For npm release work, read
+   `docs/reference/adoption/public-release-checklist.md` before changing versions
+   or publishing packages.
 
 ## Non-Negotiables
 
@@ -38,6 +41,9 @@ profiles.
 - Core lifecycle/schema/routing changes belong here first, then projects sync from here.
 - Keep `docs/governance/` for governance core rules, SSOT, agents-routing, templates, and manifest; keep project AI development policy in `docs/policy/`.
 - Project Governance System governs `docs/**` and AI entry files by default. Do not move product artifacts, prompts, generated media, runtime notes, or project-package Markdown into `docs/**` unless the project explicitly opts them into doc-gov.
+- Publish npm packages only through the trusted GitHub Actions workflow documented
+  in the public release checklist. Do not use a local npm token as the release
+  path.
 
 <!-- PGS-ROUTER:END -->
 
