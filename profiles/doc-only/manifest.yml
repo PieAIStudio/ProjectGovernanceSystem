@@ -9,6 +9,7 @@ required:
   agents_routing: docs/governance/agents-routing/doc-only-v0.9.md
   current_work: docs/reference/execution/current-work.md
 optional:
+  compound_engineering: false
   directed_development: false
   superpowers: false
 project_local_required:
@@ -19,3 +20,4 @@ not_included:
   - engineering-runtime agents routing
   - behavior-critical code lanes
   - Superpowers TDD workflow
+  - Compound Engineering main workflow

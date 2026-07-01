@@ -6,6 +6,7 @@ import {
   readFrontmatterFile,
   stringValue,
 } from '../core/frontmatter';
+import { isExternalArtifactPath } from '../core/external-artifacts';
 
 /**
  * Verifies that the commit message contains the proper override markers when:
@@ -91,6 +92,7 @@ function escapeRegex(s: string): string {
 
 function isGovernedMarkdownPath(path: string): boolean {
   if (!/\.md$/.test(path)) return false;
+  if (isExternalArtifactPath(path)) return false;
   if (path.startsWith('docs/governance/templates/')) return false;
   if (path === 'docs/governance/MANIFEST.yml') return false;
   if (path.startsWith('docs/')) return true;

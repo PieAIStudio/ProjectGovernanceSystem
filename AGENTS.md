@@ -39,6 +39,7 @@ profiles.
 - Keep the system thin. Do not add a profile unless at least two projects need it.
 - Do not copy project-local product truth into this repository.
 - Do not vendor the Superpowers plugin body.
+- Do not vendor the Compound Engineering plugin body.
 - Directed Development is optional and trigger-based, not a default ceremony.
 - Core lifecycle/schema/routing changes belong here first, then projects sync from here.
 - Keep `docs/governance/` for governance core rules, SSOT, agents-routing, templates, and manifest; keep project AI development policy in `docs/policy/`.
@@ -49,6 +50,10 @@ profiles.
 - PGS owns technical governance execution protocols. Product strategy or private
   portfolio direction may live in an external control plane, but target
   repositories own installed versions and runtime facts.
+- Superpowers remains the default engineering workflow for PGS-governed
+  engineering projects. Compound Engineering is used by default only as the
+  post-work Compound Gate through `ce-compound`; full CE workflows require an
+  explicit user request.
 
 <!-- PGS-ROUTER:END -->
 

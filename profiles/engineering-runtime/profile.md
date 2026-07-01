@@ -10,6 +10,7 @@ Use for code-heavy projects: apps, games, runtimes, services, browser products, 
 - external AI-in-the-Loop policy linked by target projects under `docs/policy/shared-rules/ai-in-the-loop.md`
 - `docs/governance/agents-routing/engineering-runtime-v0.9.md`
 - `integrations/superpowers.md`
+- `integrations/compound-engineering.md`
 - `integrations/directed-development.md`
 - starter `docs/governance/` and `docs/policy/` templates
 
@@ -29,6 +30,7 @@ Each project must define:
 - stack-specific rules
 - game/app-specific lane wording
 - Superpowers plugin body
+- Compound Engineering plugin body
 
 ## Automation Boundary
 

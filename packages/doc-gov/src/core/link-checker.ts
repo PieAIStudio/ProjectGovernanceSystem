@@ -1,5 +1,6 @@
 import { existsSync, lstatSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, extname, join, resolve } from 'node:path';
+import { isExternalArtifactPath } from './external-artifacts';
 import { toRepoPath } from './files';
 
 export interface LinkIssue {
@@ -94,6 +95,7 @@ function walkMarkdown(rootDir: string, dir: string): string[] {
 }
 
 function shouldSkipTree(repoPath: string): boolean {
+  if (isExternalArtifactPath(repoPath)) return true;
   if (repoPath.startsWith('docs/archive/')) return true;
   if (repoPath.startsWith('docs/governance/templates/')) return true;
   if (repoPath === 'docs/governance/MANIFEST.yml') return true;
@@ -101,6 +103,7 @@ function shouldSkipTree(repoPath: string): boolean {
 }
 
 function shouldIncludeSource(repoPath: string): boolean {
+  if (isExternalArtifactPath(repoPath)) return false;
   if (repoPath.startsWith('docs/')) {
     if (repoPath.startsWith('docs/governance/')) return true;
     return CURRENT_DOC_DIR_PREFIXES.some((prefix) => repoPath.startsWith(prefix));

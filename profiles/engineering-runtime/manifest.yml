@@ -9,6 +9,7 @@ required:
   agents_routing: docs/governance/agents-routing/engineering-runtime-v0.9.md
   current_work: docs/reference/execution/current-work.md
 optional:
+  compound_engineering: integrations/compound-engineering.md
   directed_development: integrations/directed-development.md
   superpowers: integrations/superpowers.md
 project_local_required:
@@ -20,3 +21,4 @@ not_included:
   - product canon
   - project-specific runtime rules
   - Superpowers plugin body
+  - Compound Engineering plugin body

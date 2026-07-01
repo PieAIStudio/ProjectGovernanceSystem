@@ -40,6 +40,7 @@ Use `AGENTS.md` for startup reading. It should point agents to:
 | `docs/specs/completed/` | Completed specs |
 | `docs/plans/active/` | Active implementation plans |
 | `docs/plans/completed/` | Completed execution records |
+| `docs/solutions/` | Compound Engineering learning records, governed by CE schema |
 | `docs/canon/` | Durable project truth |
 | `docs/reference/` | Guides and references |
 | `docs/archive/` | Retired history |
@@ -49,3 +50,7 @@ Markdown outside `docs/**` is not governed by default. Product prompts, assets,
 project-package canon, generated media notes, and source-package files stay in
 their product/workbench structure unless this project explicitly opts them into
 doc-gov.
+
+Compound Engineering may create `docs/solutions/**`, `docs/brainstorms/**`,
+`docs/pulse-reports/**`, and CE-native root artifacts under `docs/plans/*`.
+Those are external workflow artifacts, not Doc Gov canonical documents.

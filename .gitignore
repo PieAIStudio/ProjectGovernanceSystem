@@ -6,6 +6,7 @@ coverage/
 tmp/
 temp/
 .worktrees/
+audits/
 .agents/
 packages/pro-gov/assets/
 agent-assets/

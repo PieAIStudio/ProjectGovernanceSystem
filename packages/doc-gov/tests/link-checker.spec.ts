@@ -65,6 +65,19 @@ describe('checkCurrentMarkdownLinks', () => {
     expect(result.ok).toBe(true);
   });
 
+  it('does not treat Compound Engineering artifacts as current link truth', () => {
+    const root = createFixture({
+      'docs/solutions/runtime-errors/example.md': '[broken](missing.md)\n',
+      'docs/brainstorms/example.md': '[broken](missing.md)\n',
+      'docs/pulse-reports/example.md': '[broken](missing.md)\n',
+      'docs/plans/2026-07-01-001-feat-ce-native-plan.md': '[broken](missing.md)\n',
+    });
+
+    const result = checkCurrentMarkdownLinks(root);
+
+    expect(result.ok).toBe(true);
+  });
+
   it('ignores external URLs', () => {
     const root = createFixture({
       'README.md': '[external](https://example.com/no-local-file)\n',

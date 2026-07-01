@@ -12,6 +12,7 @@ tags:
   - adoption
   - tooling
   - superpowers
+  - compound-engineering
   - ponytail
 pinned: false
 related:
@@ -30,6 +31,7 @@ Imagine a school workshop:
 
 - PGS labels the shelves, routes each job, and checks that the record is complete.
 - Superpowers gives the class a reliable build-and-test routine.
+- Compound Engineering keeps the class notebook of hard-won lessons.
 - Ponytail is the adviser who asks, "Can we make this with fewer unnecessary
   parts?"
 
@@ -42,6 +44,7 @@ Installing every tool does not mean every tool should run all the time.
 | `@pieai/pro-gov` | Required for package-based PGS adoption | Projects adopting PGS starter/profile assets | Use its read-only discovery, init, sync, doctor, and Lens commands. |
 | `@pieai/doc-gov` | Required for package-based PGS adoption | All governed PGS projects | Run document, router, manifest, link, hook, and CI checks. |
 | Superpowers | Recommended for engineering/runtime projects | Apps, games, services, browser products, and other code-heavy work | Use the matching workflow when the selected PGS lane requires it. |
+| Compound Engineering | Recommended for knowledge capture | Engineering projects that benefit from reusable learnings | Default to `ce-compound` as the post-work Compound Gate; use full CE workflows only when explicit. |
 | Ponytail | Recommended as an installed, optional adviser | Projects that need help resisting unnecessary complexity | Keep the global mode `off`; activate it explicitly for a bounded task or review. |
 
 ## Superpowers
@@ -62,6 +65,25 @@ projects should not inherit the full engineering ceremony unless their current
 task actually involves runtime or code behavior.
 
 Read `integrations/superpowers.md` for the exact boundary.
+
+## Compound Engineering
+
+Compound Engineering is useful for preserving lessons that should make future
+work easier. In PGS-governed projects, its default role is the post-work
+Compound Gate:
+
+```text
+Superpowers completes verified work
+-> decide with CE criteria whether reusable learning exists
+-> run ce-compound or report a skip reason
+```
+
+Do not make routine tasks choose between Superpowers and Compound Engineering as
+competing default engineering processes. Use CE's full `ce-plan`, `ce-work`, or
+`lfg` flow only when the user explicitly asks for it.
+
+Read `integrations/compound-engineering.md` for artifact ownership and Doc Gov
+compatibility.
 
 ## Ponytail
 
@@ -85,6 +107,7 @@ For an engineering/runtime project:
 ```text
 install PGS packages
 -> keep Superpowers available for engineering workflows
+-> use Compound Engineering's ce-compound as the post-work learning tail
 -> install Ponytail but keep global mode off
 -> activate Ponytail only when a bounded simplicity review would help
 ```
@@ -103,4 +126,3 @@ install PGS packages
 PGS does not automatically install, enable, update, or remove these external
 plugins in another person's AI host. It documents the recommended boundary and
 lets each project or user adopt tools deliberately.
-

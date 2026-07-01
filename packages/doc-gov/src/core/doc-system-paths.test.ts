@@ -118,3 +118,72 @@ test('rejects governed README files outside the repository root', () => {
     /Keep README\.md as the root human introduction only/
   );
 });
+
+test('ignores Compound Engineering external artifacts under docs', () => {
+  const root = mkdtempSync(join(tmpdir(), 'doc-gov-ce-artifacts-'));
+  mkdirSync(join(root, 'docs/solutions/runtime-errors'), { recursive: true });
+  mkdirSync(join(root, 'docs/brainstorms'), { recursive: true });
+  mkdirSync(join(root, 'docs/pulse-reports'), { recursive: true });
+  mkdirSync(join(root, 'docs/plans/active'), { recursive: true });
+  mkdirSync(join(root, 'docs/plans/completed'), { recursive: true });
+  mkdirSync(join(root, 'docs/reference'), { recursive: true });
+
+  writeFileSync(
+    join(root, 'docs/solutions/runtime-errors/example.md'),
+    [
+      '---',
+      'module: runtime',
+      'date: 2026-07-01',
+      'problem_type: runtime_error',
+      'component: tooling',
+      'severity: medium',
+      'symptoms:',
+      '  - "Example CE-owned symptom"',
+      'root_cause: config_error',
+      'resolution_type: config_change',
+      '---',
+      '',
+      '# CE Solution',
+    ].join('\n')
+  );
+  writeFileSync(join(root, 'docs/brainstorms/example.md'), '# CE brainstorm without PGS frontmatter\n');
+  writeFileSync(join(root, 'docs/pulse-reports/example.md'), '# CE pulse without PGS frontmatter\n');
+  writeFileSync(
+    join(root, 'docs/plans/2026-07-01-001-feat-ce-native-plan.md'),
+    ['---', 'title: CE Native Plan', 'type: feature', 'date: 2026-07-01', '---', '# CE Plan'].join(
+      '\n'
+    )
+  );
+  writeFileSync(
+    join(root, 'docs/reference/current.md'),
+    [
+      '---',
+      'id: REF-CURRENT',
+      'title: Current Reference',
+      'type: reference',
+      'status: stable',
+      'canonical: true',
+      'owner: docs',
+      'created: 2026-07-01',
+      'last_reviewed: 2026-07-01',
+      'domain: docs',
+      'tags:',
+      '  - docs',
+      'pinned: false',
+      'related: []',
+      'supersedes: []',
+      'superseded_by: null',
+      '---',
+      '',
+      '# Current Reference',
+    ].join('\n')
+  );
+
+  const result = checkDocs(root);
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(
+    result.records.map((record) => record.path),
+    ['docs/reference/current.md']
+  );
+});
