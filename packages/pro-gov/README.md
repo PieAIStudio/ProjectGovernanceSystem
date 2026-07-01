@@ -47,8 +47,9 @@ pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov init --profile engineering-runtime --dry-run
+pro-gov init --profile engineering-runtime --apply
 pro-gov init --profile doc-only --dry-run
-pro-gov sync --check
+pro-gov sync --check --profile engineering-runtime
 pro-gov doctor
 ```
 
@@ -59,18 +60,20 @@ What these commands do:
 | `assets list` | Shows packaged assets and public registry metadata. | No |
 | `assets discover` | Detects local project signals. | No |
 | `assets recommend` | Suggests relevant asset bundles with reasons. | No |
-| `portfolio check` | Validates an external portfolio manifest owned by the user's control repo. | No |
-| `portfolio plan` | Builds dry-run asset plans for manifest targets. | No |
+| `portfolio check` | Validates an external portfolio manifest owned by the user or organization. | No |
+| `portfolio plan` | Builds dry-run asset plans for manifest targets, using packaged public assets unless a full checkout is supplied. | No |
 | `lens inspect` | Produces ProjectLens-style local evidence. | No |
 | `lens report` | Writes the requested report file. | Only the explicit output |
 | `init --dry-run` | Shows starter/profile files that would be needed. | No |
-| `sync --check` | Compares local starter files with packaged assets. | No |
+| `init --apply` | Installs one profile into a fresh target; refuses the whole operation if any target file exists. Optional CI and Lefthook references are not installed. | Yes |
+| `sync --check` | Strictly compares shared core files and checks only the presence of project-local seed files. | No |
 | `doctor` | Checks required packaged assets and whether `doc-gov` is available. | No |
 
 ## Full Checkout Commands
 
-A full Project Governance System checkout may also manage Yuanfei's local
-agent-asset registry through reviewed plans:
+The npm package can install reviewed public agent assets through an explicit
+plan. A full Project Governance System checkout can additionally use its
+maintainer-local asset registry:
 
 ```bash
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
@@ -109,7 +112,9 @@ the private-source and public-copy hashes recorded during promotion.
   deterministic recommendations.
 - `pro-gov portfolio check|plan` reads an external portfolio manifest. Real
   downstream project lists belong in the user's control repository, not in this
-  public package.
+  public package. The manifest does not require a private headquarters repo:
+  npm users can omit `controlPlane` and `executionEngine`, and PGS will use the
+  reviewed public assets packaged with `@pieai/pro-gov`.
 - `pro-gov assets plan|apply|check` manages local assets only from an explicit,
   reviewable plan in a full upstream checkout.
 - `pro-gov lens inspect|report` provides read-only inspection and an explicit
@@ -117,7 +122,8 @@ the private-source and public-copy hashes recorded during promotion.
 - `doc-gov` remains the document, router, manifest, link, hook, CI, and migration
   validator.
 - Product truth stays in the target project.
-- Write-mode `pro-gov init --apply` is not enabled in this release.
+- `pro-gov init --apply` is intentionally fresh-target only. Existing projects
+  use `--dry-run` and a deliberate migration so local truth is never overwritten.
 - Superpowers and Ponytail are external tools, not bundled runtime dependencies.
 
 ## Recommended Companion Tools

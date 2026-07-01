@@ -12,9 +12,9 @@ import {
 
 test('loadPortfolioManifest loads a valid portfolio manifest', () => {
   const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
-  const controlPlane = join(rootDir, 'PieHQ');
+  const controlPlane = join(rootDir, 'ControlPlane');
   const executionEngine = join(rootDir, 'ProjectGovernanceSystem');
-  const target = join(rootDir, 'OwnMySpace');
+  const target = join(rootDir, 'WebApp');
   mkdirSync(controlPlane);
   mkdirSync(executionEngine);
   mkdirSync(target);
@@ -24,12 +24,12 @@ test('loadPortfolioManifest loads a valid portfolio manifest', () => {
     `${JSON.stringify(
       {
         schemaVersion: 1,
-        portfolioId: 'pieai',
-        controlPlane: { id: 'piehq', path: controlPlane },
+        portfolioId: 'example-org',
+        controlPlane: { id: 'headquarters', path: controlPlane },
         executionEngine: { id: 'project-governance-system', path: executionEngine },
         targets: [
           {
-            id: 'ownmyspace',
+            id: 'web-app',
             path: target,
             profile: 'engineering-runtime',
             assetBundles: ['base-governance'],
@@ -44,11 +44,51 @@ test('loadPortfolioManifest loads a valid portfolio manifest', () => {
   const loaded = loadPortfolioManifest(configPath);
 
   assert.deepEqual(loaded.issues, []);
-  assert.equal(loaded.manifest?.portfolioId, 'pieai');
+  assert.equal(loaded.manifest?.portfolioId, 'example-org');
   assert.deepEqual(
     getDefaultPortfolioTargets(loaded.manifest).map((entry) => entry.id),
-    ['ownmyspace'],
+    ['web-app'],
   );
+});
+
+test('loadPortfolioManifest resolves relative paths from the config directory', () => {
+  const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-relative-'));
+  const configDir = join(rootDir, 'control');
+  const target = join(rootDir, 'projects', 'demo');
+  mkdirSync(configDir, { recursive: true });
+  mkdirSync(target, { recursive: true });
+  const configPath = join(configDir, 'portfolio.json');
+  writeFileSync(
+    configPath,
+    `${JSON.stringify(
+      {
+        schemaVersion: 1,
+        portfolioId: 'example-company',
+        targets: [
+          {
+            id: 'demo',
+            path: '../projects/demo',
+            profile: 'engineering-runtime',
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  const unrelatedCwd = mkdtempSync(join(tmpdir(), 'pro-gov-unrelated-cwd-'));
+  const previousCwd = process.cwd();
+  let loaded;
+  try {
+    process.chdir(unrelatedCwd);
+    loaded = loadPortfolioManifest(configPath);
+  } finally {
+    process.chdir(previousCwd);
+  }
+
+  assert.deepEqual(loaded.issues, []);
+  assert.equal(loaded.manifest?.targets[0]?.path, target);
 });
 
 test('validatePortfolioManifest rejects duplicate target ids', () => {
@@ -58,7 +98,7 @@ test('validatePortfolioManifest rejects duplicate target ids', () => {
 
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
+    portfolioId: 'example-org',
     targets: [
       { id: 'duplicate', path: join(rootDir, 'A') },
       { id: 'duplicate', path: join(rootDir, 'B') },
@@ -71,8 +111,8 @@ test('validatePortfolioManifest rejects duplicate target ids', () => {
 test('validatePortfolioManifest rejects missing target paths', () => {
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
-    targets: [{ id: 'missing', path: '/definitely/missing/pieai-target' }],
+    portfolioId: 'example-org',
+    targets: [{ id: 'missing', path: '/definitely/missing/example-target' }],
   });
 
   assert.ok(issues.some((issue) => issue.type === 'missing-path' && issue.id === 'missing'));
@@ -84,7 +124,7 @@ test('validatePortfolioManifest rejects non-array assetBundles', () => {
 
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
+    portfolioId: 'example-org',
     targets: [
       {
         id: 'target',
@@ -103,7 +143,7 @@ test('validatePortfolioManifest rejects unknown profiles', () => {
 
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
+    portfolioId: 'example-org',
     targets: [
       {
         id: 'target',
@@ -122,7 +162,7 @@ test('validatePortfolioManifest rejects sharedRules until they are managed by pl
 
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
+    portfolioId: 'example-org',
     targets: [
       {
         id: 'target',
@@ -141,7 +181,7 @@ test('validatePortfolioManifest rejects unknown target fields', () => {
 
   const issues = validatePortfolioManifest({
     schemaVersion: 1,
-    portfolioId: 'pieai',
+    portfolioId: 'example-org',
     targets: [
       {
         id: 'target',
@@ -156,23 +196,23 @@ test('validatePortfolioManifest rejects unknown target fields', () => {
 
 test('getDefaultPortfolioTargets excludes controlPlane and executionEngine metadata', () => {
   const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
-  const controlPlane = join(rootDir, 'PieHQ');
+  const controlPlane = join(rootDir, 'ControlPlane');
   const executionEngine = join(rootDir, 'ProjectGovernanceSystem');
-  const target = join(rootDir, 'OwnMySpace');
+  const target = join(rootDir, 'WebApp');
   mkdirSync(controlPlane);
   mkdirSync(executionEngine);
   mkdirSync(target);
 
   const manifest = {
     schemaVersion: 1 as const,
-    portfolioId: 'pieai',
-    controlPlane: { id: 'piehq', path: controlPlane },
+    portfolioId: 'example-org',
+    controlPlane: { id: 'headquarters', path: controlPlane },
     executionEngine: { id: 'project-governance-system', path: executionEngine },
-    targets: [{ id: 'ownmyspace', path: target }],
+    targets: [{ id: 'web-app', path: target }],
   };
 
   assert.deepEqual(
     getDefaultPortfolioTargets(manifest).map((entry) => entry.id),
-    ['ownmyspace'],
+    ['web-app'],
   );
 });

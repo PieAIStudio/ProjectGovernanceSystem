@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-06-29
+last_reviewed: 2026-07-01
 domain: adoption
 tags:
   - downstream
@@ -45,10 +45,31 @@ Recommended shape:
     portfolio.json
 ```
 
-For Yuanfei's PieAI workspace, PieHQ is the private control-plane instance. That
-instance is intentionally not copied into this public PGS reference.
+The real control-plane instance is intentionally not copied into this public
+PGS reference.
 
 ## Minimal Example
+
+For a normal npm-package user, the manifest can be this small. There is no
+required private headquarters repository and no required local PGS checkout:
+
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance", "frontend-app"]
+    }
+  ]
+}
+```
+
+If a user has a separate control repository or full PGS checkout, they may add
+those as metadata:
 
 ```json
 {
@@ -103,6 +124,9 @@ pro-gov portfolio assets-check --config /path/to/portfolio.json --json
 `plan` creates dry-run target asset plans. It does not write files. If a target
 already has unmanaged files or symlinks at a planned destination, the plan fails
 instead of guessing whether it is safe to overwrite.
+
+When `executionEngine` is omitted, `plan` uses the reviewed public assets
+packaged with `@pieai/pro-gov`. That is the normal path for npm users.
 
 `assets-check` runs central strict asset verification for the selected targets.
 It uses `executionEngine.path/agent-assets` when that private registry exists,

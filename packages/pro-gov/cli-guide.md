@@ -20,14 +20,25 @@ pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
+pro-gov lens audit init --target /path/to/project --out audits/project/2026-07-01
+pro-gov lens audit check --dir audits/project/2026-07-01
 pro-gov init --profile engineering-runtime --dry-run
+pro-gov init --profile engineering-runtime --apply
 pro-gov init --profile doc-only --dry-run
-pro-gov sync --check
+pro-gov sync --check [--profile engineering-runtime|doc-only]
 pro-gov doctor
 ```
 
-`init` and `sync` are read-only in the first release. They report planned files,
-missing files, or changed files, but they do not overwrite target projects.
+`init --apply` is safe for a fresh target: it preflights every destination and
+refuses the entire operation if any target file already exists. It never merges
+or overwrites an existing router or project-local policy. Existing projects
+should use `--dry-run` and migrate deliberately. Optional Lefthook and GitHub
+Actions references stay packaged but are not installed by default.
+
+`sync --check` is read-only. It compares shared governance core files strictly,
+but checks project-local seeds such as `AGENTS.md`, project policy, and current
+work for presence only. It infers the installed profile when exactly one route
+exists; `--profile` resolves an empty or temporarily ambiguous target.
 
 Full upstream-checkout commands:
 
@@ -54,8 +65,23 @@ auto|manual` only as a migration override when deliberately moving an existing
 target.
 
 Portfolio manifests are external configuration files owned by a user or
-organization's control repository. PGS provides the format and commands; it does
-not publish a real user's private downstream project list.
+organization. PGS provides the format and commands; it does not publish a real
+user's private downstream project list. A normal npm user can omit
+`controlPlane` and `executionEngine`; `portfolio plan` will use the reviewed
+public assets packaged with `@pieai/pro-gov`. Add `executionEngine.path` only
+when a full local checkout should provide a private asset registry for strict
+maintainer checks.
+
+`lens audit init` creates a raw-first audit package for Project Lens plus
+Ponytail reviews. For a "read-only project audit", the target repository remains
+read-only, but the audit package is still the required output record. `lens
+audit check` fails when the package is missing required artifacts, when
+artifacts are still marked pending, or when generated template text was not
+replaced with real audit output. It also requires method records for the
+read-only boundary, agent execution, subagent trace, Project Lens/Ponytail
+sources, target status, and audit package status. Use
+`lens audit check --mode fresh` when this session must prove it created the raw
+passes; use `--mode reuse` when it only verifies an existing audit package.
 
 ## Typical Adoption Flow
 
@@ -65,7 +91,9 @@ pnpm pro-gov assets list
 pnpm pro-gov assets discover --target .
 pnpm pro-gov assets recommend --target .
 pnpm pro-gov init --profile engineering-runtime --dry-run
-pnpm pro-gov sync --check
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 pnpm doc-gov migrate --profile engineering-runtime --check
 pnpm doc-gov doctor
 ```

@@ -107,13 +107,13 @@ Do not rename `@pieai/doc-gov` to `pro-gov`. They do different jobs:
 | `@pieai/pro-gov` | Distribute project-level governance assets and run conservative read-only init/sync checks. |
 
 Beginner version: `doc-gov` is the inspection machine. `pro-gov` is the setup
-kit and parts catalog. The first `pro-gov` release still keeps write behavior
-off by default, because overwriting another project's router or policies without
-a review is too risky.
+kit and parts catalog. Fresh targets may use guarded `init --apply`; existing
+targets stay on the reviewed migration path because overwriting another
+project's router or policies is too risky.
 
 ## Local Agent Asset Registry
 
-`agent-assets/` is the local-only upstream registry for Yuanfei's skills,
+`agent-assets/` is the maintainer-local upstream registry for skills,
 npx-installed skills, non-npx third-party skill packs, rules, commands, bundles,
 and ProjectLens skills. It is ignored by Git in the public repository. Reviewed,
 publishable agent assets are promoted into `public-agent-assets/`.

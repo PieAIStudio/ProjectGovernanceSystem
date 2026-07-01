@@ -43,6 +43,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm test:package-consumer
       - run: pnpm doc-gov router-check
       - run: pnpm doc-gov check
       - run: pnpm doc-gov scan --check

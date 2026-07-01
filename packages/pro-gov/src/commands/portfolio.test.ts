@@ -33,7 +33,7 @@ test('portfolio check --json validates a manifest', () => {
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const parsed = JSON.parse(result.stdout);
   assert.equal(parsed.ok, true);
-  assert.deepEqual(parsed.targetIds, ['ownmyspace']);
+  assert.deepEqual(parsed.targetIds, ['web-app']);
 });
 
 test('portfolio plan --target --json returns dry-run asset plans for one target', () => {
@@ -48,7 +48,7 @@ test('portfolio plan --target --json returns dry-run asset plans for one target'
       '--config',
       fixture.configPath,
       '--target',
-      'ownmyspace',
+      'web-app',
       '--json',
     ],
     {
@@ -60,7 +60,7 @@ test('portfolio plan --target --json returns dry-run asset plans for one target'
   assert.equal(result.status, 0, result.stderr || result.stdout);
   const parsed = JSON.parse(result.stdout);
   assert.equal(parsed.targets.length, 1);
-  assert.equal(parsed.targets[0].id, 'ownmyspace');
+  assert.equal(parsed.targets[0].id, 'web-app');
   assert.equal(parsed.targets[0].plan.dryRun, true);
   assert.deepEqual(parsed.targets[0].plan.bundleIds, ['base-governance']);
 });
@@ -80,15 +80,15 @@ test('portfolio assets-check --json reports per-target asset issues', () => {
   assert.equal(result.status, 1, result.stderr || result.stdout);
   const parsed = JSON.parse(result.stdout);
   assert.equal(parsed.ok, false);
-  assert.equal(parsed.targets[0].id, 'ownmyspace');
+  assert.equal(parsed.targets[0].id, 'web-app');
   assert.ok(parsed.targets[0].issues.some((issue: { type: string }) => issue.type === 'missing-lock'));
 });
 
 function createPortfolioFixture(): { configPath: string } {
   const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-cli-'));
-  const controlPlane = join(rootDir, 'PieHQ');
+  const controlPlane = join(rootDir, 'ControlPlane');
   const executionEngine = join(rootDir, 'ProjectGovernanceSystem');
-  const target = join(rootDir, 'OwnMySpace');
+  const target = join(rootDir, 'WebApp');
   mkdirSync(controlPlane);
   mkdirSync(executionEngine);
   mkdirSync(target);
@@ -98,12 +98,12 @@ function createPortfolioFixture(): { configPath: string } {
     `${JSON.stringify(
       {
         schemaVersion: 1,
-        portfolioId: 'pieai',
-        controlPlane: { id: 'piehq', path: controlPlane },
+        portfolioId: 'example-org',
+        controlPlane: { id: 'headquarters', path: controlPlane },
         executionEngine: { id: 'project-governance-system', path: executionEngine },
         targets: [
           {
-            id: 'ownmyspace',
+            id: 'web-app',
             path: target,
             profile: 'engineering-runtime',
             assetBundles: ['base-governance'],

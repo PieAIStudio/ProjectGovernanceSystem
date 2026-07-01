@@ -1,8 +1,8 @@
 {
   "name": "pro-gov",
   "private": true,
-  "version": "0.3.7",
-  "description": "Central upstream for PieAI project documentation governance, agents routing, and workflow profiles.",
+  "version": "0.3.8",
+  "description": "Public upstream for AI-assisted project documentation governance, agent routing, and workflow profiles.",
   "packageManager": "pnpm@11.9.0",
   "type": "module",
   "engines": {
@@ -13,6 +13,7 @@
     "pro-gov": "node packages/pro-gov/dist/cli.js",
     "build": "pnpm --filter @pieai/doc-gov build && pnpm --filter @pieai/pro-gov build",
     "test": "pnpm --filter @pieai/doc-gov test && pnpm --filter @pieai/pro-gov test",
+    "test:package-consumer": "node scripts/smoke-packed-consumer.mjs",
     "typecheck": "pnpm --filter @pieai/doc-gov typecheck && pnpm --filter @pieai/pro-gov typecheck"
   },
   "devDependencies": {

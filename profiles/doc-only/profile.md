@@ -31,7 +31,7 @@ Each project must define:
 ## Automation Boundary
 
 This profile is a human/AI adoption contract. `doc-gov` validates the resulting
-project shape. `pro-gov` packages reusable starter/profile assets and exposes
-read-only init/sync checks, but it does not overwrite project-local files in
-the first release. Use `starter/`, this profile, and `manifest.yml` as the
-reference checklist.
+project shape. `pro-gov init --apply` can install it into a fresh target, but
+refuses all writes when any destination already exists. `sync --check` compares
+shared core files while leaving project-local router, policy, and current-work
+content under the target project's ownership.

@@ -45,8 +45,8 @@ Beginner-friendly description:
 - It has two practical profiles: engineering-runtime and doc-only.
 - It provides `doc-gov` commands for schema checks, manifest freshness, link
   checks, router integrity, health checks, and read-only migration checks.
-- It provides `pro-gov` commands for packaged starter/profile assets,
-  read-only init planning, read-only sync checks, and package health checks.
+- It provides `pro-gov` commands for packaged starter/profile assets, guarded
+  fresh-target installation, read-only sync checks, and package health checks.
 - It includes ProjectLens-style read-only inspection and a governed local agent
   asset registry without publishing private or third-party skill bodies.
 - It works with external workflow systems instead of replacing them:

@@ -126,6 +126,30 @@ PGS はマヤの代わりに製品判断をしません。マヤと AI が次の
 Profile が変えるのは作業経路であり、製品の真実ではありません。アプリのルール、
 物語設定、実行設定、プロンプト、原始資産は、それを所有するプロジェクトに残ります。
 
+### 任意の portfolio 制御
+
+PGS はユーザー所有の portfolio manifest から複数リポジトリを検査できますが、公開
+パッケージは実ユーザーのプロジェクト一覧や private control plane を同梱しません。
+
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance"]
+    }
+  ]
+}
+```
+
+`pro-gov portfolio check|plan` はこの明示的な設定だけを読みます。完全なローカル PGS
+checkout が指定されていなければ、`@pieai/pro-gov` に同梱されたレビュー済み public
+assets を使います。
+
 ## 各要素の連携
 
 1. AI が `AGENTS.md` を読む。
@@ -186,7 +210,7 @@ managed agent assets を適用する場合を除き、公開パッケージ、st
 
 PGS に上書きを許可せず、まず検査できます。
 
-Node.js `22.12.0` 以降が必要です。
+Node.js `24.x` が必要です。
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list
@@ -197,15 +221,20 @@ pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
 pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 ```
 
-現在の init と sync は読み取り専用です。存在、不足、差分を表示し、別プロジェクトの
-ルーターを勝手に書き換えません。
+プレビューは読み取り専用です。新規ターゲットでは、パッケージ導入後に
+`init --apply` を使えます。既存の宛先が一つでもあれば、書き込み前に全体を中止します。
+既存プロジェクトは dry-run に基づいて意図的に移行します。
 
 プロジェクトへ導入する場合：
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov init --profile engineering-runtime --dry-run
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 pnpm pro-gov doctor
-pnpm doc-gov check
+pnpm doc-gov doctor
 ```
 
 既存ファイルを移行する前に
@@ -291,7 +320,7 @@ pnpm pro-gov doctor
 | Git を置き換えますか？ | いいえ。Git は履歴、PGS は真実の整理と協業構造の検査を担当します。 |
 | Superpowers は必須ですか？ | 必須ではありませんが、engineering/runtime 作業には推奨です。 |
 | Ponytail をグローバルで有効にすべきですか？ | いいえ。`off` を保ち、隔離タスクで `lite` を先に試します。 |
-| `pro-gov init` は上書きしますか？ | 現行版ではしません。対応する init は読み取り専用の `--dry-run` です。 |
+| `pro-gov init` は上書きしますか？ | いいえ。`--apply` は新規ターゲット専用で、既存の宛先があれば書き込み前に中止します。 |
 | 友人も使えますか？ | はい。公開パッケージは `@pieai/pro-gov` と `@pieai/doc-gov` で、非公開・第三者スキル本文は含みません。 |
 
 AI が十分速くなり、本当の問題が「10個目の計画、5回目の AI セッション、次の担当者が

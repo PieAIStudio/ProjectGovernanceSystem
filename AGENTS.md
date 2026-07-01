@@ -28,7 +28,9 @@ profiles.
    - `integrations/directed-development.md`
    - `profiles/engineering-runtime/`
    - `profiles/doc-only/`
-7. For npm release work, read
+7. For portfolio technology-stack, dependency, version, or project audit work,
+   also read `docs/reference/portfolio-technology-governance.md`.
+8. For npm release work, read
    `docs/reference/adoption/public-release-checklist.md` before changing versions
    or publishing packages.
 
@@ -44,6 +46,9 @@ profiles.
 - Publish npm packages only through the trusted GitHub Actions workflow documented
   in the public release checklist. Do not use a local npm token as the release
   path.
+- PGS owns technical governance execution protocols. Product strategy or private
+  portfolio direction may live in an external control plane, but target
+  repositories own installed versions and runtime facts.
 
 <!-- PGS-ROUTER:END -->
 

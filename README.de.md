@@ -133,6 +133,31 @@ Profile ändern den Arbeitsweg, nicht die Produktwahrheit. App-Regeln,
 Erzählkanon, Laufzeitkonfiguration, Prompts und Quell-Assets bleiben im
 zuständigen Projekt.
 
+### Optionale Portfolio-Steuerung
+
+PGS kann mehrere Repositories über ein vom Nutzer gepflegtes Portfolio-Manifest
+prüfen, aber das öffentliche Paket enthält keine echte Projektliste und keine
+private Control Plane.
+
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance"]
+    }
+  ]
+}
+```
+
+`pro-gov portfolio check|plan` liest diese explizite Konfiguration. Wenn kein
+vollständiger lokaler PGS-Checkout angegeben ist, nutzt es die geprüften public
+assets, die mit `@pieai/pro-gov` ausgeliefert werden.
+
 ## Wie die Teile zusammenarbeiten
 
 1. Die KI liest `AGENTS.md`.
@@ -200,7 +225,7 @@ verwaltete Agent-Assets an.
 
 Du kannst PGS prüfen, ohne Überschreiben zu erlauben.
 
-Node.js `22.12.0` oder neuer ist erforderlich.
+Node.js `24.x` ist erforderlich.
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list
@@ -211,15 +236,20 @@ pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
 pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 ```
 
-Die init- und sync-Wege dieser ersten Version sind schreibgeschützt. Sie zeigen
-vorhandene, fehlende oder abweichende Inhalte und schreiben keinen Router heimlich um.
+Die Vorschau ist schreibgeschützt. Bei einem neuen Ziel bricht `init --apply`
+vor dem Schreiben vollständig ab, sobald eine Zieldatei bereits existiert.
+Bestehende Projekte nutzen den dry-run für eine bewusste Migration.
 
 Zur Paketübernahme:
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov init --profile engineering-runtime --dry-run
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 pnpm pro-gov doctor
-pnpm doc-gov check
+pnpm doc-gov doctor
 ```
 
 Lies vor der Migration vorhandener Dateien das
@@ -310,7 +340,7 @@ in Downstream-Projekten.
 | Ersetzt es Git? | Nein. Git speichert Historie; PGS ordnet Wahrheit und prüft die Struktur. |
 | Ist Superpowers Pflicht? | Nein, aber für engineering/runtime-Arbeit empfohlen. |
 | Soll Ponytail global aktiviert werden? | Nein. `off` beibehalten und `lite` zuerst isoliert testen. |
-| Überschreibt `pro-gov init` mein Projekt? | Nicht in dieser Version. Unterstützt wird nur das schreibgeschützte `--dry-run`. |
+| Überschreibt `pro-gov init` mein Projekt? | Nein. `--apply` ist nur für neue Ziele gedacht und bricht vor dem Schreiben ab, wenn ein Ziel bereits existiert. |
 | Können Freunde es nutzen? | Ja. Öffentlich sind `@pieai/pro-gov` und `@pieai/doc-gov`; private und fremde Skill-Inhalte fehlen. |
 
 PGS wird dann wertvoll, wenn KI bereits schnell genug ist und das echte Problem

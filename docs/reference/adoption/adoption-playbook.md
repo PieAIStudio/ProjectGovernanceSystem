@@ -70,8 +70,15 @@ Current package-based method:
 - preserve project-local package scripts
 - run `pro-gov init --profile <engineering-runtime|doc-only> --dry-run` to see
   the starter files that would be installed
-- run `pro-gov sync --check` to compare reusable starter files without changing
-  the project
+- for a fresh target, run `pro-gov init --profile <profile> --apply`; it refuses
+  the entire operation if any destination already exists
+- optional Lefthook and GitHub Actions guardrails remain reference assets; add
+  them deliberately when the target has the matching package manager and CI
+- for an existing target, keep the dry-run output as the migration checklist and
+  merge local truth deliberately instead of asking PGS to overwrite it
+- run `pro-gov sync --check --profile <profile>` to compare shared core files;
+  project-local router, policy, documentation map, and current-work files are
+  checked for presence rather than byte equality
 - run `pro-gov assets discover --target <path>` and
   `pro-gov assets recommend --target <path>` to collect local project signals
   and suggested agent-asset bundles without changing the project
@@ -89,14 +96,16 @@ Current package-based method:
 - treat the npm package as the CLI source and the local `docs/governance/`
   files as the project's checked-in governance contract
 
-Later Stage 2 method:
-
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov init --profile engineering-runtime --dry-run
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 ```
 
-Do not jump to write-mode installation until package installation is
-deliberately enabled and the read-only checks are understood.
+Use `--apply` only for a fresh target. Existing projects normally already own
+some of the same paths, so keep them on the dry-run migration path.
 Do not use an absolute-path script as the default for collaborators; it is fine
 for one local machine, but it is brittle once a repo moves or another person
 checks it out.
@@ -257,7 +266,8 @@ If the target project is an app/runtime project:
 2. Inventory existing docs and current runtime truth.
 3. Install `@pieai/pro-gov` and `@pieai/doc-gov`, or keep the existing local
    tool copy until the project is ready to move scripts and CI together.
-4. Add governed `docs/governance/` and `docs/policy/` starter files.
+4. Preview the selected profile. Use fresh-target `init --apply`, or merge the
+   starter files deliberately when the project already has local truth.
 5. Write `docs/policy/best-practice-for-this-project.md` with project-specific truth, stack, lanes, and verification commands.
 6. Create `docs/reference/execution/current-work.md`.
 7. Move current plans into `docs/plans/active/`; move finished plans into `docs/plans/completed/`.

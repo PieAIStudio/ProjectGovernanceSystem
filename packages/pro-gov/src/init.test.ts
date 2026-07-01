@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, mkdtempSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import test from 'node:test';
@@ -36,16 +36,55 @@ test('init rejects invalid profiles', () => {
   assert.match(output, /Invalid profile/);
 });
 
-test('init requires dry-run in the first release', () => {
+test('init apply installs only the selected profile without overwriting project truth', () => {
+  const root = mkdtempSync(join(tmpdir(), 'pro-gov-init-apply-'));
+
+  const output = withCwd(root, () =>
+    captureConsole(() => {
+      assert.equal(runInit(['--profile', 'doc-only', '--apply']), 0);
+    })
+  );
+
+  assert.match(output, /APPLIED/);
+  assert.equal(existsSync(join(root, 'AGENTS.md')), true);
+  assert.equal(existsSync(join(root, 'lefthook.yml')), false);
+  assert.equal(existsSync(join(root, '.github/workflows/docs-check.yml')), false);
+  assert.equal(existsSync(join(root, 'docs/governance/agents-routing/doc-only-v0.9.md')), true);
+  assert.equal(existsSync(join(root, 'docs/governance/agents-routing/engineering-runtime-v0.9.md')), false);
+  assert.match(readFileSync(join(root, 'AGENTS.md'), 'utf8'), /docs\/governance\/agents-routing\/doc-only-v0\.9\.md/);
+  assert.doesNotMatch(
+    readFileSync(join(root, 'AGENTS.md'), 'utf8'),
+    /docs\/governance\/agents-routing\/engineering-runtime-v0\.9\.md/,
+  );
+});
+
+test('init apply refuses all writes when any target file already exists', () => {
+  const root = mkdtempSync(join(tmpdir(), 'pro-gov-init-conflict-'));
+  writeFileSync(join(root, 'AGENTS.md'), '# Existing project router\n');
+
+  const output = withCwd(root, () =>
+    captureConsole(() => {
+      assert.equal(runInit(['--profile', 'engineering-runtime', '--apply']), 1);
+    })
+  );
+
+  assert.match(output, /refusing to overwrite/i);
+  assert.equal(readFileSync(join(root, 'AGENTS.md'), 'utf8'), '# Existing project router\n');
+  assert.equal(existsSync(join(root, 'docs')), false);
+  assert.equal(existsSync(join(root, 'CLAUDE.md')), false);
+});
+
+test('init requires exactly one execution mode', () => {
   const root = mkdtempSync(join(tmpdir(), 'pro-gov-init-safety-'));
 
   const output = withCwd(root, () =>
     captureConsole(() => {
       assert.equal(runInit(['--profile', 'doc-only']), 1);
+      assert.equal(runInit(['--profile', 'doc-only', '--dry-run', '--apply']), 1);
     })
   );
 
-  assert.match(output, /requires --dry-run/);
+  assert.match(output, /exactly one of --dry-run or --apply/);
 });
 
 function withCwd<T>(root: string, fn: () => T): T {

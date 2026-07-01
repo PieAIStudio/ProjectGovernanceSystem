@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-06-30T03:15:40.475Z
-generator_version: doc-gov@0.3.7
-docs_count: 28
+generated_at: 2026-07-01T07:11:42.839Z
+generator_version: doc-gov@0.3.8
+docs_count: 29
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -107,7 +107,7 @@ docs:
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-06-29
+    last_reviewed: 2026-07-01
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
@@ -151,6 +151,13 @@ docs:
     canonical: true
     last_reviewed: 2026-06-04
     pinned: false
+  - id: REF-PORTFOLIO-TECHNOLOGY-GOVERNANCE
+    path: docs/reference/portfolio-technology-governance.md
+    type: reference
+    status: active
+    canonical: true
+    last_reviewed: 2026-07-01
+    pinned: true
   - id: SPEC-PROJECT-AUDIT-PROTOCOL-V0-1
     path: docs/reference/project-lens/project-audit-protocol-v0.1.md
     type: reference
@@ -172,13 +179,6 @@ docs:
     canonical: false
     last_reviewed: 2026-06-12
     pinned: false
-  - id: SPEC-0005
-    path: docs/specs/active/SPEC-0005-piehq-controlled-public-pgs.md
-    type: spec
-    status: active
-    canonical: true
-    last_reviewed: 2026-06-29
-    pinned: false
   - id: SPEC-0002
     path: docs/specs/completed/SPEC-0002-pro-gov-project-package.md
     type: spec
@@ -199,4 +199,11 @@ docs:
     status: completed
     canonical: true
     last_reviewed: 2026-06-21
+    pinned: false
+  - id: SPEC-0005
+    path: docs/specs/completed/SPEC-0005-private-control-plane-public-pgs.md
+    type: spec
+    status: completed
+    canonical: true
+    last_reviewed: 2026-07-01
     pinned: false

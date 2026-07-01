@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.3.8 - 2026-07-01
+
+- Added guarded `pro-gov init --apply` for fresh targets; it preflights every
+  destination and refuses all writes when an existing target file is found.
+- Made `sync --check` profile-aware and separated shared core comparison from
+  project-owned router, policy, documentation-map, and current-work content.
+- Resolved relative portfolio paths from the manifest directory so external
+  control repositories remain portable.
+- Added a release-blocking packed-consumer smoke test that installs both npm
+  tarballs and runs the complete first-adoption validation path.
+- Removed maintainer-only release/site briefs from npm assets, aligned all
+  translated READMEs on Node 24 and current init behavior, and moved the private
+  control-plane implementation spec out of the active work surface.
+
+## 0.3.7 - 2026-06-30
+
+- Added portable downstream asset checks, central portfolio asset validation,
+  profile validation, and ignored generated Python cache files in asset hashes.
+- Kept private portfolio configuration external while allowing public package
+  assets to validate independently from a maintainer checkout.
+
+## 0.3.6 - 2026-06-30
+
+- Added user-scoped skill ownership so reusable personal skills are not
+  installed into every project target.
+- Documented and enforced the Trusted Publishing release path.
+
 ## 0.3.5 - 2026-06-21
 
 - Fixed the public `@pieai/pro-gov` npm package so normal registry installs do

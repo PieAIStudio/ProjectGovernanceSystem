@@ -6,6 +6,7 @@ export interface PlannedFile {
   sourcePath: string;
   targetPath: string;
   absoluteSourcePath: string;
+  ownership: 'shared' | 'project-local-seed' | 'optional-guardrail';
 }
 
 export function planStarterFiles(profile?: ProGovProfile): PlannedFile[] {
@@ -19,10 +20,30 @@ export function planStarterFiles(profile?: ProGovProfile): PlannedFile[] {
           sourcePath: asset.path,
           targetPath,
           absoluteSourcePath: asset.absolutePath,
+          ownership: classifyOwnership(targetPath),
         },
       ];
     })
     .sort((a, b) => a.targetPath.localeCompare(b.targetPath));
+}
+
+function classifyOwnership(targetPath: string): PlannedFile['ownership'] {
+  if (
+    targetPath === 'lefthook.yml' ||
+    targetPath === '.github/workflows/docs-check.yml'
+  ) {
+    return 'optional-guardrail';
+  }
+  if (
+    targetPath === 'AGENTS.md' ||
+    targetPath === 'CLAUDE.md' ||
+    targetPath === 'docs/policy/best-practice-for-this-project.md' ||
+    targetPath === 'docs/reference/documentation-map.md' ||
+    targetPath === 'docs/reference/execution/current-work.md'
+  ) {
+    return 'project-local-seed';
+  }
+  return 'shared';
 }
 
 function isOtherProfileRouting(targetPath: string, profile: ProGovProfile): boolean {

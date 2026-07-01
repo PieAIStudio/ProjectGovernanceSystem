@@ -63,6 +63,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Test packed consumer install
+        run: pnpm test:package-consumer
+
       - name: Validate router and entry files
         run: pnpm doc-gov router-check
 

@@ -133,6 +133,31 @@ Los profiles cambian la ruta, no la verdad del producto. Las reglas de la
 aplicación, el canon narrativo, la configuración, los prompts y los activos
 fuente permanecen en su proyecto.
 
+### Control portfolio opcional
+
+PGS puede inspeccionar varios repositorios desde un portfolio manifest propiedad
+del usuario, pero el paquete público no incluye listas reales de proyectos ni
+un control plane privado.
+
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance"]
+    }
+  ]
+}
+```
+
+`pro-gov portfolio check|plan` lee esa configuración explícita. Si no se indica
+un checkout local completo de PGS, usa los public assets revisados que vienen
+empaquetados con `@pieai/pro-gov`.
+
 ## Cómo colaboran las piezas
 
 1. La IA lee `AGENTS.md`.
@@ -199,7 +224,7 @@ administrados.
 
 Puedes inspeccionar PGS sin permitir que sobrescriba el proyecto.
 
-Requiere Node.js `22.12.0` o superior.
+Requiere Node.js `24.x`.
 
 ```bash
 pnpm dlx @pieai/pro-gov assets list
@@ -210,15 +235,20 @@ pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
 pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 ```
 
-Las rutas init y sync de esta primera versión son de solo lectura. Muestran lo
-presente, ausente o diferente; no reescriben silenciosamente el enrutador.
+La vista previa es de solo lectura. En un destino nuevo, `init --apply` aborta
+antes de escribir si ya existe cualquier archivo de destino. Los proyectos
+existentes siguen una migración deliberada basada en el dry-run.
 
 Para adoptar los paquetes:
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov init --profile engineering-runtime --dry-run
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 pnpm pro-gov doctor
-pnpm doc-gov check
+pnpm doc-gov doctor
 ```
 
 Lee la [Guía de adopción](docs/reference/adoption/adoption-playbook.md) antes de
@@ -309,7 +339,7 @@ producto permanece en los proyectos posteriores.
 | ¿Sustituye Git? | No. Git registra el historial; PGS organiza la verdad y valida la estructura. |
 | ¿Exige Superpowers? | No, pero se recomienda para flujos engineering/runtime. |
 | ¿Debo activar Ponytail globalmente? | No. Mantén `off` y prueba `lite` primero en una tarea aislada. |
-| ¿`pro-gov init` sobrescribe el proyecto? | No en esta versión. La ruta admitida es `--dry-run`, de solo lectura. |
+| ¿`pro-gov init` sobrescribe el proyecto? | No. `--apply` solo sirve para destinos nuevos y aborta antes de escribir si ya existe cualquier destino. |
 | ¿Pueden usarlo mis amigos? | Sí. Los paquetes públicos son `@pieai/pro-gov` y `@pieai/doc-gov`; no incluyen habilidades privadas ni de terceros. |
 
 PGS resulta útil cuando la IA ya es suficientemente rápida y el verdadero

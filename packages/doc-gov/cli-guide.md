@@ -1,14 +1,14 @@
 # @pieai/doc-gov
 
-Documentation governance CLI for PieAI projects.
+Documentation governance CLI for AI-assisted projects.
 
 This package is the upstream CLI source for Project Governance System. It can
 be installed by downstream projects as `@pieai/doc-gov` so scripts, hooks, and
 CI all use the same CLI source.
 
 It is intentionally the validator package. Install `@pieai/pro-gov` beside it
-when a project needs packaged starter/profile assets or read-only init/sync
-planning.
+when a project needs packaged starter/profile assets, guarded fresh-target init,
+or read-only sync planning.
 
 ## Lifecycle
 

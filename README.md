@@ -115,7 +115,7 @@ checks:
 
 - starter governance files;
 - `engineering-runtime` and `doc-only` profiles;
-- read-only init and sync comparisons;
+- guarded fresh-target init and read-only sync comparisons;
 - project signal discovery and agent-asset recommendations;
 - ProjectLens-style local inspection and reports;
 - reviewed agent-asset plans when using a full PGS checkout.
@@ -130,6 +130,31 @@ checks:
 The profiles change the route, not the project's product truth. Your app rules,
 story canon, runtime configuration, prompts, and source assets stay in the
 project that owns them.
+
+### Optional portfolio control
+
+PGS can inspect several repositories from a user-owned portfolio manifest, but
+the public package does not ship any real user's project list or private control
+plane.
+
+```json
+{
+  "schemaVersion": 1,
+  "portfolioId": "example-org",
+  "targets": [
+    {
+      "id": "web-app",
+      "path": "/path/to/web-app",
+      "profile": "engineering-runtime",
+      "assetBundles": ["base-governance"]
+    }
+  ]
+}
+```
+
+`pro-gov portfolio check|plan` reads that explicit configuration. If no full
+local PGS checkout is supplied, it uses the reviewed public assets packaged with
+`@pieai/pro-gov`.
 
 ## How The Pieces Work Together
 
@@ -211,15 +236,21 @@ pnpm dlx @pieai/pro-gov init --profile engineering-runtime --dry-run
 pnpm dlx @pieai/doc-gov migrate --profile engineering-runtime --check
 ```
 
-These first-release init and sync paths are read-only. They show what is present,
-missing, or different. They do not silently rewrite another project's router.
+The preview is read-only. For a fresh target, install the package and use
+`init --apply`; it checks every destination first and writes nothing if any
+target file already exists. Existing projects stay on the deliberate migration
+path so PGS never silently rewrites local truth.
 
 To adopt the packages in a project:
 
 ```bash
 pnpm add -D @pieai/pro-gov @pieai/doc-gov
+pnpm pro-gov init --profile engineering-runtime --dry-run
+pnpm pro-gov init --profile engineering-runtime --apply
+pnpm doc-gov scan
+pnpm pro-gov sync --check --profile engineering-runtime
 pnpm pro-gov doctor
-pnpm doc-gov check
+pnpm doc-gov doctor
 ```
 
 Read the [Adoption Playbook](docs/reference/adoption/adoption-playbook.md)
@@ -272,7 +303,7 @@ write mode because a governance tool should not become a new source of damage.
 | Path | Purpose |
 | --- | --- |
 | `packages/doc-gov/` | Documentation validator CLI and lifecycle checks. |
-| `packages/pro-gov/` | Project-level distribution, inspection, and read-only adoption CLI. |
+| `packages/pro-gov/` | Project-level distribution, inspection, and guarded fresh-target adoption CLI. |
 | `starter/` | Reference files for a governed project. |
 | `profiles/` | Reusable project-type routes. |
 | `docs/governance/` | Core document and routing contracts. |
@@ -312,7 +343,7 @@ this upstream repository first. Product-specific truth stays downstream.
 | Does it replace Git? | No. Git records history; PGS organizes truth and validates the collaboration structure. |
 | Does it require Superpowers? | No, but Superpowers is recommended for engineering/runtime workflows. |
 | Should I turn Ponytail on globally? | No. Keep it `off` and test `lite` in an isolated task first. |
-| Will `pro-gov init` overwrite my project? | Not in the current release. The supported init path is read-only `--dry-run`. |
+| Will `pro-gov init` overwrite my project? | No. `--apply` is fresh-target only and aborts before writing if any destination exists. |
 | Can friends use it? | Yes. The public packages are `@pieai/pro-gov` and `@pieai/doc-gov`; private and third-party skill bodies are not included. |
 
 PGS is useful when AI is already fast enough and the real problem is keeping the

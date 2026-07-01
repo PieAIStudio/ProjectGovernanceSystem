@@ -1,12 +1,12 @@
 ---
 id: SPEC-0005
-title: PieHQ-Controlled Public PGS
+title: Private Control Plane and Public PGS
 type: spec
-status: active
+status: completed
 canonical: true
 owner: ai-assisted
 created: 2026-06-29
-last_reviewed: 2026-06-29
+last_reviewed: 2026-07-01
 domain: governance
 tags:
   - public-boundary
@@ -22,7 +22,7 @@ related:
   - SPEC-0003
 ---
 
-# SPEC-0005: PieHQ-Controlled Public PGS
+# SPEC-0005: Private Control Plane and Public PGS
 
 ## Problem
 
@@ -115,7 +115,24 @@ Reason: Markdown is excellent for humans and AI discussion. JSON is better for
 repeatable CLI checks because fields have fixed names and machines do not need
 to parse prose tables.
 
-### 4. Public PGS Must Be Config-Driven
+### 4. Separate Strategy Direction From Technical Execution
+
+PieHQ, or any private control plane, may own product-line strategy and
+technology direction. PGS owns the technical governance execution protocol:
+portfolio checks, Project Lens audits, asset checks, dependency/version drift
+classification, and implementation handoff shape.
+
+Target repositories remain the truth for installed versions, lockfiles, runtime
+configuration, and proof that a technical change works.
+
+Beginner version: the control plane says where the convoy should go. PGS checks
+the vehicles, plans the maintenance, and records the evidence. The vehicle's own
+dashboard still proves what is actually installed today.
+
+This boundary is defined in
+`docs/reference/portfolio-technology-governance.md`.
+
+### 5. Public PGS Must Be Config-Driven
 
 PGS commands that operate across projects must accept an external config path:
 
@@ -137,7 +154,7 @@ replaced in public package assets by a generic example. Public package checks
 must fail if packaged assets contain machine-local PieAI paths such as
 `/Users/yuanfei/PieAI/`.
 
-### 5. Remove Retired Gemini Distribution Artifacts
+### 6. Remove Retired Gemini Distribution Artifacts
 
 New downstream adoption must not create `GEMINI.md` or `.gemini/` files.
 
@@ -145,7 +162,7 @@ Gemini-related host strings may remain in historical private asset metadata only
 where needed to describe imported legacy assets. They must not drive new starter
 files or downstream initialization.
 
-### 6. Make Skill Scope And Placement A Registry SSOT
+### 7. Make Skill Scope And Placement A Registry SSOT
 
 Skill scope and placement must be decided once in the asset registry, not
 separately in each target project.
@@ -233,13 +250,15 @@ apps, but a public CLI configuration contract should stay language-neutral.
 3. PGS portfolio commands read an explicit external config path.
 4. Public PGS package assets must not include PieAI private project lists or
    machine-local paths.
-5. New PGS starter/init flows must not create `GEMINI.md` or `.gemini/`.
-6. Skill assets gain a registry-level default placement.
-7. Bundles stop being the source of placement truth.
-8. Asset checks report duplicate auto/manual links, placement drift, dangling
+5. PGS owns technical governance execution; private control planes own strategy
+   direction; target repositories own installed runtime facts.
+6. New PGS starter/init flows must not create `GEMINI.md` or `.gemini/`.
+7. Skill assets gain a registry-level default placement.
+8. Bundles stop being the source of placement truth.
+9. Asset checks report duplicate auto/manual links, placement drift, dangling
    links, and unmanaged PGS-looking skill links.
-9. `my-skills-manager` states its boundary with `skill-installer` clearly.
-10. Downstream cleanup happens after the PGS/PieHQ contract and checks exist,
+10. `my-skills-manager` states its boundary with `skill-installer` clearly.
+11. Downstream cleanup happens after the PGS/PieHQ contract and checks exist,
     so cleanup can be verified instead of performed by memory.
 
 ## Non Goals
@@ -257,6 +276,8 @@ apps, but a public CLI configuration contract should stay language-neutral.
 
 - Add `portfolio` command group to `@pieai/pro-gov`.
 - Add a small portfolio manifest loader and validator.
+- Add a public portfolio technology-governance reference that separates
+  strategy direction, PGS execution, and target runtime facts.
 - Add package leak checks for private PieAI paths and retired Gemini starter
   artifacts.
 - Add `defaultPlacement` to asset registry skill entries.

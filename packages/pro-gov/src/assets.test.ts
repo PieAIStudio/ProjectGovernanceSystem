@@ -97,6 +97,8 @@ test('packed package does not expose private portfolio or retired Gemini assets'
     const list = spawnSync('tar', ['-tzf', tarballPath], { encoding: 'utf8' });
     assert.equal(list.status, 0, list.stderr || list.stdout);
     assert.doesNotMatch(list.stdout, /downstream-project-registry\.md/);
+    assert.doesNotMatch(list.stdout, /public-release-checklist\.md/);
+    assert.doesNotMatch(list.stdout, /site-publication-brief\.md/);
     assert.doesNotMatch(list.stdout, /GEMINI\.md/);
     assert.doesNotMatch(list.stdout, /\.gemini\//);
 
@@ -112,6 +114,10 @@ test('packed package does not expose private portfolio or retired Gemini assets'
 
     assert.doesNotMatch(packedText, /\/Users\/yuanfei\/PieAI\//);
     assert.doesNotMatch(packedText, /\bPieHQ\b/);
+    assert.doesNotMatch(packedText, /\bYuanfei\b/);
+    assert.doesNotMatch(packedText, /\bOwnMySpace\b/);
+    assert.doesNotMatch(packedText, /\bNon-Heroes\b/);
+    assert.doesNotMatch(packedText, /\bTuringPact\b/);
   } finally {
     rmSync(targetDir, { recursive: true, force: true });
   }
@@ -299,7 +305,7 @@ test('assets plan --placement manual targets codex manual skills', { skip: !hasB
   );
 });
 
-test('assets plan --out writes a plan artifact for a non-Codex host without applying it', { skip: !hasProjectLensBundle }, () => {
+test('assets plan rejects user-scoped Project Lens skills for project targets', { skip: !hasProjectLensBundle }, () => {
   const targetDir = createTempTargetDir();
   const outPath = join(targetDir, 'asset-plan.json');
 
@@ -324,20 +330,13 @@ test('assets plan --out writes a plan artifact for a non-Codex host without appl
     },
   );
 
-  assert.equal(result.status, 0);
-  const parsed = JSON.parse(readFileSync(outPath, 'utf8'));
-  assert.equal(parsed.host, 'claude-code');
-  assert.ok(
-    parsed.actions.some(
-      (action: { type: string; targetPath: string }) =>
-        action.type === 'symlink' && action.targetPath === '.claude/skills/project-architecture-lens',
-    ),
-  );
-  assert.equal(existsSync(join(targetDir, '.claude')), false);
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /User-scoped asset pie-skills\/project-architecture-lens/);
+  assert.equal(existsSync(outPath), false);
   assert.equal(existsSync(join(targetDir, '.pro-gov')), false);
 });
 
-test('assets apply and check complete a managed install flow', { skip: !hasProjectLensBundle }, () => {
+test('assets apply and check complete a managed install flow', () => {
   const targetDir = createTempTargetDir();
   const outPath = join(targetDir, 'asset-plan.json');
 
@@ -350,7 +349,7 @@ test('assets apply and check complete a managed install flow', { skip: !hasProje
       '--target',
       targetDir,
       '--bundle',
-      'project-lens',
+      'base-governance',
       '--out',
       outPath,
     ],
@@ -370,7 +369,7 @@ test('assets apply and check complete a managed install flow', { skip: !hasProje
     },
   );
   assert.equal(applyResult.status, 0);
-  assert.equal(existsSync(join(targetDir, '.agents/manual-skills/project-architecture-lens')), true);
+  assert.equal(existsSync(join(targetDir, '.agents/skills/doc-cross-validator')), true);
 
   const checkResult = spawnSync(
     process.execPath,
@@ -592,6 +591,424 @@ test('lens report writes a markdown evidence report', () => {
   assert.match(markdown, /AI Config Adapters/);
   assert.match(markdown, /## Review Notes/);
 });
+
+test('lens audit init creates a raw-first audit package contract', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+  writeFileSync(join(targetDir, 'AGENTS.md'), '# Agents\n');
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'lens',
+      'audit',
+      'init',
+      '--target',
+      targetDir,
+      '--out',
+      auditDir,
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.equal(existsSync(join(auditDir, 'audit.contract.json')), true);
+  assert.equal(existsSync(join(auditDir, 'manifest.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/project-lens/architecture-lens.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/project-lens/truth-surface-audit.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/project-lens/technology-strategy.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/ponytail/ponytail-audit.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/ponytail/ponytail-debt.md')), true);
+  assert.equal(existsSync(join(auditDir, 'raw/ponytail/ponytail-gain.md')), true);
+  assert.equal(existsSync(join(auditDir, 'synthesis/decision-index.md')), true);
+  assert.equal(existsSync(join(auditDir, 'synthesis/handoff-for-implementation-ai.md')), true);
+
+  const contract = JSON.parse(readFileSync(join(auditDir, 'audit.contract.json'), 'utf8')) as {
+    version: number;
+    target: { path: string };
+    requiredArtifacts: string[];
+  };
+  assert.equal(contract.version, 1);
+  assert.equal(contract.target.path, targetDir);
+  assert.ok(contract.requiredArtifacts.includes('raw/ponytail/ponytail-audit.md'));
+  assert.ok(contract.requiredArtifacts.includes('raw/project-lens/architecture-lens.md'));
+});
+
+test('lens audit check fails when required raw artifacts are missing', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+  rmSync(join(auditDir, 'raw/ponytail/ponytail-audit.md'));
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as {
+    ok: boolean;
+    issues: Array<{ type: string; path: string; message?: string }>;
+  };
+  assert.equal(parsed.ok, false);
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.type === 'missing-required-artifact' && issue.path === 'raw/ponytail/ponytail-audit.md',
+    ),
+  );
+});
+
+test('lens audit check fails pending template artifacts', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as {
+    ok: boolean;
+    issues: Array<{ type: string; path: string; message?: string }>;
+  };
+  assert.equal(parsed.ok, false);
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.type === 'artifact-not-complete' && issue.path === 'raw/ponytail/ponytail-audit.md',
+    ),
+  );
+});
+
+test('lens audit check fails complete markers left on untouched templates', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  const contract = JSON.parse(readFileSync(join(auditDir, 'audit.contract.json'), 'utf8')) as {
+    requiredArtifacts: string[];
+  };
+  for (const artifactPath of contract.requiredArtifacts) {
+    const absolutePath = join(auditDir, artifactPath);
+    const content = readFileSync(absolutePath, 'utf8').replace('status: pending', 'status: complete');
+    writeFileSync(absolutePath, content);
+  }
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as { ok: boolean; issues: Array<{ type: string; path: string }> };
+  assert.equal(parsed.ok, false);
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.type === 'artifact-template-not-replaced' && issue.path === 'raw/ponytail/ponytail-audit.md',
+    ),
+  );
+});
+
+test('lens audit check fails when the contract omits required artifacts', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  const contractPath = join(auditDir, 'audit.contract.json');
+  const contract = JSON.parse(readFileSync(contractPath, 'utf8')) as { requiredArtifacts: string[] };
+  contract.requiredArtifacts = [];
+  writeFileSync(contractPath, `${JSON.stringify(contract, null, 2)}\n`);
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as { ok: boolean; issues: Array<{ type: string; path: string }> };
+  assert.equal(parsed.ok, false);
+  assert.ok(
+    parsed.issues.some((issue) => issue.type === 'invalid-contract' && issue.path === 'audit.contract.json'),
+  );
+});
+
+test('lens audit check fails when provenance guardrails are missing', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  markAuditArtifactsComplete(auditDir, 'Evidence: completed raw artifact.');
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as {
+    ok: boolean;
+    issues: Array<{ type: string; path: string; message?: string }>;
+  };
+  assert.equal(parsed.ok, false);
+  assert.ok(parsed.issues.some((issue) => issue.type === 'audit-method-not-recorded' && issue.path === 'manifest.md'));
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.message === 'Missing required audit method record: Subagent trace:',
+    ),
+  );
+  assert.ok(
+    parsed.issues.some((issue) => issue.type === 'audit-method-not-recorded' && issue.path === 'raw/target/commands.md'),
+  );
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.type === 'audit-method-not-recorded' && issue.path === 'synthesis/decision-index.md',
+    ),
+  );
+});
+
+test('lens audit check --mode fresh rejects reused evidence without fresh run records', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  markAuditArtifactsComplete(auditDir, completeAuditBody());
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--mode', 'fresh', '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 1);
+  const parsed = JSON.parse(result.stdout) as {
+    ok: boolean;
+    issues: Array<{ type: string; path: string; message?: string }>;
+  };
+  assert.equal(parsed.ok, false);
+  assert.ok(
+    parsed.issues.some(
+      (issue) => issue.message === 'Missing required audit method record: Fresh run evidence:',
+    ),
+  );
+});
+
+test('lens audit check passes when required artifacts are marked complete', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  markAuditArtifactsComplete(auditDir, completeAuditBody());
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout) as { ok: boolean; issues: unknown[] };
+  assert.equal(parsed.ok, true);
+  assert.deepEqual(parsed.issues, []);
+});
+
+test('lens audit check --mode fresh passes with current-run evidence records', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  markAuditArtifactsComplete(
+    auditDir,
+    [
+      completeAuditBody(),
+      'Audit run mode: fresh',
+      'Current session id: 019f1c94-example',
+      'Fresh run evidence: raw Project Lens and Ponytail passes were created in this session; no existing audit package was reused.',
+    ].join('\n'),
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--mode', 'fresh', '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout) as { ok: boolean; issues: unknown[] };
+  assert.equal(parsed.ok, true);
+  assert.deepEqual(parsed.issues, []);
+});
+
+test('lens audit check --mode reuse passes only with reuse records', () => {
+  const targetDir = createTempTargetDir();
+  const auditDir = join(targetDir, 'audits/ownmyspace/2026-07-01');
+
+  const init = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'init', '--target', targetDir, '--out', auditDir],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+  assert.equal(init.status, 0, init.stderr || init.stdout);
+
+  markAuditArtifactsComplete(
+    auditDir,
+    [
+      completeAuditBody(),
+      'Audit run mode: reuse',
+      'Reuse source audit: audits/ownmyspace/2026-07-01',
+      'Reuse justification: same target commit, target worktree clean, and package check passed.',
+      'No new subagents were run: true; this was a reuse verification, not a fresh audit.',
+    ].join('\n'),
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'lens', 'audit', 'check', '--dir', auditDir, '--mode', 'reuse', '--json'],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout) as { ok: boolean; issues: unknown[] };
+  assert.equal(parsed.ok, true);
+  assert.deepEqual(parsed.issues, []);
+});
+
+function completeAuditBody(): string {
+  return [
+    'Evidence: completed raw artifact.',
+    'Read-only boundary: target repository was not modified; audit package was written in PGS.',
+    'Agent execution record: subagents used for architecture, technology, and Ponytail passes.',
+    'Subagent trace: architecture=completed raw/project-lens/architecture-lens.md; technology=completed raw/project-lens/technology-strategy.md; ponytail=completed raw/ponytail/ponytail-audit.md.',
+    'Project Lens method source: project-architecture-lens skill plus pro-gov lens inspect.',
+    'Ponytail method source: ponytail-audit, ponytail-debt, and ponytail-gain skills.',
+    'Target repository final status: clean worktree verified.',
+    'Audit package final status: pro-gov lens audit check passed.',
+  ].join('\n');
+}
+
+function markAuditArtifactsComplete(auditDir: string, replacementBody: string): void {
+  const contract = JSON.parse(readFileSync(join(auditDir, 'audit.contract.json'), 'utf8')) as {
+    requiredArtifacts: string[];
+  };
+  for (const artifactPath of contract.requiredArtifacts) {
+    const absolutePath = join(auditDir, artifactPath);
+    const content = readFileSync(absolutePath, 'utf8')
+      .replace('status: pending', 'status: complete')
+      .replace('Replace this template with the raw audit output for this producer.', replacementBody);
+    writeFileSync(absolutePath, content);
+  }
+}
 
 function createTempTargetDir(): string {
   const targetDir = join(tmpdir(), `pro-gov-cli-target-${Date.now()}-${Math.random().toString(16).slice(2)}`);

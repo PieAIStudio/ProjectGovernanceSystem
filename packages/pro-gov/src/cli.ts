@@ -20,8 +20,10 @@ const COMMANDS = [
   'lens scan [--target <path>] [--json]',
   'lens inspect [--target <path>] [--format text|json]',
   'lens report --target <path> --out <path>',
-  'init --profile <engineering-runtime|doc-only> --dry-run',
-  'sync --check',
+  'lens audit init --target <path> --out <path>',
+  'lens audit check --dir <path> [--json]',
+  'init --profile <engineering-runtime|doc-only> <--dry-run|--apply>',
+  'sync --check [--profile <engineering-runtime|doc-only>]',
   'doctor',
 ] as const;
 

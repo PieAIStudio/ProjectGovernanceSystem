@@ -1,4 +1,5 @@
 import { existsSync, readFileSync } from 'node:fs';
+import { dirname, isAbsolute, resolve } from 'node:path';
 
 import { isValidProfile } from '../assets';
 
@@ -55,11 +56,30 @@ export function loadPortfolioManifest(configPath: string): LoadedPortfolioManife
     };
   }
 
-  const issues = validatePortfolioManifest(parsed);
+  const normalized = resolveManifestPaths(parsed, dirname(resolve(configPath)));
+  const issues = validatePortfolioManifest(normalized);
   return {
     configPath,
-    manifest: issues.length === 0 ? (parsed as PortfolioManifest) : undefined,
+    manifest: issues.length === 0 ? (normalized as PortfolioManifest) : undefined,
     issues,
+  };
+}
+
+function resolveManifestPaths(value: unknown, configDir: string): unknown {
+  if (!isRecord(value)) return value;
+
+  const resolveEndpoint = (endpoint: unknown): unknown => {
+    if (!isRecord(endpoint) || typeof endpoint.path !== 'string' || isAbsolute(endpoint.path)) {
+      return endpoint;
+    }
+    return { ...endpoint, path: resolve(configDir, endpoint.path) };
+  };
+
+  return {
+    ...value,
+    controlPlane: resolveEndpoint(value.controlPlane),
+    executionEngine: resolveEndpoint(value.executionEngine),
+    targets: Array.isArray(value.targets) ? value.targets.map(resolveEndpoint) : value.targets,
   };
 }
 

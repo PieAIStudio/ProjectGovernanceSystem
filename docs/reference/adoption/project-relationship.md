@@ -22,7 +22,8 @@ related:
 
 This file answers the most important beginner question:
 
-> If Non-Heroes already has doc-gov, and this central repo now exists, who owns what?
+> If a project adopts PGS, which parts stay upstream and which parts belong to
+> that project?
 
 ## Short Answer
 
@@ -55,7 +56,7 @@ a hard-coded local checkout path. If a local automation or handoff prompt truly
 needs a clone path, write it as `<local ProjectGovernanceSystem checkout path>`
 and keep it out of reusable router text.
 
-## Does Non-Heroes Now Import This Repo?
+## Does A Target Project Import This Whole Repository?
 
 Not yet automatically.
 
@@ -64,10 +65,10 @@ the user's external portfolio manifest. See
 `docs/reference/adoption/downstream-project-registry.md` for the public
 manifest contract.
 
-Early downstream projects had local working copies because the system was born
-inside active projects. This central repo is now the upstream source, and
-downstream projects should use `@pieai/doc-gov`, `@pieai/pro-gov`, and their
-selected profile instead of keeping private CLI or starter copies.
+Early adopters may have local working copies because governance often starts
+inside an active project. The public packages are now the reusable source, and
+target projects should use `@pieai/doc-gov`, `@pieai/pro-gov`, and their selected
+profile instead of keeping private CLI or starter copies.
 
 ## Why Not Auto-Symlink Everything?
 
@@ -91,21 +92,19 @@ projects need different local lane profiles. The safe rule:
 - project-local best-practice files remain in each project's `docs/policy/`
 - product artifacts outside `docs/**` stay in the product package unless a project explicitly opts them into doc-gov
 
-## How Non-Heroes Improvements Flow Upstream
+## How Target-Project Improvements Flow Upstream
 
-When Non-Heroes discovers a better governance rule:
+When a target project discovers a better governance rule:
 
-1. Ask: is this core, profile, or Non-Heroes-local?
+1. Ask: is this core, profile, or target-local?
 2. If core, update this repo.
 3. If profile, update the relevant `profiles/**`.
-4. If Non-Heroes-local, keep it in Non-Heroes.
+4. If it is target-local, keep it in the target project.
 5. Other projects then upgrade from this central source.
 
-Example:
-
-- An active project discovered active plans were piling up.
-- The generic fix is a `completed` lifecycle state.
-- Therefore `completed` belongs in this repo's doc-gov core.
+Example: one active project discovers that completed plans are piling up. If the
+generic fix is a reusable `completed` lifecycle state, that state belongs in the
+PGS core; the project's actual completed plans remain local.
 
 ## How Downstream Projects Upgrade
 
