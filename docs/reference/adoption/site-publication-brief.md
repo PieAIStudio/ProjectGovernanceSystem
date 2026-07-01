@@ -50,13 +50,15 @@ Beginner-friendly description:
 - It includes ProjectLens-style read-only inspection and a governed local agent
   asset registry without publishing private or third-party skill bodies.
 - It works with external workflow systems instead of replacing them:
-  Superpowers owns engineering process, while Ponytail may act as an optional
+  Superpowers owns engineering process, Compound Engineering can capture
+  reusable lessons through `ce-compound`, and Ponytail may act as an optional
   complexity adviser with global mode `off`.
 
 ## Do Not Overclaim
 
 - Do not say it replaces Git.
 - Do not say it replaces Superpowers.
+- Do not say it replaces Compound Engineering or requires the full CE workflow.
 - Do not say it requires or automatically enables Ponytail.
 - Do not promise a fixed percentage reduction in code, tokens, time, or cost.
 - Do not say it automatically migrates every project.
@@ -81,8 +83,9 @@ projects understandable and governable. Lead with the pain: AI creates useful
 plans, specs, rules, and evidence faster than people can organize and retire
 them. Use the librarian, traffic desk, and inspection-machine analogy before
 technical package details. Explain how it fits next to Git, AGENTS.md,
-Superpowers, optional Ponytail advice, pro-gov starter/profile distribution,
-ProjectLens inspection, and project-local product truth.
+Superpowers, Compound Engineering's post-work learning capture, optional
+Ponytail advice, pro-gov starter/profile distribution, ProjectLens inspection,
+and project-local product truth.
 
 Keep the copy confident but accurate. Do not claim automatic migration or
 full replacement of existing workflow tools. npm publication is live, so include

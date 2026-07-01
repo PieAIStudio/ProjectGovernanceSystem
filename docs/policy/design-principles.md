@@ -33,11 +33,11 @@ This system exists to reduce project and AI-session cognitive load, not to creat
 
 ### 0. Govern AI Artifacts; Do Not Replace Git
 
-Git remains the file history and collaboration layer. Superpowers remains an external engineering workflow layer. This system governs the lifecycle and placement of durable AI-created governance artifacts: specs, plans, decisions, references, governed canon, and archives.
+Git remains the file history and collaboration layer. Superpowers remains an external engineering workflow layer. Compound Engineering remains an external knowledge-capture and optional workflow layer. This system governs the lifecycle and placement of durable AI-created governance artifacts: specs, plans, decisions, references, governed canon, and archives.
 
 It does not govern every Markdown file in a repository. Product prompts, generated media notes, runtime docs, source-package README files, and project-package canon can live outside `docs/**` when they are product artifacts rather than AI collaboration records.
 
-If a future change tries to make this repo a general project-management platform, Git replacement, or Superpowers fork, cut it back.
+If a future change tries to make this repo a general project-management platform, Git replacement, Superpowers fork, or Compound Engineering fork, cut it back.
 
 ### 1. Two Profiles Until Proven Otherwise
 
@@ -63,9 +63,11 @@ Do not locally invent new doc-gov statuses, schema fields, document types, share
 
 If a project discovers a core gap, update this repo first, then sync projects from it.
 
-### 4. Keep Superpowers External
+### 4. Keep External Workflow Tools External
 
-This repo integrates with Superpowers but does not vendor it.
+This repo integrates with Superpowers, Compound Engineering, and Ponytail, but
+does not vendor them. PGS may define artifact boundaries and handoff gates; it
+must not copy plugin bodies or turn every external workflow into a PGS feature.
 
 ### 5. Directed Development Is Optional
 

@@ -11,6 +11,7 @@ station:
 - `pro-gov` shows which reusable project-governance parts are present or missing;
 - `@pieai/doc-gov` checks documents, routing, links, hooks, and CI;
 - Superpowers may provide the engineering process;
+- Compound Engineering may provide the post-work learning capture tail;
 - Ponytail may provide an optional simplicity review.
 
 The current `pro-gov` release is conservative by design. Public init and sync
@@ -124,12 +125,19 @@ the private-source and public-copy hashes recorded during promotion.
 - Product truth stays in the target project.
 - `pro-gov init --apply` is intentionally fresh-target only. Existing projects
   use `--dry-run` and a deliberate migration so local truth is never overwritten.
-- Superpowers and Ponytail are external tools, not bundled runtime dependencies.
+- Superpowers, Compound Engineering, and Ponytail are external tools, not
+  bundled runtime dependencies.
 
 ## Recommended Companion Tools
 
 Superpowers is recommended for engineering/runtime projects that need
 brainstorming, plans, TDD, debugging, verification, and worktree discipline.
+
+Compound Engineering is recommended for knowledge capture after verified
+engineering work. The default PGS pattern is a Compound Gate: run
+`ce-compound` when there is reusable learning, or report why compounding was
+skipped. Full CE workflows such as `ce-plan`, `ce-work`, and `lfg` remain
+explicit user choices.
 
 Ponytail can be installed as an optional complexity adviser. Keep its global mode
 `off`; test `lite` in one isolated task before considering a stronger mode.

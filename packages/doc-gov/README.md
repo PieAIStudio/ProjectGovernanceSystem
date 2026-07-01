@@ -52,6 +52,10 @@ It does not try to swallow product artifacts, prompts, generated media,
 runtime notes, or source assets outside `docs/**` unless a project explicitly
 opts them into doc-gov.
 
+It also recognizes selected external workflow artifacts under `docs/**` as
+outside the Doc Gov schema. For example, Compound Engineering learning records
+under `docs/solutions/**` use CE frontmatter, not Doc Gov frontmatter.
+
 ## Status
 
 The CLI is in public preview. The read-only checks are the stable path:

@@ -24,8 +24,9 @@ Use this when a project wants to migrate into the Project Governance System.
 
 Before choosing external AI workflow tools, read
 `docs/reference/adoption/recommended-agent-tooling.md`. It explains which PGS
-packages are required, when Superpowers is recommended, and why Ponytail should
-remain globally `off` until it is tested in an isolated task.
+packages are required, when Superpowers is recommended, how Compound
+Engineering's `ce-compound` fits as a post-work learning tail, and why Ponytail
+should remain globally `off` until it is tested in an isolated task.
 
 ## The Short Version
 
@@ -192,6 +193,11 @@ The project must define local lanes and proof commands.
 Do not copy the upstream root `integrations/` directory into target projects by default.
 If a project needs local external-workflow guidance, keep it thin in `AGENTS.md` or put project-specific notes under `docs/reference/integrations/`.
 
+For engineering projects, keep Superpowers as the default engineering workflow.
+Use Compound Engineering by default only as the post-work Compound Gate:
+`ce-compound` captures reusable lessons when they exist; otherwise the agent
+reports a skip reason. Full CE workflows require an explicit user request.
+
 ### Doc-Only
 
 Add:
@@ -202,6 +208,10 @@ Add:
 - canon/provenance/archive rules in `docs/policy/best-practice-for-this-project.md`
 
 Do not add Superpowers TDD or Directed Development by default.
+
+Do not add the Compound Engineering main workflow by default. If CE is installed
+in the AI host, doc-only projects should use it only for a real reusable
+learning that belongs in that workspace.
 
 Ponytail is also optional. If it is installed, keep its global mode `off` and
 activate it only for a bounded task or review after reading

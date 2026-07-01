@@ -60,10 +60,10 @@ Durable outputs should map back to the project's doc-gov layers:
 ## Execution Order
 
 Agents routing classifies first. Superpowers executes inside the selected lane.
-The Compound Gate runs before final reporting. Optional Ponytail advice comes
-after those responsibilities are known. It may make the implementation leaner,
-but it must not remove explicit requirements or reduce how correctness is
-proven.
+Optional Ponytail advice may run after those responsibilities are known. It may
+make the implementation leaner, but it must not remove explicit requirements or
+reduce how correctness is proven. The Compound Gate runs near the end, before
+final reporting, to decide whether verified work produced reusable learning.
 
 ```mermaid
 flowchart TD
@@ -72,12 +72,12 @@ flowchart TD
   C --> D{"Does this lane need a Superpowers workflow?"}
   D -- "yes" --> E["Use the matching Superpowers skill"]
   D -- "no" --> F["Use the local non-Superpowers lane rules"]
-  E --> G["Pass the Compound Gate"]
+  E --> G{"Would an explicit simplicity review help?"}
   F --> G
-  G --> H{"Would an explicit simplicity review help?"}
-  H -- "yes" --> I["Use Ponytail without dropping workflow gates"]
-  H -- "no" --> J["Write durable outputs into doc-gov layers"]
-  I --> J
+  G -- "yes" --> H["Use Ponytail without dropping workflow gates"]
+  G -- "no" --> I["Pass the Compound Gate"]
+  H --> I
+  I --> J["Write durable outputs into doc-gov layers"]
 ```
 
 If Superpowers suggests a default location such as `docs/superpowers/**`, project instructions may override that location. The durable project record should still land in the governed doc-gov layer unless the project has explicitly adopted a separate Superpowers document tree.

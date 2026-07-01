@@ -23,7 +23,8 @@ duradero creado por IA, elige la profundidad de trabajo adecuada y comprueba que
 las protecciones del proyecto sigan conectadas.
 
 Es una capa deliberadamente ligera. Colabora con Git, `AGENTS.md`,
-[Superpowers](integrations/superpowers.md) y el
+[Superpowers](integrations/superpowers.md),
+[Compound Engineering](integrations/compound-engineering.md) y el
 [Ponytail](integrations/ponytail.md) opcional, sin sustituirlos.
 
 ## Por qué existe PGS
@@ -59,6 +60,7 @@ Piensa en el proyecto como un edificio con mucha actividad:
 | `AGENTS.md` | Instrucciones de entrada | Explica a la IA cómo entrar en este proyecto. |
 | PGS | Biblioteca, control de tráfico e inspección | Organiza la verdad duradera, dirige el trabajo y revisa las protecciones. |
 | Superpowers | Proceso de construcción | Aporta lluvia de ideas, planes, TDD, depuración, verificación y disciplina de worktrees. |
+| Compound Engineering | Cuaderno de recetas | Captura aprendizajes reutilizables con `ce-compound` después del trabajo verificado. |
 | Ponytail | Asesor opcional de coste y complejidad | Cuestiona código y estructuras innecesarias sin cancelar requisitos ni pruebas. |
 
 ```mermaid
@@ -66,13 +68,15 @@ flowchart LR
   A["Llega una tarea"] --> B["PGS elige la ruta"]
   B --> C["Superpowers ejecuta el flujo necesario"]
   C --> D["Revisión opcional de simplicidad con Ponytail"]
-  D --> E["PGS guarda la evidencia duradera"]
-  E --> F["Git registra el historial"]
+  D --> E["Compound Gate decide si guardar aprendizajes"]
+  E --> F["PGS guarda la evidencia duradera"]
+  F --> G["Git registra el historial"]
 ```
 
 PGS decide **dónde vive el trabajo y qué ruta necesita**. Superpowers decide
 **cómo avanza un trabajo de ingeniería disciplinado**. Ponytail puede preguntar
-**si la implementación puede ser más ligera**. Git recuerda el cambio real.
+**si la implementación puede ser más ligera**. Compound Engineering puede guardar
+**aprendizajes reutilizables** después de la verificación. Git recuerda el cambio real.
 
 ## Un ejemplo concreto
 
@@ -271,6 +275,11 @@ runtime real que demostrar.
 Superpowers se recomienda para proyectos engineering/runtime. Gestiona lluvia
 de ideas, planes, TDD, depuración, verificación y worktrees aislados.
 
+Compound Engineering se recomienda para capturar conocimiento después del trabajo.
+En proyectos gobernados por PGS, CE no compite por defecto con Superpowers: se usa
+como Compound Gate tras el trabajo verificado y ejecuta `ce-compound` solo cuando
+hay un aprendizaje reutilizable que conservar.
+
 Ponytail es útil como asesor opcional. Mantén su modo global en `off`; prueba
 `lite` en una tarea aislada y de bajo riesgo antes de considerar `full`. Un diff
 menor no es una victoria si pierde alcance, pruebas, seguridad, accesibilidad o
@@ -282,7 +291,7 @@ Consulta [Herramientas recomendadas para agentes](docs/reference/adoption/recomm
 
 PGS no:
 
-- sustituye Git, `AGENTS.md`, Superpowers o Ponytail;
+- sustituye Git, `AGENTS.md`, Superpowers, Compound Engineering o Ponytail;
 - comprende y reescribe automáticamente todos los proyectos;
 - mueve todo Markdown a `docs/**`;
 - gobierna por defecto medios generados, prompts, notas de runtime o
@@ -305,7 +314,7 @@ antes que la escritura para que la gobernanza no cause daños nuevos.
 | `docs/governance/` | Contratos centrales de documentos y enrutamiento. |
 | `docs/policy/` | Políticas propias de desarrollo y adopción. |
 | `docs/reference/adoption/` | Guías de migración, relación, publicación y herramientas. |
-| `integrations/` | Límites con Superpowers, Ponytail y Directed Development. |
+| `integrations/` | Límites con Superpowers, Compound Engineering, Ponytail y Directed Development. |
 | `public-agent-assets/` | Superficie pública para habilidades, reglas, comandos y bundles revisados. |
 
 Los checkouts de mantenedor pueden tener un árbol local `agent-assets/`. Git lo
@@ -338,6 +347,7 @@ producto permanece en los proyectos posteriores.
 | ¿Es una aplicación de gestión de proyectos? | No. Es una capa ligera de gobernanza y distribución para trabajo duradero con IA. |
 | ¿Sustituye Git? | No. Git registra el historial; PGS organiza la verdad y valida la estructura. |
 | ¿Exige Superpowers? | No, pero se recomienda para flujos engineering/runtime. |
+| ¿Sustituye Compound Engineering? | No. CE puede aportar la cola de aprendizaje `ce-compound`; sus flujos completos siguen siendo explícitos. |
 | ¿Debo activar Ponytail globalmente? | No. Mantén `off` y prueba `lite` primero en una tarea aislada. |
 | ¿`pro-gov init` sobrescribe el proyecto? | No. `--apply` solo sirve para destinos nuevos y aborta antes de escribir si ya existe cualquier destino. |
 | ¿Pueden usarlo mis amigos? | Sí. Los paquetes públicos son `@pieai/pro-gov` y `@pieai/doc-gov`; no incluyen habilidades privadas ni de terceros. |
