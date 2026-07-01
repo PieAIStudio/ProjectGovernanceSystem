@@ -327,6 +327,9 @@ is a completion gate, not a style suggestion.
 
 Required method records:
 
+Keep these records as top-level lines that start with the exact label. Do not
+hide them inside bullet lists; the checker reads line-start labels.
+
 - `manifest.md`: `Agent execution record:` states whether separate subagents or
   one main agent produced the raw passes; `Subagent trace:` records each pass
   role, execution mode, final status, and raw artifact path.

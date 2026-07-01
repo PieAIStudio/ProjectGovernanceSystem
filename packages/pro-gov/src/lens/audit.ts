@@ -189,7 +189,30 @@ function renderArtifactTemplate(artifactPath: AuditArtifactPath, contract: Proje
 function renderArtifactGuardrailHint(artifactPath: AuditArtifactPath): string[] {
   const rules = REQUIRED_METHOD_RECORDS[artifactPath];
   if (!rules) return [];
-  return ['', 'Required audit method records:', '', ...rules.map((rule) => `- ${rule.label}`)];
+  const lines = [
+    '',
+    'Required audit method records. Keep these labels at the start of their own lines:',
+    '',
+    ...rules.map((rule) => `${rule.label} <replace with evidence>`),
+  ];
+  if (artifactPath === 'manifest.md') {
+    lines.push(
+      '',
+      'For --mode fresh, also keep these labels at the start of their own lines:',
+      '',
+      'Audit run mode: <replace with fresh>',
+      'Current session id: <replace with current Codex thread id, or unknown plus reason>',
+      'Fresh run evidence: <replace with current-run raw pass and subagent evidence>',
+      '',
+      'For --mode reuse, use these labels instead of the fresh-mode labels:',
+      '',
+      'Audit run mode: <replace with reuse>',
+      'Reuse source audit: <replace with reused audit package path>',
+      'Reuse justification: <replace with same target commit, clean status, and check result>',
+      'No new subagents were run: <replace with true and explanation>',
+    );
+  }
+  return lines;
 }
 
 function artifactProducer(artifactPath: string): string {
@@ -293,12 +316,18 @@ function checkArtifactGuardrails(
   ];
   if (!rules) return [];
   return rules
-    .filter((rule) => !rule.match.test(content))
+    .filter((rule) => !hasCompletedMethodRecord(rule, content))
     .map((rule) => ({
       type: 'audit-method-not-recorded' as const,
       path: artifactPath,
       message: `Missing required audit method record: ${rule.label}`,
     }));
+}
+
+function hasCompletedMethodRecord(rule: AuditMethodRecordRule, content: string): boolean {
+  return content
+    .split(/\r?\n/)
+    .some((line) => rule.match.test(line) && !line.includes('<replace with'));
 }
 
 export function formatProjectLensAuditCheckText(result: ProjectLensAuditCheckResult): string {

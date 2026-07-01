@@ -636,6 +636,21 @@ test('lens audit init creates a raw-first audit package contract', () => {
   assert.equal(contract.target.path, targetDir);
   assert.ok(contract.requiredArtifacts.includes('raw/ponytail/ponytail-audit.md'));
   assert.ok(contract.requiredArtifacts.includes('raw/project-lens/architecture-lens.md'));
+
+  const manifestTemplate = readFileSync(join(auditDir, 'manifest.md'), 'utf8');
+  assert.match(manifestTemplate, /^Read-only boundary: <replace with evidence>$/m);
+  assert.match(manifestTemplate, /^Agent execution record: <replace with evidence>$/m);
+  assert.match(manifestTemplate, /^Subagent trace: <replace with evidence>$/m);
+  assert.match(manifestTemplate, /^Audit run mode: <replace with fresh>$/m);
+  assert.match(manifestTemplate, /^Audit run mode: <replace with reuse>$/m);
+  assert.doesNotMatch(manifestTemplate, /^Audit run mode: fresh$/m);
+  assert.doesNotMatch(manifestTemplate, /^Audit run mode: reuse$/m);
+  assert.doesNotMatch(manifestTemplate, /^- Read-only boundary:/m);
+
+  const commandsTemplate = readFileSync(join(auditDir, 'raw/target/commands.md'), 'utf8');
+  assert.match(commandsTemplate, /^Project Lens method source: <replace with evidence>$/m);
+  assert.match(commandsTemplate, /^Ponytail method source: <replace with evidence>$/m);
+  assert.doesNotMatch(commandsTemplate, /^- Project Lens method source:/m);
 });
 
 test('lens audit check fails when required raw artifacts are missing', () => {
