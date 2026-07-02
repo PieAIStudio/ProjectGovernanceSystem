@@ -1,7 +1,7 @@
 {
   "name": "pro-gov",
   "private": true,
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Public upstream for AI-assisted project documentation governance, agent routing, and workflow profiles.",
   "packageManager": "pnpm@11.9.0",
   "type": "module",
