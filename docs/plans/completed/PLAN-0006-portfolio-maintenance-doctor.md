@@ -184,11 +184,11 @@ commands, upstream `npx skills` CLI.
 
 - [x] Bump the coordinated package patch version and update completed spec/plan
   status.
-- [ ] Commit and push PGS, then verify the trusted GitHub Actions npm release and
+- [x] Commit and push PGS, then verify the trusted GitHub Actions npm release and
   registry versions.
-- [ ] Inventory every downstream worktree before editing; preserve unrelated
+- [x] Inventory every downstream worktree before editing; preserve unrelated
   changes, including Anvil's user-owned dirty files.
-- [ ] For each target, upgrade both packages, apply reviewed PGS asset changes,
+- [x] For each target, upgrade both packages, apply reviewed PGS asset changes,
   run target checks, stage only PGS-owned changes, commit, and push.
-- [ ] Run final `portfolio doctor`, `portfolio assets-check`, and per-repository
+- [x] Run final `portfolio doctor`, `portfolio assets-check`, and per-repository
   clean/alignment inventory; report any preserved user changes separately.
