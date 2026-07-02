@@ -139,6 +139,19 @@ engineering work. The default PGS pattern is a Compound Gate: run
 skipped. Full CE workflows such as `ce-plan`, `ce-work`, and `lfg` remain
 explicit user choices.
 
+Engineering-runtime starters include cross-host Stop hooks for Codex,
+Claude Code, and Antigravity. Those hooks call `pro-gov host-hook` and require
+the final report to include either:
+
+```text
+Compound Gate: ran ce-compound -> <path>
+Compound Gate: skipped -> <reason>
+```
+
+Use `pro-gov doctor --strict-hooks` after syncing an engineering project to
+verify that the host configs are wired. Open a fresh AI session after installing
+or changing hooks; old sessions may not reload host configuration.
+
 Ponytail can be installed as an optional complexity adviser. Keep its global mode
 `off`; test `lite` in one isolated task before considering a stronger mode.
 Ponytail must not remove requested scope, tests, safety, accessibility, or proof.

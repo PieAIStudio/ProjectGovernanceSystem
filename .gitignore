@@ -8,6 +8,10 @@ temp/
 .worktrees/
 audits/
 .agents/
+!.agents/
+!.agents/hooks.json
+!starter/.agents/
+!starter/.agents/hooks.json
 packages/pro-gov/assets/
 agent-assets/
 .devspace-visual/

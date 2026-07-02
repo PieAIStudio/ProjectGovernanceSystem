@@ -5,6 +5,7 @@ import { join } from 'node:path';
 import test from 'node:test';
 
 import { runInit } from './commands/init';
+import { planStarterFiles } from './commands/shared';
 import { runSync } from './commands/sync';
 
 test('sync check reports missing starter files', () => {
@@ -57,6 +58,18 @@ test('sync requires --check', () => {
   });
 
   assert.match(output, /requires --check/);
+});
+
+test('starter host hooks are installed only for engineering-runtime projects', () => {
+  const engineeringTargets = planStarterFiles('engineering-runtime').map((file) => file.targetPath);
+  const docOnlyTargets = planStarterFiles('doc-only').map((file) => file.targetPath);
+
+  assert.ok(engineeringTargets.includes('.codex/hooks.json'));
+  assert.ok(engineeringTargets.includes('.claude/settings.json'));
+  assert.ok(engineeringTargets.includes('.agents/hooks.json'));
+  assert.ok(!docOnlyTargets.includes('.codex/hooks.json'));
+  assert.ok(!docOnlyTargets.includes('.claude/settings.json'));
+  assert.ok(!docOnlyTargets.includes('.agents/hooks.json'));
 });
 
 function withCwd<T>(root: string, fn: () => T): T {

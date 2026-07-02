@@ -50,7 +50,8 @@ doc-gov migrate --profile engineering-runtime --check
 New migration work should install `@pieai/pro-gov` as the project-level
 starter/profile asset source and `@pieai/doc-gov` as the validator source. Use
 `pro-gov init --dry-run`, `pro-gov sync --check`, `doc-gov migrate --check`,
-`router-check`, and `doctor` to verify local files, hooks, and CI.
+`router-check`, `doctor`, and `pro-gov doctor --strict-hooks` for
+engineering-runtime projects to verify local files, AI host hooks, and CI.
 
 This does not update files yet. It verifies that the target project structurally
 matches the selected profile before a human or AI sync task edits anything.
@@ -88,6 +89,12 @@ repository manages multiple targets, record that private instance in an external
 portfolio manifest and validate it with `pro-gov portfolio check --config`.
 Do not switch only the package command while leaving old guardrails behind; that
 creates a half-migrated project.
+
+Engineering-runtime projects receive PGS-owned Stop hooks for Codex,
+Claude Code, and Antigravity through the starter. These hooks are not a second
+workflow engine; they are the exit door that ensures the Compound Gate was
+considered before the agent finishes. Doc-only projects do not install those
+hooks by default.
 
 ## Package Naming Model
 

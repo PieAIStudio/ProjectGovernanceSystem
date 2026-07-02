@@ -15,6 +15,7 @@ export function planStarterFiles(profile?: ProGovProfile): PlannedFile[] {
       const targetPath = starterTargetPath(asset.path);
       if (!targetPath) return [];
       if (profile && isOtherProfileRouting(targetPath, profile)) return [];
+      if (profile && isEngineeringOnlyGuardrail(targetPath) && profile !== 'engineering-runtime') return [];
       return [
         {
           sourcePath: asset.path,
@@ -51,6 +52,12 @@ function isOtherProfileRouting(targetPath: string, profile: ProGovProfile): bool
     targetPath.startsWith('docs/governance/agents-routing/') &&
     targetPath !== `docs/governance/agents-routing/${profile}-v0.9.md`
   );
+}
+
+function isEngineeringOnlyGuardrail(targetPath: string): boolean {
+  return targetPath === '.codex/hooks.json'
+    || targetPath === '.claude/settings.json'
+    || targetPath === '.agents/hooks.json';
 }
 
 function starterTargetPath(sourcePath: string): string | null {

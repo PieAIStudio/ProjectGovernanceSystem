@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 
@@ -15,9 +15,11 @@ const REQUIRED_ASSETS = [
 ] as const;
 
 export function runDoctor(_args: string[]): number {
+  const strictHooks = _args.includes('--strict-hooks');
   const assets = listAssets();
   const assetPaths = new Set(assets.map((asset) => asset.path));
   const missing = REQUIRED_ASSETS.filter((assetPath) => !assetPaths.has(assetPath));
+  const hookIssues = strictHooks ? checkStrictHostHooks(process.cwd()) : [];
 
   console.log('pro-gov doctor');
   console.log(`assets: ${assets.length}`);
@@ -31,8 +33,14 @@ export function runDoctor(_args: string[]): number {
   }
 
   console.log(checkDocGov());
+  for (const issue of hookIssues) {
+    console.error(issue);
+  }
+  if (strictHooks && hookIssues.length === 0) {
+    console.log('host-hooks: PGS Compound Gate hooks wired');
+  }
 
-  return missing.length > 0 ? 1 : 0;
+  return missing.length > 0 || hookIssues.length > 0 ? 1 : 0;
 }
 
 function checkDocGov(): string {
@@ -71,4 +79,36 @@ function resolveDocGovDependencyCli(): string | null {
   } catch {
     return null;
   }
+}
+
+function checkStrictHostHooks(root: string): string[] {
+  if (!isEngineeringRuntimeProject(root)) {
+    return [];
+  }
+
+  const expected = [
+    { path: '.codex/hooks.json', host: 'codex' },
+    { path: '.claude/settings.json', host: 'claude-code' },
+    { path: '.agents/hooks.json', host: 'antigravity' },
+  ] as const;
+  const issues: string[] = [];
+
+  for (const entry of expected) {
+    const absolutePath = join(root, entry.path);
+    if (!existsSync(absolutePath)) {
+      issues.push(`host-hooks: missing ${entry.path}`);
+      continue;
+    }
+
+    const content = readFileSync(absolutePath, 'utf8');
+    if (!content.includes('pro-gov host-hook') || !content.includes(`--host ${entry.host}`)) {
+      issues.push(`host-hooks: ${entry.path} does not call pro-gov host-hook for ${entry.host}`);
+    }
+  }
+
+  return issues;
+}
+
+function isEngineeringRuntimeProject(root: string): boolean {
+  return existsSync(join(root, 'docs/governance/agents-routing/engineering-runtime-v0.9.md'));
 }

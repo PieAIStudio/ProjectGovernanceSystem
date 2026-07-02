@@ -1,7 +1,7 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-07-01T07:11:42.839Z
-generator_version: doc-gov@0.3.8
+generated_at: 2026-07-02T03:41:54.432Z
+generator_version: doc-gov@0.3.9
 docs_count: 29
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
@@ -173,11 +173,11 @@ docs:
     last_reviewed: 2026-06-15
     pinned: false
   - id: SPEC-0001
-    path: docs/specs/active/SPEC-0001-cross-host-doc-gov-hooks.md
+    path: docs/specs/completed/SPEC-0001-cross-host-compound-gate-hooks.md
     type: spec
-    status: draft
-    canonical: false
-    last_reviewed: 2026-06-12
+    status: completed
+    canonical: true
+    last_reviewed: 2026-07-02
     pinned: false
   - id: SPEC-0002
     path: docs/specs/completed/SPEC-0002-pro-gov-project-package.md

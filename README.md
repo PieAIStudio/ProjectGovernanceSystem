@@ -285,6 +285,14 @@ PGS-governed projects, the default is not to make CE compete with Superpowers;
 the default is to run a Compound Gate after verified work and use
 `ce-compound` only when there is reusable learning to preserve.
 
+Engineering-runtime starters wire Codex, Claude Code, and Antigravity Stop
+hooks to `pro-gov host-hook`. The hook does not write the learning record by
+itself; it blocks final reporting until the agent reports either
+`Compound Gate: ran ce-compound -> <path>` or
+`Compound Gate: skipped -> <reason>`. Run
+`pro-gov doctor --strict-hooks` after syncing a project, then validate from a
+fresh AI session because old sessions may not reload hook configuration.
+
 Ponytail is useful as an installed but opt-in complexity adviser. Keep its global
 mode `off`. Test `lite` in one isolated, low-risk task before considering an
 optional `full` stress test. A smaller diff is not a win if it drops requested

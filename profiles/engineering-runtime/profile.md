@@ -39,3 +39,9 @@ project shape. `pro-gov init --apply` can install it into a fresh target, but
 refuses all writes when any destination already exists. `sync --check` compares
 shared core files while leaving project-local router, policy, and current-work
 content under the target project's ownership.
+
+Engineering-runtime starters also include Codex, Claude Code, and Antigravity
+Stop hooks that call `pro-gov host-hook`. Use `pro-gov doctor --strict-hooks`
+after sync to confirm the exit gate is wired. The hook enforces the Compound
+Gate final-report marker; it does not replace verification, tests, or
+`ce-compound` itself.

@@ -257,6 +257,18 @@ Compound Engineering 推荐用于工作完成后的经验沉淀。在 PGS 治理
 CE 和 Superpowers 抢主流程；默认是在验证后的工作末尾走一次 Compound Gate，只有确实
 有可复用经验时才运行 `ce-compound`。
 
+`engineering-runtime` starter 会把 Codex、Claude Code、Antigravity 的 Stop hook
+接到 `pro-gov host-hook`。这个 hook 不会替 AI 写经验文档；它只是在 AI 准备结束前
+检查最终报告里有没有：
+
+```text
+Compound Gate: ran ce-compound -> <path>
+Compound Gate: skipped -> <reason>
+```
+
+同步工程项目后运行 `pro-gov doctor --strict-hooks` 检查三宿主配置。安装或修改 hooks
+之后，要用新 session 验证；老 session 可能不会重新加载宿主配置。
+
 Ponytail 适合安装成按需使用的复杂度顾问。全局模式保持 `off`；先在一个低风险的
 隔离任务里测试 `lite`，确认没有漏掉需求和验证后，再考虑可选的 `full` 压力测试。
 如果更小的修改丢掉了需求、测试、安全、无障碍或证据，那就不是胜利。

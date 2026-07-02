@@ -1,5 +1,6 @@
 import { runAssets } from './commands/assets';
 import { runDoctor } from './commands/doctor';
+import { runHostHook } from './commands/host-hook';
 import { runInit } from './commands/init';
 import { runLens } from './commands/lens';
 import { runPortfolio } from './commands/portfolio';
@@ -22,6 +23,7 @@ const COMMANDS = [
   'lens report --target <path> --out <path>',
   'lens audit init --target <path> --out <path>',
   'lens audit check --dir <path> [--json]',
+  'host-hook --host <codex|claude-code|antigravity> --event <Stop|SubagentStop|...>',
   'init --profile <engineering-runtime|doc-only> <--dry-run|--apply>',
   'sync --check [--profile <engineering-runtime|doc-only>]',
   'doctor',
@@ -38,6 +40,8 @@ if (!command || command === '--help' || command === '-h') {
   process.exitCode = runLens(process.argv.slice(3));
 } else if (command === 'portfolio') {
   process.exitCode = runPortfolio(process.argv.slice(3));
+} else if (command === 'host-hook') {
+  process.exitCode = runHostHook(process.argv.slice(3));
 } else if (command === 'init') {
   process.exitCode = runInit(process.argv.slice(3));
 } else if (command === 'sync') {
