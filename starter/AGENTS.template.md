@@ -20,7 +20,7 @@
 7. `docs/reference/execution/current-work.md`
 8. Before non-trivial implementation, debugging, release, architecture, or
    migration work, run `pro-gov learn recall --query "<task summary>"` and read
-   any relevant `docs/solutions/**` or `CONCEPTS.md` hits before changing files.
+   any relevant prior-learning hits before changing files.
 
 ## Governance
 
