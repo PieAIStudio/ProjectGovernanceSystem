@@ -194,6 +194,58 @@ test('validatePortfolioManifest rejects unknown target fields', () => {
   assert.ok(issues.some((issue) => issue.type === 'invalid-field' && issue.field === 'assetBundle'));
 });
 
+test('validatePortfolioManifest accepts Codex and Claude Code host tooling requirements', () => {
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'example-org',
+    hostTooling: [
+      { host: 'codex', plugins: ['superpowers@openai-curated'] },
+      { host: 'claude-code', plugins: ['superpowers@superpowers-marketplace'] },
+    ],
+    targets: [],
+  });
+
+  assert.deepEqual(issues, []);
+});
+
+test('validatePortfolioManifest rejects duplicate and unsupported host tooling entries', () => {
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'example-org',
+    hostTooling: [
+      { host: 'codex', plugins: ['superpowers@openai-curated'] },
+      { host: 'codex', plugins: ['ponytail@ponytail'] },
+      { host: 'antigravity', plugins: ['example@marketplace'] },
+    ],
+    targets: [],
+  });
+
+  assert.ok(issues.some((issue) => issue.field === 'hostTooling' && /Duplicate/.test(issue.message)));
+  assert.ok(issues.some((issue) => issue.field === 'hostTooling.host'));
+});
+
+test('validatePortfolioManifest rejects empty host plugin ids', () => {
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'example-org',
+    hostTooling: [{ host: 'codex', plugins: [''] }],
+    targets: [],
+  });
+
+  assert.ok(issues.some((issue) => issue.field === 'hostTooling.plugins'));
+});
+
+test('validatePortfolioManifest rejects unknown host tooling fields', () => {
+  const issues = validatePortfolioManifest({
+    schemaVersion: 1,
+    portfolioId: 'example-org',
+    hostTooling: [{ host: 'codex', plugins: [], autoUpdate: true }],
+    targets: [],
+  });
+
+  assert.ok(issues.some((issue) => issue.field === 'autoUpdate'));
+});
+
 test('getDefaultPortfolioTargets excludes controlPlane and executionEngine metadata', () => {
   const rootDir = mkdtempSync(join(tmpdir(), 'pro-gov-portfolio-'));
   const controlPlane = join(rootDir, 'ControlPlane');

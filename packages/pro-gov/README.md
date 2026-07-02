@@ -45,6 +45,8 @@ pro-gov assets discover --target .
 pro-gov assets recommend --target .
 pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
+pro-gov portfolio assets-check --config /path/to/portfolio.json --json
+pro-gov portfolio doctor --config /path/to/portfolio.json --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov init --profile engineering-runtime --dry-run
@@ -63,6 +65,8 @@ What these commands do:
 | `assets recommend` | Suggests relevant asset bundles with reasons. | No |
 | `portfolio check` | Validates an external portfolio manifest owned by the user or organization. | No |
 | `portfolio plan` | Builds dry-run asset plans for manifest targets, using packaged public assets unless a full checkout is supplied. | No |
+| `portfolio assets-check` | Checks the integrity of each target's current managed asset lock and symlinks. | No |
+| `portfolio doctor` | Runs the offline fleet gate: package, target CLI, bundle, asset, symlink, Git-state evidence, and optional host-tooling checks. | No |
 | `lens inspect` | Produces ProjectLens-style local evidence. | No |
 | `lens report` | Writes the requested report file. | Only the explicit output |
 | `init --dry-run` | Shows starter/profile files that would be needed. | No |
@@ -98,7 +102,10 @@ User-scoped skills, such as a personal loop library, are not installed into
 project targets; link them once under the user's skill roots instead.
 
 The plan is the safety gate. `apply` may update managed targets described by the
-plan; it must not overwrite an unrelated unmanaged file.
+plan; it must not overwrite an unrelated unmanaged file. When an asset leaves a
+bundle, a plan may remove its old symlink only when the previous lock proves
+ownership and both plan-time and apply-time checks confirm that the path is
+still the same managed symlink.
 
 These checkout-only workflows depend on a maintainer-local `agent-assets/`
 registry when local-only assets are being used. The public repository and npm
@@ -111,7 +118,7 @@ the private-source and public-copy hashes recorded during promotion.
 - `pro-gov` distributes starter, profile, integration, and adoption assets.
 - `pro-gov assets discover|recommend` provides read-only project evidence and
   deterministic recommendations.
-- `pro-gov portfolio check|plan` reads an external portfolio manifest. Real
+- `pro-gov portfolio check|plan|assets-check|doctor` reads an external portfolio manifest. Real
   downstream project lists belong in the user's control repository, not in this
   public package. The manifest does not require a private headquarters repo:
   npm users can omit `controlPlane` and `executionEngine`, and PGS will use the
@@ -127,6 +134,8 @@ the private-source and public-copy hashes recorded during promotion.
   use `--dry-run` and a deliberate migration so local truth is never overwritten.
 - Superpowers, Compound Engineering, and Ponytail are external tools, not
   bundled runtime dependencies.
+- Optional `hostTooling` entries let `portfolio doctor` verify required Codex or
+  Claude Code plugins. PGS does not install or upgrade those plugins.
 
 ## Recommended Companion Tools
 

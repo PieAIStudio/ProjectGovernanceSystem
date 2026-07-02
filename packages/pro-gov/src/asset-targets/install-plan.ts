@@ -1,5 +1,5 @@
-import { existsSync, lstatSync, readFileSync } from 'node:fs';
-import { basename, dirname, join } from 'node:path';
+import { existsSync, lstatSync, readFileSync, readlinkSync } from 'node:fs';
+import { basename, dirname, join, resolve } from 'node:path';
 
 import { createAgentAssetLockEntries } from '../asset-registry/loader';
 import type {
@@ -25,6 +25,12 @@ export type AssetInstallAction =
       type: 'update-symlink';
       assetId: string;
       sourcePath: string;
+      targetPath: string;
+    }
+  | {
+      type: 'remove-symlink';
+      assetId: string;
+      expectedSourcePath: string;
       targetPath: string;
     }
   | {
@@ -71,7 +77,8 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
     return asset;
   });
   const lockEntries = createAgentAssetLockEntries(options.registry, options.agentAssetsDir, assetIds);
-  const managedTargets = readManagedTargets(options.targetDir);
+  const managedEntries = readManagedEntries(options.targetDir);
+  const managedTargets = new Set(managedEntries.map((entry) => entry.targetPath));
   const assetActions = assets.map((asset) =>
     createAssetAction(asset, options.agentAssetsDir, options.targetDir, options.host, placement, managedTargets),
   );
@@ -107,6 +114,17 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
       content: `${JSON.stringify(lockfile, null, 2)}\n`,
     },
   ];
+  const expectedTargetPaths = new Set(
+    assetActions
+      .filter((action) => 'assetId' in action)
+      .map((action) => action.targetPath),
+  );
+  const removalActions = createRemovalActions(
+    options.targetDir,
+    options.agentAssetsDir,
+    managedEntries,
+    expectedTargetPaths,
+  );
 
   return {
     schemaVersion: 1,
@@ -116,7 +134,12 @@ export function createAssetInstallPlan(options: CreateAssetInstallPlanOptions): 
     placement,
     bundleIds: [...options.bundleIds],
     assetIds,
-    actions: [...createDirectoryActions([...assetActions, ...writeActions]), ...assetActions, ...writeActions],
+    actions: [
+      ...createDirectoryActions([...assetActions, ...writeActions]),
+      ...removalActions,
+      ...assetActions,
+      ...writeActions,
+    ],
   };
 }
 
@@ -217,17 +240,71 @@ function createDirectoryActions(actions: readonly AssetInstallAction[]): AssetIn
   return [...directories].sort().map((targetPath) => ({ type: 'create-dir', targetPath }));
 }
 
-function readManagedTargets(targetDir: string): ReadonlySet<string> {
+interface ManagedLockEntry {
+  id: string;
+  sourcePath: string;
+  targetPath: string;
+}
+
+function readManagedEntries(targetDir: string): ManagedLockEntry[] {
   const lockfilePath = join(targetDir, '.pro-gov/assets.lock.json');
-  if (!existsSync(lockfilePath)) return new Set();
+  if (!existsSync(lockfilePath)) return [];
   try {
     const lockfile = JSON.parse(readFileSync(lockfilePath, 'utf8')) as {
-      assets?: Array<{ targetPath?: string }>;
+      assets?: Array<Partial<ManagedLockEntry>>;
     };
-    return new Set((lockfile.assets ?? []).map((asset) => asset.targetPath).filter(Boolean) as string[]);
+    return (lockfile.assets ?? []).filter(
+      (entry): entry is ManagedLockEntry =>
+        typeof entry.id === 'string' &&
+        typeof entry.sourcePath === 'string' &&
+        typeof entry.targetPath === 'string',
+    );
   } catch {
-    return new Set();
+    return [];
   }
+}
+
+function createRemovalActions(
+  targetDir: string,
+  agentAssetsDir: string,
+  managedEntries: readonly ManagedLockEntry[],
+  expectedTargetPaths: ReadonlySet<string>,
+): AssetInstallAction[] {
+  const actions: AssetInstallAction[] = [];
+  for (const entry of managedEntries) {
+    if (expectedTargetPaths.has(entry.targetPath)) continue;
+    if (!isManagedAssetTargetPath(entry.targetPath)) {
+      throw new Error(`Refusing to remove managed asset outside supported roots: ${entry.targetPath}`);
+    }
+    const targetAbsolutePath = join(targetDir, entry.targetPath);
+    if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) continue;
+    const stats = lstatSync(targetAbsolutePath);
+    if (!stats.isSymbolicLink()) {
+      throw new Error(`Refusing to remove path that is no longer a managed symlink: ${entry.targetPath}`);
+    }
+    const expectedSourcePath = join(agentAssetsDir, entry.sourcePath);
+    const actualSourcePath = resolve(dirname(targetAbsolutePath), readlinkSync(targetAbsolutePath));
+    if (actualSourcePath !== resolve(expectedSourcePath)) {
+      throw new Error(`Refusing to remove managed symlink with changed target: ${entry.targetPath}`);
+    }
+    actions.push({
+      type: 'remove-symlink',
+      assetId: entry.id,
+      expectedSourcePath,
+      targetPath: entry.targetPath,
+    });
+  }
+  return actions.sort((a, b) => a.targetPath.localeCompare(b.targetPath));
+}
+
+export function isManagedAssetTargetPath(path: string): boolean {
+  return [
+    '.agents/skills/',
+    '.agents/manual-skills/',
+    '.claude/skills/',
+    '.pro-gov/agent-assets/rules/',
+    '.pro-gov/agent-assets/commands/',
+  ].some((prefix) => path.startsWith(prefix));
 }
 
 function pathExistsEvenIfDanglingSymlink(path: string): boolean {

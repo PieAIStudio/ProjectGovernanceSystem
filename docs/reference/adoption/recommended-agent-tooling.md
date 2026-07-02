@@ -125,4 +125,7 @@ install PGS packages
 
 PGS does not automatically install, enable, update, or remove these external
 plugins in another person's AI host. It documents the recommended boundary and
-lets each project or user adopt tools deliberately.
+lets each project or user adopt tools deliberately. A user-owned portfolio may
+declare required Codex or Claude Code plugin ids in `hostTooling`; `portfolio
+doctor` then verifies installed/enabled state and reports observed versions.
+The host's native plugin manager remains the installation and update authority.

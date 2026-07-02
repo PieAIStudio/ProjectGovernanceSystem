@@ -1,6 +1,16 @@
-import { existsSync, lstatSync, mkdirSync, realpathSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readlinkSync,
+  realpathSync,
+  symlinkSync,
+  unlinkSync,
+  writeFileSync,
+} from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 
+import { isManagedAssetTargetPath } from './install-plan';
 import type { AssetInstallAction, AssetInstallPlan } from './install-plan';
 
 export interface AssetApplyResult {
@@ -20,6 +30,11 @@ export function applyAssetInstallPlan(plan: AssetInstallPlan): AssetApplyResult 
 
 function applyAction(targetDir: string, action: AssetInstallAction): void {
   const targetAbsolutePath = join(targetDir, action.targetPath);
+
+  if (action.type === 'remove-symlink') {
+    removeManagedSymlink(targetAbsolutePath, action);
+    return;
+  }
 
   if (action.type === 'create-dir') {
     mkdirSync(targetAbsolutePath, { recursive: true });
@@ -55,6 +70,25 @@ function applyAction(targetDir: string, action: AssetInstallAction): void {
   }
   unlinkSync(targetAbsolutePath);
   symlinkSync(symlinkTarget, targetAbsolutePath);
+}
+
+function removeManagedSymlink(
+  targetAbsolutePath: string,
+  action: Extract<AssetInstallAction, { type: 'remove-symlink' }>,
+): void {
+  if (!isManagedAssetTargetPath(action.targetPath)) {
+    throw new Error(`Refusing to remove managed asset outside supported roots: ${action.targetPath}`);
+  }
+  if (!pathExistsEvenIfDanglingSymlink(targetAbsolutePath)) return;
+  const stats = lstatSync(targetAbsolutePath);
+  if (!stats.isSymbolicLink()) {
+    throw new Error(`Refusing to remove path that is no longer a managed symlink: ${action.targetPath}`);
+  }
+  const actualSourcePath = resolve(dirname(targetAbsolutePath), readlinkSync(targetAbsolutePath));
+  if (actualSourcePath !== resolve(action.expectedSourcePath)) {
+    throw new Error(`Refusing to remove managed symlink with changed target: ${action.targetPath}`);
+  }
+  unlinkSync(targetAbsolutePath);
 }
 
 function pathExistsEvenIfDanglingSymlink(path: string): boolean {

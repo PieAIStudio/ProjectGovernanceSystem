@@ -83,6 +83,12 @@ those as metadata:
     "id": "project-governance-system",
     "path": "/path/to/ProjectGovernanceSystem"
   },
+  "hostTooling": [
+    {
+      "host": "codex",
+      "plugins": ["superpowers@openai-curated"]
+    }
+  ],
   "targets": [
     {
       "id": "web-app",
@@ -102,6 +108,7 @@ those as metadata:
 | `portfolioId` | Short identifier for this user's portfolio. |
 | `controlPlane` | The private coordination repository. It is metadata, not a default downstream target. |
 | `executionEngine` | The PGS checkout or package source used to run commands. It is metadata, not a default downstream target. |
+| `hostTooling` | Optional operator-machine Codex or Claude Code plugin ids that must be installed and enabled. Versions are observed, not pinned. |
 | `targets` | Repositories PGS may inspect, check, or plan for by default. |
 | `profile` | Optional target profile. Current values are `engineering-runtime` and `doc-only`. |
 | `assetBundles` | PGS asset bundles to plan for that target. |
@@ -123,6 +130,7 @@ pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio check --config /path/to/portfolio.json --json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov portfolio assets-check --config /path/to/portfolio.json --json
+pro-gov portfolio doctor --config /path/to/portfolio.json --json
 ```
 
 `check` validates the manifest and local paths.
@@ -138,6 +146,12 @@ packaged with `@pieai/pro-gov`. That is the normal path for npm users.
 It uses `executionEngine.path/agent-assets` when that private registry exists,
 so a control repository can validate private skill ids and placement without
 bundling those private assets into the public npm package.
+
+`doctor` is the offline fleet-level gate. It runs target-local PGS checks,
+compares declared bundles with asset manifests and locks, detects obsolete
+managed symlinks, verifies installed PGS package versions, reports Git dirty
+state, and checks optional host-tooling requirements. It never installs plugins,
+updates packages, fetches remotes, or edits targets.
 
 For engineering-runtime targets, run this after installing or syncing host hook
 configuration:

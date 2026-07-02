@@ -176,7 +176,14 @@ strict checks:
 ```bash
 pro-gov assets check --target /path/to/project --strict-registry
 pro-gov portfolio assets-check --config /path/to/portfolio.json
+pro-gov portfolio doctor --config /path/to/portfolio.json
 ```
+
+`assets-check` proves the current lock and linked content are internally valid.
+`portfolio doctor` also proves that every target still matches the bundles,
+package versions, target-local checks, and optional operator-host prerequisites
+declared by the current portfolio. Keep this default doctor offline; third-party
+update discovery is a separate reviewed maintenance operation.
 
 Managed project symlinks are written as relative links by default. This keeps a
 sibling workspace movable as one folder and avoids committing machine-local
@@ -203,6 +210,11 @@ native npx root in local `agent-assets/skills/npx-skills/` through
 `pro-gov assets npx ... --plan` and then review the generated diff before
 changing the local registry. Promote only reviewed public assets into
 `public-agent-assets/`.
+
+An npx update plan runs in a temporary copy and has a bounded timeout. Review
+added, changed, deleted, renamed, and merged skills before changing the real
+registry. After acceptance, regenerate target plans; removed bundle assets may
+delete only symlinks proven by the previous lock and revalidated at apply time.
 
 ## Checkout Path Boundary
 

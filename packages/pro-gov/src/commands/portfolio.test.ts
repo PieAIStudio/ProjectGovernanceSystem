@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -82,6 +82,61 @@ test('portfolio assets-check --json reports per-target asset issues', () => {
   assert.equal(parsed.ok, false);
   assert.equal(parsed.targets[0].id, 'web-app');
   assert.ok(parsed.targets[0].issues.some((issue: { type: string }) => issue.type === 'missing-lock'));
+});
+
+test('portfolio doctor --json reports package, target-check, and asset-state failures', () => {
+  const fixture = createPortfolioFixture();
+
+  const result = spawnSync(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'portfolio', 'doctor', '--config', fixture.configPath, '--json'],
+    { cwd: packageRoot, encoding: 'utf8' },
+  );
+
+  assert.equal(result.status, 1, result.stderr || result.stdout);
+  const parsed = JSON.parse(result.stdout);
+  assert.equal(parsed.ok, false);
+  assert.equal(parsed.targets[0].id, 'web-app');
+  assert.ok(parsed.targets[0].issues.some((issue: { type: string }) =>
+    issue.type === 'package-declaration-missing'));
+  assert.ok(parsed.targets[0].issues.some((issue: { type: string }) =>
+    issue.type === 'target-check-failed'));
+  assert.ok(parsed.targets[0].issues.some((issue: { type: string }) =>
+    issue.type === 'bundle-drift'));
+});
+
+test('portfolio doctor --target limits the report to one target', () => {
+  const fixture = createPortfolioFixture();
+  const manifest = JSON.parse(readFileSync(fixture.configPath, 'utf8')) as {
+    targets: Array<{ id: string; path: string; profile: string; assetBundles: string[] }>;
+  };
+  const secondPath = join(dirname(fixture.configPath), 'SecondApp');
+  mkdirSync(secondPath);
+  manifest.targets.push({
+    id: 'second-app',
+    path: secondPath,
+    profile: 'engineering-runtime',
+    assetBundles: ['base-governance'],
+  });
+  writeFileSync(fixture.configPath, `${JSON.stringify(manifest, null, 2)}\n`);
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'portfolio',
+      'doctor',
+      '--config',
+      fixture.configPath,
+      '--target',
+      'second-app',
+      '--json',
+    ],
+    { cwd: packageRoot, encoding: 'utf8' },
+  );
+
+  const parsed = JSON.parse(result.stdout);
+  assert.deepEqual(parsed.targets.map((target: { id: string }) => target.id), ['second-app']);
 });
 
 function createPortfolioFixture(): { configPath: string } {

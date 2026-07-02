@@ -1,8 +1,8 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-07-02T04:01:35.161Z
-generator_version: doc-gov@0.3.9
-docs_count: 29
+generated_at: 2026-07-02T09:06:36.357Z
+generator_version: doc-gov@0.3.12
+docs_count: 31
 docs:
   - id: GOV-AGENTS-ROUTING-DOC-ONLY-V0-9
     path: docs/governance/agents-routing/doc-only-v0.9.md
@@ -66,6 +66,13 @@ docs:
     status: completed
     canonical: true
     last_reviewed: 2026-06-29
+    pinned: false
+  - id: PLAN-0006
+    path: docs/plans/completed/PLAN-0006-portfolio-maintenance-doctor.md
+    type: plan
+    status: completed
+    canonical: true
+    last_reviewed: 2026-07-02
     pinned: false
   - id: POLICY-DESIGN-PRINCIPLES
     path: docs/policy/design-principles.md
@@ -206,4 +213,11 @@ docs:
     status: completed
     canonical: true
     last_reviewed: 2026-07-01
+    pinned: false
+  - id: SPEC-0006
+    path: docs/specs/completed/SPEC-0006-portfolio-maintenance-doctor.md
+    type: spec
+    status: completed
+    canonical: true
+    last_reviewed: 2026-07-02
     pinned: false

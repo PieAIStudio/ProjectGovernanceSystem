@@ -18,6 +18,7 @@ const COMMANDS = [
   'portfolio check --config <path> [--json]',
   'portfolio plan --config <path> [--target <id|all>] [--json]',
   'portfolio assets-check --config <path> [--target <id|all>] [--json]',
+  'portfolio doctor --config <path> [--target <id|all>] [--json]',
   'lens scan [--target <path>] [--json]',
   'lens inspect [--target <path>] [--format text|json]',
   'lens report --target <path> --out <path>',

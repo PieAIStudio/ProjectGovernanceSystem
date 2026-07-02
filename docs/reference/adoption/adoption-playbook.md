@@ -153,6 +153,10 @@ Managed symlinks are relative by default. A target project's normal
 public package to know a maintainer's private registry. Maintainers can add
 `--strict-registry`, or run `pro-gov portfolio assets-check --config
 /path/to/portfolio.json`, when they need central private-registry validation.
+Use `pro-gov portfolio doctor --config /path/to/portfolio.json` as the final
+offline fleet gate when package versions, target-local routers and hooks,
+declared bundles, locks, managed symlinks, and optional host plugins all need to
+be checked together. The command reports dirty Git state but does not edit it.
 
 When a maintainer promotes a private asset into `public-agent-assets/`, the
 public registry must record the private-source hash and the public-copy hash.

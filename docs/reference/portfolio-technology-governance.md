@@ -160,11 +160,18 @@ For a managed portfolio, use this order when the reusable PGS system changes:
 6. Run target-local checks, including `pro-gov doctor --strict-hooks` for
    engineering-runtime targets.
 7. Commit and push each target as its own clear checkpoint.
-8. Run a final portfolio check from the control plane.
+8. Run final `portfolio assets-check` and `portfolio doctor` from the control plane.
 
 Do not sync targets against an unpublished local package version unless the task
 is explicitly a local prerelease test. A target should be able to reinstall from
 the public registry and recover the same governance behavior.
+
+The fleet doctor is the final dashboard, not an updater. It reports dirty Git
+state without modifying product work, checks the target's installed PGS package
+CLIs, compares the portfolio's desired bundles with target manifests and locks,
+and can verify an optional Codex/Claude plugin baseline. Native host tools own
+plugin upgrades; PGS owns the evidence that required capabilities remain
+available afterward.
 
 ## Project Lens Rules
 

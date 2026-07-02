@@ -18,6 +18,8 @@ pro-gov assets discover --target .
 pro-gov assets recommend --target .
 pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
+pro-gov portfolio assets-check --config /path/to/portfolio.json --json
+pro-gov portfolio doctor --config /path/to/portfolio.json --json
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov lens audit init --target /path/to/project --out audits/project/2026-07-01
@@ -46,6 +48,8 @@ Full upstream-checkout commands:
 pro-gov assets list --json
 pro-gov portfolio check --config /path/to/control-repo/.pro-gov/portfolio.json --json
 pro-gov portfolio plan --config /path/to/control-repo/.pro-gov/portfolio.json --target web-app --json
+pro-gov portfolio assets-check --config /path/to/control-repo/.pro-gov/portfolio.json --json
+pro-gov portfolio doctor --config /path/to/control-repo/.pro-gov/portfolio.json --json
 pro-gov assets plan --bundle base-governance --target . --out .pro-gov/asset-plan.json
 pro-gov assets plan --bundle project-lens --target /path/to/project --host codex --placement manual --out /tmp/project-lens-plan.json
 pro-gov assets apply --plan .pro-gov/asset-plan.json
@@ -71,6 +75,27 @@ user's private downstream project list. A normal npm user can omit
 public assets packaged with `@pieai/pro-gov`. Add `executionEngine.path` only
 when a full local checkout should provide a private asset registry for strict
 maintainer checks.
+
+`portfolio assets-check` verifies that the currently recorded lock and managed
+links are healthy. `portfolio doctor` additionally compares each target with the
+current portfolio `assetBundles`, registry hashes, package versions, target-local
+router/hook checks, and optional `hostTooling` requirements. The doctor is
+offline and read-only by default. A dirty product worktree is reported as
+evidence but is not itself a governance failure.
+
+Third-party update discovery is deliberately separate and low frequency:
+
+```bash
+pro-gov assets npx update --plan
+codex plugin marketplace upgrade
+codex plugin list --json
+claude plugin update <plugin>
+claude plugin list --json
+```
+
+The native tools own fetching and installation. PGS reviews resulting asset
+changes, regenerates plans, and verifies the fleet; it does not implement a
+second plugin marketplace or silently accept upstream changes.
 
 `lens audit init` creates a raw-first audit package for Project Lens plus
 Ponytail reviews. For a "read-only project audit", the target repository remains

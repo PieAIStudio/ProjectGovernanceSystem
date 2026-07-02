@@ -156,9 +156,12 @@ plane.
 }
 ```
 
-`pro-gov portfolio check|plan` reads that explicit configuration. If no full
+`pro-gov portfolio check|plan|assets-check|doctor` reads that explicit configuration. If no full
 local PGS checkout is supplied, it uses the reviewed public assets packaged with
-`@pieai/pro-gov`.
+`@pieai/pro-gov`. `portfolio doctor` is the single offline fleet gate: it checks
+package versions, target-local routers and hooks, declared bundles, asset locks,
+managed symlinks, and optional Codex/Claude plugin availability without changing
+the host or target repositories.
 
 ## How The Pieces Work Together
 
@@ -323,6 +326,10 @@ PGS does not:
 - promise a fixed reduction in code, tokens, time, or cost;
 - silently install, enable, update, or delete external AI plugins.
 
+PGS may verify an explicitly configured host-tooling baseline. The host's native
+plugin manager still owns installation and upgrades; PGS reports observed
+versions instead of pretending that every marketplace uses one version scheme.
+
 The public package is conservative on purpose. Read-only inspection comes before
 write mode because a governance tool should not become a new source of damage.
 
@@ -358,6 +365,7 @@ pnpm test
 pnpm build
 pnpm doc-gov doctor
 pnpm pro-gov doctor
+pnpm pro-gov portfolio doctor --config /path/to/portfolio.json
 ```
 
 Core lifecycle, schema, routing, starter, and reusable CLI changes belong in

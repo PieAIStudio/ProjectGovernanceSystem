@@ -11,18 +11,23 @@ export interface NpxSkillsMaintenanceOptions {
   npxRoot: string;
   source?: string;
   skill?: string;
+  timeoutMs?: number;
   runner?: NpxSkillsRunner;
 }
 
 export interface NpxSkillsRunnerInput {
   command: string[];
   cwd: string;
+  timeoutMs: number;
 }
 
 export type NpxSkillsRunner = (input: NpxSkillsRunnerInput) => {
   status: number | null;
   stdout: string;
   stderr: string;
+  signal?: string | null;
+  timedOut?: boolean;
+  timeoutMs?: number;
 };
 
 export interface NpxSkillsMaintenanceChange {
@@ -58,7 +63,14 @@ export function createNpxSkillsMaintenancePlan(
 
   const command = buildNpxCommand(options);
   const runner = options.runner ?? defaultRunner;
-  const result = runner({ command, cwd: tempRoot });
+  const timeoutMs = options.timeoutMs ?? 300_000;
+  const result = runner({ command, cwd: tempRoot, timeoutMs });
+  if (result.timedOut) {
+    throw new Error(`npx skills ${options.operation} timed out after ${timeoutMs}ms`);
+  }
+  if (result.status === null && result.signal) {
+    throw new Error(`npx skills ${options.operation} terminated by ${result.signal}`);
+  }
   if (result.status !== 0) {
     throw new Error(`npx skills ${options.operation} failed with exit code ${result.status}`);
   }
@@ -112,16 +124,24 @@ function buildNpxCommand(options: NpxSkillsMaintenanceOptions): string[] {
   return command;
 }
 
-function defaultRunner({ command, cwd }: NpxSkillsRunnerInput): {
+function defaultRunner({ command, cwd, timeoutMs }: NpxSkillsRunnerInput): {
   status: number | null;
   stdout: string;
   stderr: string;
+  signal: string | null;
+  timedOut: boolean;
 } {
-  const result = spawnSync(command[0] ?? 'npx', command.slice(1), { cwd, encoding: 'utf8' });
+  const result = spawnSync(command[0] ?? 'npx', command.slice(1), {
+    cwd,
+    encoding: 'utf8',
+    timeout: timeoutMs,
+  });
   return {
     status: result.status,
     stdout: result.stdout,
     stderr: result.stderr,
+    signal: result.signal,
+    timedOut: (result.error as NodeJS.ErrnoException | undefined)?.code === 'ETIMEDOUT',
   };
 }
 

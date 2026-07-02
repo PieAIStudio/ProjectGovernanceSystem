@@ -6,6 +6,7 @@ import { loadAgentAssetRegistry } from '../asset-registry/loader';
 import { checkInstalledAssets } from '../asset-targets/check';
 import { createAssetInstallPlan } from '../asset-targets/install-plan';
 import { getDefaultPortfolioTargets, loadPortfolioManifest } from '../portfolio/manifest';
+import { inspectPortfolio } from '../portfolio/doctor';
 import type { AssetRegistryHost } from '../asset-registry/registry';
 
 export function runPortfolio(args: string[]): number {
@@ -13,8 +14,60 @@ export function runPortfolio(args: string[]): number {
   if (subcommand === 'check') return runPortfolioCheck(rest);
   if (subcommand === 'plan') return runPortfolioPlan(rest);
   if (subcommand === 'assets-check') return runPortfolioAssetsCheck(rest);
+  if (subcommand === 'doctor') return runPortfolioDoctor(rest);
   printUsage();
   return 1;
+}
+
+function runPortfolioDoctor(args: string[]): number {
+  const options = parsePortfolioOptions(args);
+  if (!options.ok) {
+    console.error(options.error);
+    printUsage();
+    return 1;
+  }
+  const loaded = loadPortfolioManifest(options.value.configPath);
+  if (loaded.issues.length > 0 || !loaded.manifest) {
+    if (options.value.json) {
+      console.log(JSON.stringify({ ok: false, configPath: loaded.configPath, issues: loaded.issues, targets: [] }, null, 2));
+    } else {
+      for (const issue of loaded.issues) console.error(`${issue.type}: ${issue.message}`);
+    }
+    return 1;
+  }
+  const targets = getDefaultPortfolioTargets(loaded.manifest).filter(
+    (target) => !options.value.targetId || options.value.targetId === 'all' || target.id === options.value.targetId,
+  );
+  if (targets.length === 0) {
+    console.error(`Unknown portfolio target: ${options.value.targetId}`);
+    return 1;
+  }
+  const loadedAssets = loadAgentAssetRegistry({
+    agentAssetsDir: findPortfolioAgentAssetsDir(loaded.manifest),
+  });
+  if (loadedAssets.issues.length > 0) {
+    for (const issue of loadedAssets.issues) console.error(`${issue.type}: ${issue.message}`);
+    return 1;
+  }
+  const result = inspectPortfolio({
+    manifest: loaded.manifest,
+    targets,
+    agentAssetsDir: loadedAssets.agentAssetsDir,
+    registry: loadedAssets.registry,
+    bundles: loadAgentAssetBundles(loadedAssets.agentAssetsDir),
+  });
+  const output = { configPath: loaded.configPath, ...result };
+  if (options.value.json) {
+    console.log(JSON.stringify(output, null, 2));
+  } else if (result.ok) {
+    console.log(`portfolio doctor passed (${targets.length} targets)`);
+  } else {
+    for (const issue of result.hostTooling.issues) console.log(`${issue.host}\t${issue.type}: ${issue.message}`);
+    for (const target of result.targets) {
+      for (const issue of target.issues) console.log(`${target.id}\t${issue.type}: ${issue.message}`);
+    }
+  }
+  return result.ok ? 0 : 1;
 }
 
 function runPortfolioCheck(args: string[]): number {
@@ -301,4 +354,5 @@ function printUsage(): void {
   console.error('  pro-gov portfolio check --config <path> [--json]');
   console.error('  pro-gov portfolio plan --config <path> [--target <id|all>] [--host codex|claude-code|gemini-cli|antigravity] [--json]');
   console.error('  pro-gov portfolio assets-check --config <path> [--target <id|all>] [--json]');
+  console.error('  pro-gov portfolio doctor --config <path> [--target <id|all>] [--json]');
 }

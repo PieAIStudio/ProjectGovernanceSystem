@@ -8,7 +8,13 @@ export interface PortfolioManifest {
   portfolioId: string;
   controlPlane?: PortfolioEndpoint;
   executionEngine?: PortfolioEndpoint;
+  hostTooling?: PortfolioHostTooling[];
   targets: PortfolioTarget[];
+}
+
+export interface PortfolioHostTooling {
+  host: 'codex' | 'claude-code';
+  plugins: string[];
 }
 
 export interface PortfolioEndpoint {
@@ -110,9 +116,15 @@ export function validatePortfolioManifest(value: unknown): PortfolioManifestIssu
     });
   }
 
-  validateAllowedFields(value, 'root', ['schemaVersion', 'portfolioId', 'controlPlane', 'executionEngine', 'targets'], issues);
+  validateAllowedFields(
+    value,
+    'root',
+    ['schemaVersion', 'portfolioId', 'controlPlane', 'executionEngine', 'hostTooling', 'targets'],
+    issues,
+  );
   validateEndpoint(value.controlPlane, 'controlPlane', issues);
   validateEndpoint(value.executionEngine, 'executionEngine', issues);
+  validateHostTooling(value.hostTooling, issues);
 
   if (!Array.isArray(value.targets)) {
     issues.push({
@@ -247,6 +259,60 @@ function validateOptionalStringArray(
       field,
       message: `Portfolio target ${field} must be an array of strings.`,
     });
+  }
+}
+
+function validateHostTooling(
+  value: unknown,
+  issues: PortfolioManifestIssue[],
+): void {
+  if (value === undefined) return;
+  if (!Array.isArray(value)) {
+    issues.push({
+      type: 'invalid-field',
+      field: 'hostTooling',
+      message: 'Portfolio hostTooling must be an array.',
+    });
+    return;
+  }
+
+  const seenHosts = new Set<string>();
+  for (const entry of value) {
+    if (!isRecord(entry)) {
+      issues.push({
+        type: 'invalid-field',
+        field: 'hostTooling',
+        message: 'Portfolio hostTooling entry must be an object.',
+      });
+      continue;
+    }
+    validateAllowedFields(entry, 'hostTooling', ['host', 'plugins'], issues);
+    if (entry.host !== 'codex' && entry.host !== 'claude-code') {
+      issues.push({
+        type: 'invalid-field',
+        field: 'hostTooling.host',
+        message: 'Portfolio hostTooling host must be codex or claude-code.',
+      });
+    } else if (seenHosts.has(entry.host)) {
+      issues.push({
+        type: 'invalid-field',
+        field: 'hostTooling',
+        message: `Duplicate portfolio hostTooling entry: ${entry.host}`,
+      });
+    } else {
+      seenHosts.add(entry.host);
+    }
+
+    if (
+      !Array.isArray(entry.plugins) ||
+      !entry.plugins.every((plugin) => typeof plugin === 'string' && plugin.length > 0)
+    ) {
+      issues.push({
+        type: 'invalid-field',
+        field: 'hostTooling.plugins',
+        message: 'Portfolio hostTooling plugins must be an array of non-empty strings.',
+      });
+    }
   }
 }
 

@@ -158,9 +158,10 @@ private Control Plane.
 }
 ```
 
-`pro-gov portfolio check|plan` liest diese explizite Konfiguration. Wenn kein
+`pro-gov portfolio check|plan|assets-check|doctor` liest diese explizite Konfiguration. Wenn kein
 vollständiger lokaler PGS-Checkout angegeben ist, nutzt es die geprüften public
 assets, die mit `@pieai/pro-gov` ausgeliefert werden.
+`portfolio doctor` ist eine offline und schreibgeschützte Flottenprüfung; es aktualisiert keine Plugins und ändert keine Ziel-Repositories.
 
 ## Wie die Teile zusammenarbeiten
 

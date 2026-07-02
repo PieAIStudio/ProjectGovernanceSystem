@@ -101,6 +101,45 @@ test('applyAssetInstallPlan refuses unmanaged target conflicts', () => {
   assert.throws(() => createPlan(agentAssetsDir, targetDir), /Refusing to overwrite unmanaged target/);
 });
 
+test('applyAssetInstallPlan safely removes an old managed symlink after a bundle change', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  applyAssetInstallPlan(createPlan(agentAssetsDir, targetDir));
+  const emptyPlan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'empty', title: 'Empty', description: 'Empty', assets: [] }],
+    bundleIds: ['empty'],
+    host: 'codex',
+  });
+
+  applyAssetInstallPlan(emptyPlan);
+
+  assert.equal(existsSync(join(targetDir, '.agents/skills/example')), false);
+});
+
+test('applyAssetInstallPlan refuses removal when a managed symlink was replaced after planning', () => {
+  const { agentAssetsDir, targetDir } = createFixture();
+  applyAssetInstallPlan(createPlan(agentAssetsDir, targetDir));
+  const emptyPlan = createAssetInstallPlan({
+    targetDir,
+    agentAssetsDir,
+    registry,
+    bundles: [{ id: 'empty', title: 'Empty', description: 'Empty', assets: [] }],
+    bundleIds: ['empty'],
+    host: 'codex',
+  });
+  const targetPath = join(targetDir, '.agents/skills/example');
+  rmSync(targetPath);
+  writeFileSync(targetPath, 'user-owned replacement\n');
+
+  assert.throws(
+    () => applyAssetInstallPlan(emptyPlan),
+    /Refusing to remove path that is no longer a managed symlink/,
+  );
+  assert.equal(readFileSync(targetPath, 'utf8'), 'user-owned replacement\n');
+});
+
 test('checkInstalledAssets reports clean install, hash drift, and dangling symlinks', () => {
   const { agentAssetsDir, targetDir } = createFixture();
   applyAssetInstallPlan(createPlan(agentAssetsDir, targetDir));

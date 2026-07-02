@@ -42,8 +42,8 @@ Use this order for portfolio-wide PGS upgrades:
 8. Run `pro-gov doctor --strict-hooks` in every engineering-runtime target.
 9. Run the target's local governance checks.
 10. Commit and push each target as its own checkpoint.
-11. Run `pro-gov portfolio check` and `pro-gov portfolio assets-check` from the
-    control-plane manifest.
+11. Run `pro-gov portfolio check`, `pro-gov portfolio assets-check`, and
+    `pro-gov portfolio doctor` from the control-plane manifest.
 
 Treat `controlPlane` and `executionEngine` in a portfolio manifest as metadata,
 not ordinary downstream targets. They can have their own package updates, but

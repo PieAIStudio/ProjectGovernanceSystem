@@ -87,6 +87,45 @@ test('createNpxSkillsMaintenancePlan rejects partial update failures reported wi
   );
 });
 
+test('createNpxSkillsMaintenancePlan reports a bounded updater timeout', () => {
+  const npxRoot = createNpxRoot();
+
+  assert.throws(
+    () => createNpxSkillsMaintenancePlan({
+      operation: 'update',
+      npxRoot,
+      timeoutMs: 1_000,
+      runner: ({ timeoutMs }) => ({
+        status: null,
+        stdout: '',
+        stderr: '',
+        timedOut: true,
+        signal: 'SIGTERM',
+        timeoutMs,
+      }),
+    }),
+    /timed out after 1000ms/,
+  );
+});
+
+test('createNpxSkillsMaintenancePlan reports updater termination signals', () => {
+  const npxRoot = createNpxRoot();
+
+  assert.throws(
+    () => createNpxSkillsMaintenancePlan({
+      operation: 'update',
+      npxRoot,
+      runner: () => ({
+        status: null,
+        stdout: '',
+        stderr: '',
+        signal: 'SIGKILL',
+      }),
+    }),
+    /terminated by SIGKILL/,
+  );
+});
+
 function createNpxRoot(): string {
   const npxRoot = join(tmpdir(), `pro-gov-npx-${Date.now()}-${Math.random().toString(16).slice(2)}`);
   mkdirSync(join(npxRoot, '.agents/skills/example'), { recursive: true });

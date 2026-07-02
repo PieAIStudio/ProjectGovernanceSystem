@@ -158,9 +158,10 @@ un control plane privado.
 }
 ```
 
-`pro-gov portfolio check|plan` lee esa configuración explícita. Si no se indica
+`pro-gov portfolio check|plan|assets-check|doctor` lee esa configuración explícita. Si no se indica
 un checkout local completo de PGS, usa los public assets revisados que vienen
 empaquetados con `@pieai/pro-gov`.
+`portfolio doctor` es una comprobación de cartera sin red y de solo lectura; no actualiza plugins ni modifica repositorios objetivo.
 
 ## Cómo colaboran las piezas
 
