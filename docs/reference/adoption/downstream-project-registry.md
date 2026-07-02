@@ -148,7 +148,9 @@ pro-gov doctor --strict-hooks
 
 That check proves the target has the cross-host Compound Gate wiring expected by
 PGS: Codex, Claude Code, and Antigravity each have a Stop/SubagentStop path into
-`pro-gov host-hook`.
+`pro-gov host-hook`. It does not simulate the hosts themselves; PGS keeps
+per-host contract tests in the package test suite for the supported
+Stop/SubagentStop input and output shapes.
 
 ## Public Boundary
 

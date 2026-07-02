@@ -149,8 +149,11 @@ Compound Gate: skipped -> <reason>
 ```
 
 Use `pro-gov doctor --strict-hooks` after syncing an engineering project to
-verify that the host configs are wired. Open a fresh AI session after installing
-or changing hooks; old sessions may not reload host configuration.
+verify that the host configs are wired. This is a wiring check: it proves the
+project calls `pro-gov host-hook` for Codex, Claude Code, and Antigravity. The
+host behavior contract is covered by PGS package tests against recorded
+per-host Stop/SubagentStop fixtures. Open a fresh AI session after installing or
+changing hooks; old sessions may not reload host configuration.
 
 Ponytail can be installed as an optional complexity adviser. Keep its global mode
 `off`; test `lite` in one isolated task before considering a stronger mode.

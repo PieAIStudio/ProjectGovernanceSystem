@@ -96,6 +96,10 @@ workflow engine; they are the exit door that ensures the Compound Gate was
 considered before the agent finishes. Doc-only projects do not install those
 hooks by default.
 
+`pro-gov doctor --strict-hooks` checks that these exit-door hooks are wired in
+the target. It does not replace package-level host contract tests, which replay
+the supported Codex, Claude Code, and Antigravity Stop/SubagentStop schemas.
+
 ## Package Naming Model
 
 `@pieai/doc-gov` is the stable validator subsystem: the command-line tool that

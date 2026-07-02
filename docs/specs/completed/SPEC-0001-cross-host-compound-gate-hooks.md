@@ -91,14 +91,18 @@ Included:
 - Starter hook configs for `engineering-runtime` projects.
 - `pro-gov doctor --strict-hooks` to verify that the three host configs are
   wired.
-- Tests for continuation, skip/ran markers, loop guard behavior, profile
-  filtering, CLI output, and doctor checks.
+- Per-host contract tests for Codex, Claude Code, and Antigravity
+  Stop/SubagentStop output shapes, plus tests for continuation, skip/ran
+  markers, loop guard behavior, profile filtering, CLI output, and doctor
+  checks.
 
 Excluded:
 
 - `PreToolUse` mutation blocking.
 - Automatic hook installation or merge into existing user hook files.
-- Reading full transcripts by default.
+- Reading full transcripts by default. Claude Code transcript reading is a
+  bounded fallback only when a Stop/SubagentStop payload omits
+  `last_assistant_message`.
 - Making Compound Engineering the default main workflow.
 - Installing hooks in `doc-only` projects by default.
 
@@ -130,6 +134,11 @@ pnpm --filter @pieai/pro-gov typecheck
 pnpm --filter @pieai/pro-gov build
 node packages/pro-gov/dist/cli.js doctor --strict-hooks
 ```
+
+`doctor --strict-hooks` proves hook configuration is wired in a target project.
+It is intentionally not a live simulation of Codex, Claude Code, or
+Antigravity. Host behavior is pinned by package tests that replay supported
+Stop/SubagentStop fixtures.
 
 Downstream engineering projects should run:
 

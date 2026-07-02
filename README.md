@@ -290,8 +290,10 @@ hooks to `pro-gov host-hook`. The hook does not write the learning record by
 itself; it blocks final reporting until the agent reports either
 `Compound Gate: ran ce-compound -> <path>` or
 `Compound Gate: skipped -> <reason>`. Run
-`pro-gov doctor --strict-hooks` after syncing a project, then validate from a
-fresh AI session because old sessions may not reload hook configuration.
+`pro-gov doctor --strict-hooks` after syncing a project to verify hook wiring;
+PGS package tests pin the supported Codex, Claude Code, and Antigravity
+Stop/SubagentStop behavior. Validate changed hooks from a fresh AI session
+because old sessions may not reload hook configuration.
 
 Ponytail is useful as an installed but opt-in complexity adviser. Keep its global
 mode `off`. Test `lite` in one isolated, low-risk task before considering an

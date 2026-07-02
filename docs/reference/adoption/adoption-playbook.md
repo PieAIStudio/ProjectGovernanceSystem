@@ -101,7 +101,8 @@ Current package-based method:
 - run `doc-gov doctor` after wiring guardrails to verify they are actually
   connected
 - run `pro-gov doctor --strict-hooks` after wiring host hooks to prove the
-  Compound Gate is reachable from the target
+  target has the expected host-hook configuration for Codex, Claude Code, and
+  Antigravity
 - treat the npm package as the CLI source and the local `docs/governance/`
   files as the project's checked-in governance contract
 
@@ -288,6 +289,11 @@ git diff --check
 Use `pro-gov doctor --strict-hooks` for engineering-runtime projects. Doc-only
 projects may omit strict host hooks unless they intentionally adopt the
 engineering runtime profile.
+
+`pro-gov doctor --strict-hooks` is a wiring check, not a live host simulation.
+It proves the project has hook files that call `pro-gov host-hook`; PGS package
+tests prove the expected Stop/SubagentStop behavior for the supported host
+schemas. After installing or changing hooks, validate from a fresh AI session.
 
 Engineering projects should also run their local verification ladder.
 

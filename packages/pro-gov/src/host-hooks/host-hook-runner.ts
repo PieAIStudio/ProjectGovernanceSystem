@@ -1,3 +1,5 @@
+import { closeSync, openSync, readFileSync, readSync, statSync } from 'node:fs';
+
 import type { HostHookDecision, HostHookEvent, HostHookHost, HostHookRequest } from './types';
 
 const gateMarkerPattern = /Compound Gate:\s*(ran ce-compound|skipped)\s*->/i;
@@ -16,6 +18,8 @@ const compoundGateInstruction = [
   'If there is no reusable learning, report:',
   'Compound Gate: skipped -> <reason>',
 ].join('\n');
+
+const maxTranscriptBytes = 2 * 1024 * 1024;
 
 export function evaluateHostHook(request: HostHookRequest): HostHookDecision {
   if (request.event !== 'Stop' && request.event !== 'SubagentStop') {
@@ -70,7 +74,7 @@ export function formatHostHookOutput(
 
   if (host === 'claude' || host === 'claude-code') {
     if (event === 'Stop' || event === 'SubagentStop') {
-      return { ok: false, reason: decision.reason };
+      return { decision: 'block', reason: decision.reason };
     }
     if (decision.action === 'block') {
       return {
@@ -106,7 +110,10 @@ function normalizeStopInput(input: unknown): {
   }
 
   return {
-    lastAssistantMessage: findString(input, ['last_assistant_message', 'lastAssistantMessage', 'message', 'text']),
+    lastAssistantMessage:
+      findString(input, ['last_assistant_message', 'lastAssistantMessage', 'message', 'text']) ??
+      findLastAssistantMessageFromTranscript(findString(input, ['agent_transcript_path', 'agentTranscriptPath'])) ??
+      findLastAssistantMessageFromTranscript(findString(input, ['transcript_path', 'transcriptPath'])),
     stopHookActive: findBoolean(input, ['stop_hook_active', 'stopHookActive']) ?? false,
   };
 }
@@ -133,6 +140,102 @@ function findBoolean(input: Record<string, unknown>, keys: readonly string[]): b
     }
   }
   return undefined;
+}
+
+function findLastAssistantMessageFromTranscript(path: string | undefined): string | undefined {
+  if (!path || path.startsWith('~/')) {
+    return undefined;
+  }
+
+  let content: string;
+  try {
+    content = readTranscriptTail(path);
+  } catch {
+    return undefined;
+  }
+
+  const lines = content.split(/\r?\n/);
+  for (let index = lines.length - 1; index >= 0; index -= 1) {
+    const line = lines[index]?.trim();
+    if (!line) {
+      continue;
+    }
+
+    let record: unknown;
+    try {
+      record = JSON.parse(line);
+    } catch {
+      continue;
+    }
+
+    const message = extractAssistantText(record);
+    if (message) {
+      return message;
+    }
+  }
+
+  return undefined;
+}
+
+function readTranscriptTail(path: string): string {
+  const size = statSync(path).size;
+  if (size <= maxTranscriptBytes) {
+    return readFileSync(path, 'utf8');
+  }
+
+  const fd = openSync(path, 'r');
+  try {
+    const buffer = Buffer.allocUnsafe(maxTranscriptBytes);
+    readSync(fd, buffer, 0, maxTranscriptBytes, size - maxTranscriptBytes);
+    return buffer.toString('utf8');
+  } finally {
+    closeSync(fd);
+  }
+}
+
+function extractAssistantText(value: unknown): string | undefined {
+  if (!isRecord(value)) {
+    return undefined;
+  }
+
+  const nested = value.message;
+  const role = findString(value, ['role', 'type']);
+  if (isRecord(nested)) {
+    const nestedRole = findString(nested, ['role', 'type']);
+    if (nestedRole === 'assistant') {
+      return extractTextContent(nested.content);
+    }
+  }
+
+  if (role === 'assistant') {
+    return extractTextContent(value.content) ?? extractTextContent(value.text);
+  }
+
+  return undefined;
+}
+
+function extractTextContent(value: unknown): string | undefined {
+  if (typeof value === 'string' && value.trim().length > 0) {
+    return value;
+  }
+
+  if (!Array.isArray(value)) {
+    return undefined;
+  }
+
+  const parts: string[] = [];
+  for (const item of value) {
+    if (typeof item === 'string') {
+      parts.push(item);
+      continue;
+    }
+    if (isRecord(item) && typeof item.text === 'string') {
+      parts.push(item.text);
+    }
+  }
+
+  const text = parts.join('\n').trim();
+  return text.length > 0 ? text : undefined;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

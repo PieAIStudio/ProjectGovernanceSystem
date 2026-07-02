@@ -59,8 +59,9 @@ change rather than a local-machine ceremony.
 
 The strict hook check is the second recovery line. It proves that Codex, Claude
 Code, and Antigravity have Stop/SubagentStop paths into `pro-gov host-hook`, so
-the Compound Gate is enforced by host configuration instead of remembered only
-in prompts.
+the Compound Gate is connected through host configuration instead of remembered
+only in prompts. Package-level host contract tests cover the supported
+Stop/SubagentStop input and output shapes.
 
 ## When to Apply
 
