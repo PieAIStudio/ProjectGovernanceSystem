@@ -10,7 +10,7 @@ applies_when:
   - "A reusable PGS change must be rolled out to multiple target repositories"
   - "Engineering-runtime targets need cross-host Compound Gate hooks"
   - "The public npm package must remain usable without private portfolio state"
-tags: [portfolio-governance, release, trusted-publishing, compound-gate, downstream-sync]
+tags: [portfolio-governance, release, trusted-publishing, compound-gate, downstream-sync, maintenance-doctor, host-tooling]
 ---
 
 # Publish PGS before syncing portfolio targets
@@ -45,6 +45,13 @@ Use this order for portfolio-wide PGS upgrades:
 11. Run `pro-gov portfolio check`, `pro-gov portfolio assets-check`, and
     `pro-gov portfolio doctor` from the control-plane manifest.
 
+Run `portfolio doctor` once after choosing the new upstream version and again
+after target commits. The first run should expose version drift while still
+proving the old routers, hooks, locks, and links are healthy; the second should
+be fully green. Git dirtiness is evidence, not an automatic health failure, so
+an explicitly approved dirty target can still be upgraded by staging only the
+known governance files and preserving every unrelated path.
+
 Treat `controlPlane` and `executionEngine` in a portfolio manifest as metadata,
 not ordinary downstream targets. They can have their own package updates, but
 bulk target sync should operate on `targets` unless the operator explicitly
@@ -62,6 +69,14 @@ Code, and Antigravity have Stop/SubagentStop paths into `pro-gov host-hook`, so
 the Compound Gate is connected through host configuration instead of remembered
 only in prompts. Package-level host contract tests cover the supported
 Stop/SubagentStop input and output shapes.
+
+The portfolio's optional `hostTooling` baseline checks that required Codex or
+Claude Code plugins are installed and enabled, but native host tools remain the
+installation and update authority. The same boundary applies to third-party npx
+skills: inspect updates in a bounded temporary copy, review renames or merges,
+then let PGS regenerate target plans. An obsolete symlink may be removed only
+when the previous asset lock proves ownership and apply-time checks confirm the
+path is still the same managed link.
 
 ## When to Apply
 
@@ -92,6 +107,13 @@ pnpm pro-gov doctor --strict-hooks
 pnpm docs:check
 git commit -m "chore: sync PGS 0.3.9"
 git push
+```
+
+Good fleet verification:
+
+```bash
+pro-gov portfolio doctor --config /path/to/portfolio.json
+pro-gov portfolio assets-check --config /path/to/portfolio.json
 ```
 
 If a target's hooks call bare `pnpm` but the local runtime provides an older

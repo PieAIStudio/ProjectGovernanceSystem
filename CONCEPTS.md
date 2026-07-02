@@ -18,6 +18,11 @@ may inspect, plan for, or verify.
 The manifest may also name a control plane or execution engine, but those are
 metadata unless explicitly selected as targets.
 
+### Portfolio Doctor
+The read-only fleet gate that compares a Portfolio Manifest with installed PGS
+packages, target-local checks, managed assets, Git evidence, and optional host
+tooling without updating any of them.
+
 ### Control Plane
 A private coordination repository that may hold product strategy, portfolio
 configuration, or status reporting outside the public PGS package.
