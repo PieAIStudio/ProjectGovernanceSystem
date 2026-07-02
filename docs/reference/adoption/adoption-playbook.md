@@ -294,6 +294,12 @@ engineering runtime profile.
 It proves the project has hook files that call `pro-gov host-hook`; PGS package
 tests prove the expected Stop/SubagentStop behavior for the supported host
 schemas. After installing or changing hooks, validate from a fresh AI session.
+For Antigravity, a real invocation writes diagnostics under
+`.git/pro-gov-hook-debug/` because the starter hook command sets
+`PGS_HOST_HOOK_DEBUG=1`. Absence of a diagnostic file after a fresh
+Antigravity session usually means the host did not load or run
+`.agents/hooks.json`. The `.pro-gov/assets.json` `host` field records asset
+placement only; it does not control runtime hook dispatch.
 
 Engineering projects should also run their local verification ladder.
 

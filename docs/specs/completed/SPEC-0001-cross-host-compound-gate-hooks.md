@@ -82,6 +82,20 @@ The hook does not auto-run `ce-compound`. The agent must still decide whether
 the work produced reusable learning. This keeps the knowledge base useful
 instead of filling it with low-value notes.
 
+Antigravity remains a first-class supported host. Because Antigravity host
+behavior is harder to inspect from outside the app, PGS starters set
+`PGS_HOST_HOOK_DEBUG=1` on Antigravity hook commands. When the hook is invoked,
+`pro-gov host-hook` writes a diagnostic JSON file under
+`.git/pro-gov-hook-debug/` with the hook input, PGS decision, and output JSON.
+This location is intentionally inside Git metadata so diagnostics do not dirty
+the target worktree. Absence of a diagnostic file in a fresh Antigravity
+session means the host did not load or run the workspace hook.
+
+`.pro-gov/assets.json` is not part of runtime hook dispatch. Its `host` field
+records the asset-install target layout for skills and rules; runtime host
+selection comes from the hook command itself, for example
+`pro-gov host-hook --host antigravity --event Stop`.
+
 ## Scope
 
 Included:

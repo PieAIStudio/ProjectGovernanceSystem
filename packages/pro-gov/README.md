@@ -155,6 +155,15 @@ host behavior contract is covered by PGS package tests against recorded
 per-host Stop/SubagentStop fixtures. Open a fresh AI session after installing or
 changing hooks; old sessions may not reload host configuration.
 
+Antigravity hook commands enable `PGS_HOST_HOOK_DEBUG=1` by default in PGS
+starters. The hook writes local diagnostics to `.git/pro-gov-hook-debug/` when
+it is actually invoked, including the input summary, decision, and output JSON.
+This directory lives inside Git's private metadata so it does not dirty the
+worktree. If an Antigravity test does not create a diagnostic file, inspect
+whether the host loaded `.agents/hooks.json` before changing PGS policy.
+`.pro-gov/assets.json` is only an asset-install manifest; its `host` field does
+not control runtime hook dispatch.
+
 Ponytail can be installed as an optional complexity adviser. Keep its global mode
 `off`; test `lite` in one isolated task before considering a stronger mode.
 Ponytail must not remove requested scope, tests, safety, accessibility, or proof.

@@ -41,7 +41,7 @@ test('doctor --strict-hooks accepts engineering projects with PGS host hooks wir
   writeFileSync(join(root, 'docs/governance/agents-routing/engineering-runtime-v0.9.md'), '# Engineering\n');
   writeFileSync(join(root, '.codex/hooks.json'), '{"hooks":{"Stop":[{"hooks":[{"command":"pro-gov host-hook --host codex --event Stop"}]}]}}\n');
   writeFileSync(join(root, '.claude/settings.json'), '{"hooks":{"Stop":[{"hooks":[{"command":"pro-gov host-hook --host claude-code --event Stop"}]}]}}\n');
-  writeFileSync(join(root, '.agents/hooks.json'), '{"pgs-compound-gate":{"Stop":[{"hooks":[{"command":"pro-gov host-hook --host antigravity --event Stop"}]}]}}\n');
+  writeFileSync(join(root, '.agents/hooks.json'), '{"pgs-compound-gate":{"Stop":[{"hooks":[{"command":"PGS_HOST_HOOK_DEBUG=1 pro-gov host-hook --host antigravity --event Stop"}]}]}}\n');
 
   const output = withCwd(root, () =>
     captureConsole(() => {

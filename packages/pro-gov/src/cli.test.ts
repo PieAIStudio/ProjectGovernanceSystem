@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readdirSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
@@ -54,4 +56,87 @@ test('built CLI host-hook emits Codex Stop continuation JSON', () => {
       'Compound Gate: skipped -> <reason>',
     ].join('\n'),
   });
+});
+
+test('built CLI host-hook can write optional debug logs without changing stdout protocol', () => {
+  const debugDir = mkdtempSync(join(tmpdir(), 'pro-gov-hook-debug-'));
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'host-hook',
+      '--host',
+      'antigravity',
+      '--event',
+      'Stop',
+      '--debug-log',
+      debugDir,
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+      input: JSON.stringify({
+        hook_event_name: 'Stop',
+        stop_hook_active: false,
+        last_assistant_message: 'Done. I updated the docs and tests passed.',
+      }),
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  assert.deepEqual(JSON.parse(result.stdout), {
+    decision: 'continue',
+    reason: [
+      'Before final reporting, pass the PGS Compound Gate.',
+      'If this completed work produced reusable learning, run compound-engineering:ce-compound and report:',
+      'Compound Gate: ran ce-compound -> <path>',
+      'If there is no reusable learning, report:',
+      'Compound Gate: skipped -> <reason>',
+    ].join('\n'),
+  });
+
+  const files = readdirSync(debugDir);
+  assert.equal(files.length, 1);
+  const debug = JSON.parse(readFileSync(join(debugDir, files[0]), 'utf8'));
+  assert.equal(debug.host, 'antigravity');
+  assert.equal(debug.event, 'Stop');
+  assert.equal(debug.decision.action, 'continue');
+  assert.equal(existsSync(join(debugDir, files[0])), true);
+});
+
+test('built CLI host-hook exits when stdin stays open without a payload', async () => {
+  const child = spawn(
+    process.execPath,
+    [join(packageRoot, 'dist/cli.js'), 'host-hook', '--host', 'antigravity', '--event', 'Stop'],
+    {
+      cwd: packageRoot,
+      stdio: ['pipe', 'pipe', 'pipe'],
+    },
+  );
+
+  let stdout = '';
+  let stderr = '';
+  child.stdout.setEncoding('utf8');
+  child.stderr.setEncoding('utf8');
+  child.stdout.on('data', (chunk) => {
+    stdout += chunk;
+  });
+  child.stderr.on('data', (chunk) => {
+    stderr += chunk;
+  });
+
+  const result = await new Promise<{ code: number | null; timedOut: boolean }>((resolve) => {
+    const timer = setTimeout(() => {
+      child.kill('SIGKILL');
+      resolve({ code: null, timedOut: true });
+    }, 3_000);
+    child.on('exit', (code) => {
+      clearTimeout(timer);
+      resolve({ code, timedOut: false });
+    });
+  });
+
+  assert.equal(result.timedOut, false, stderr);
+  assert.equal(result.code, 0, stderr || stdout);
+  assert.deepEqual(JSON.parse(stdout), {});
 });

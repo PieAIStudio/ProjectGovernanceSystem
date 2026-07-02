@@ -104,6 +104,9 @@ function checkStrictHostHooks(root: string): string[] {
     if (!content.includes('pro-gov host-hook') || !content.includes(`--host ${entry.host}`)) {
       issues.push(`host-hooks: ${entry.path} does not call pro-gov host-hook for ${entry.host}`);
     }
+    if (entry.host === 'antigravity' && !content.includes('PGS_HOST_HOOK_DEBUG=1')) {
+      issues.push(`host-hooks: ${entry.path} does not enable PGS_HOST_HOOK_DEBUG=1 for Antigravity diagnostics`);
+    }
   }
 
   return issues;

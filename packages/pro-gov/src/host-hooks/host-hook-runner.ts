@@ -8,7 +8,12 @@ const completionSignalPatterns = [
   /\b(done|completed|implemented|fixed|verified|validated|shipped|pushed|committed)\b/i,
   /\b(tests?|typecheck|build|lint|doctor|pack)\b.*\b(pass|passed|green|succeed|succeeded|ok)\b/i,
   /\b(changed|updated|modified|created|deleted|refactored)\b.*\b(files?|docs?|tests?|hooks?|configs?)\b/i,
-  /完成|已完成|修好了|实现了|验证通过|测试通过|已经提交|已经推送|提交并推送/,
+  /已完成|完成了|修好了|实现了|验证通过|测试通过|已经提交|已经推送|提交并推送|已提交|已推送/,
+];
+
+const negativeCompletionSignalPatterns = [
+  /\b(not done|not completed|not implemented|not fixed|did not complete|didn't complete|have not completed|haven't completed)\b/i,
+  /没有完成|未完成|还没完成|没有改动|未改动|没有修改|未修改/,
 ];
 
 const compoundGateInstruction = [
@@ -119,6 +124,9 @@ function normalizeStopInput(input: unknown): {
 }
 
 function looksLikeCompletedEngineeringWork(message: string): boolean {
+  if (negativeCompletionSignalPatterns.some((pattern) => pattern.test(message))) {
+    return false;
+  }
   return completionSignalPatterns.some((pattern) => pattern.test(message));
 }
 

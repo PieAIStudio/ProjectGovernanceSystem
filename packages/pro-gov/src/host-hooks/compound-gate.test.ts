@@ -163,6 +163,19 @@ test('Stop hook ignores analysis-only replies with no completion claim', () => {
   assert.deepEqual(decision, { action: 'allow' });
 });
 
+test('Stop hook ignores negative Chinese completion statements', () => {
+  const decision = evaluateHostHook({
+    host: 'antigravity',
+    event: 'Stop',
+    input: {
+      stop_hook_active: false,
+      last_assistant_message: '我只是检查了原因，没有完成工程修改，也没有提交代码。',
+    },
+  });
+
+  assert.deepEqual(decision, { action: 'allow' });
+});
+
 test('formatHostHookOutput emits host-specific continuation shapes', () => {
   const decision = {
     action: 'continue' as const,

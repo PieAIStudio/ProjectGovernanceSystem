@@ -152,6 +152,11 @@ PGS: Codex, Claude Code, and Antigravity each have a Stop/SubagentStop path into
 per-host contract tests in the package test suite for the supported
 Stop/SubagentStop input and output shapes.
 
+Antigravity hook commands should also enable `PGS_HOST_HOOK_DEBUG=1`. When
+Antigravity actually invokes the hook, PGS writes diagnostics under
+`.git/pro-gov-hook-debug/` without dirtying the worktree. Use that directory to
+distinguish "host did not run the hook" from "PGS allowed the response".
+
 ## Public Boundary
 
 Do not commit real user portfolio manifests into the public PGS package unless

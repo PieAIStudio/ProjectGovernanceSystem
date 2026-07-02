@@ -295,6 +295,13 @@ PGS package tests pin the supported Codex, Claude Code, and Antigravity
 Stop/SubagentStop behavior. Validate changed hooks from a fresh AI session
 because old sessions may not reload hook configuration.
 
+Antigravity starters enable `PGS_HOST_HOOK_DEBUG=1` on the hook command. When
+Antigravity calls the hook, PGS writes a local diagnostic JSON file under
+`.git/pro-gov-hook-debug/` so the project worktree stays clean. If no file
+appears after a fresh Antigravity session stops, the host did not load or run
+the workspace hook. `.pro-gov/assets.json` records asset-install placement; its
+`host` field does not decide which runtime host can call `pro-gov host-hook`.
+
 Ponytail is useful as an installed but opt-in complexity adviser. Keep its global
 mode `off`. Test `lite` in one isolated, low-risk task before considering an
 optional `full` stress test. A smaller diff is not a win if it drops requested

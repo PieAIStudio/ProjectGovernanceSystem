@@ -31,27 +31,24 @@ const COMMANDS = [
 
 const [command, subcommand] = process.argv.slice(2);
 
-if (!command || command === '--help' || command === '-h') {
-  printHelp();
-  process.exitCode = command ? 0 : 1;
-} else if (command === 'assets') {
-  process.exitCode = runAssets(process.argv.slice(3));
-} else if (command === 'lens') {
-  process.exitCode = runLens(process.argv.slice(3));
-} else if (command === 'portfolio') {
-  process.exitCode = runPortfolio(process.argv.slice(3));
-} else if (command === 'host-hook') {
-  process.exitCode = runHostHook(process.argv.slice(3));
-} else if (command === 'init') {
-  process.exitCode = runInit(process.argv.slice(3));
-} else if (command === 'sync') {
-  process.exitCode = runSync(process.argv.slice(3));
-} else if (command === 'doctor') {
-  process.exitCode = runDoctor(process.argv.slice(3));
-} else {
+process.exitCode = await main();
+
+async function main(): Promise<number> {
+  if (!command || command === '--help' || command === '-h') {
+    printHelp();
+    return command ? 0 : 1;
+  }
+  if (command === 'assets') return runAssets(process.argv.slice(3));
+  if (command === 'lens') return runLens(process.argv.slice(3));
+  if (command === 'portfolio') return runPortfolio(process.argv.slice(3));
+  if (command === 'host-hook') return runHostHook(process.argv.slice(3));
+  if (command === 'init') return runInit(process.argv.slice(3));
+  if (command === 'sync') return runSync(process.argv.slice(3));
+  if (command === 'doctor') return runDoctor(process.argv.slice(3));
+
   console.error(`Unknown command: ${[command, subcommand].filter(Boolean).join(' ')}`);
   printHelp();
-  process.exitCode = 1;
+  return 1;
 }
 
 function printHelp(): void {

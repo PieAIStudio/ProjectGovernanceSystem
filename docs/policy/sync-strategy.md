@@ -99,6 +99,9 @@ hooks by default.
 `pro-gov doctor --strict-hooks` checks that these exit-door hooks are wired in
 the target. It does not replace package-level host contract tests, which replay
 the supported Codex, Claude Code, and Antigravity Stop/SubagentStop schemas.
+For Antigravity targets, the synced hook command sets `PGS_HOST_HOOK_DEBUG=1`
+so real invocations leave local diagnostics under `.git/pro-gov-hook-debug/`.
+This debug path is the factual source for host-load and stdin-shape issues.
 
 ## Package Naming Model
 
