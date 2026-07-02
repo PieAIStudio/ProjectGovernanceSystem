@@ -324,7 +324,7 @@ function parsePortfolioOptions(args: string[]): PortfolioParseResult {
       index += 1;
     } else if (arg === '--host') {
       const host = args[index + 1];
-      if (!isHost(host)) return { ok: false, error: 'Expected --host codex|claude-code' };
+      if (!isHost(host)) return { ok: false, error: 'Expected --host codex|claude-code|gemini-cli|antigravity' };
       options.host = host;
       index += 1;
     } else if (arg === '--json') {

@@ -33,10 +33,14 @@ profiles.
 8. For npm release work, read
    `docs/reference/adoption/public-release-checklist.md` before changing versions
    or publishing packages.
-9. `docs/solutions/**` contains documented solutions from prior work, and
-   `CONCEPTS.md` defines shared project vocabulary. These are useful when
-   implementing, debugging, or discussing areas already covered by past
-   learnings.
+9. Before non-trivial implementation, debugging, release, architecture, or
+   portfolio-sync work, run `pro-gov learn recall --query "<task summary>"`
+   and read any relevant `docs/solutions/**` or `CONCEPTS.md` hits before
+   changing files.
+10. `docs/solutions/**` contains documented solutions from prior work, and
+    `CONCEPTS.md` defines shared project vocabulary. These are useful when
+    implementing, debugging, or discussing areas already covered by past
+    learnings.
 
 ## Non-Negotiables
 

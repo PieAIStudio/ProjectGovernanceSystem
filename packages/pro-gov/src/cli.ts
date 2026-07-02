@@ -2,6 +2,7 @@ import { runAssets } from './commands/assets';
 import { runDoctor } from './commands/doctor';
 import { runHostHook } from './commands/host-hook';
 import { runInit } from './commands/init';
+import { runLearn } from './commands/learn';
 import { runLens } from './commands/lens';
 import { runPortfolio } from './commands/portfolio';
 import { runSync } from './commands/sync';
@@ -19,6 +20,7 @@ const COMMANDS = [
   'portfolio plan --config <path> [--target <id|all>] [--json]',
   'portfolio assets-check --config <path> [--target <id|all>] [--json]',
   'portfolio doctor --config <path> [--target <id|all>] [--json]',
+  'learn recall --query <text> [--target <path>] [--limit <n>] [--json]',
   'lens scan [--target <path>] [--json]',
   'lens inspect [--target <path>] [--format text|json]',
   'lens report --target <path> --out <path>',
@@ -40,6 +42,7 @@ async function main(): Promise<number> {
     return command ? 0 : 1;
   }
   if (command === 'assets') return runAssets(process.argv.slice(3));
+  if (command === 'learn') return runLearn(process.argv.slice(3));
   if (command === 'lens') return runLens(process.argv.slice(3));
   if (command === 'portfolio') return runPortfolio(process.argv.slice(3));
   if (command === 'host-hook') return runHostHook(process.argv.slice(3));

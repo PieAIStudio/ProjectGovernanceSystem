@@ -8,13 +8,15 @@ Think of an AI project as a building site:
 
 - PGS is the traffic desk and inspection station.
 - Superpowers is the construction process.
+- `pro-gov learn recall` is the pre-work lookup for reusable lessons.
 - Compound Engineering's `ce-compound` is the knowledge-capture tail.
 - Ponytail is an optional cost and complexity adviser.
 
 PGS chooses the lane. Superpowers makes sure the work follows the right
-engineering process. Compound Engineering records reusable lessons after
-verified work. Ponytail may suggest a leaner implementation, but it cannot
-cancel the process or the final inspection.
+engineering process. Learning Recall checks prior lessons before work starts.
+Compound Engineering records reusable lessons after verified work. Ponytail may
+suggest a leaner implementation, but it cannot cancel the process or the final
+inspection.
 
 ## Boundary
 
@@ -32,6 +34,7 @@ Project Governance System owns:
 - documentation lifecycle
 - agents routing
 - current work index conventions
+- pre-work learning recall through `pro-gov learn recall`
 - the governed location and boundary for externally sourced AI evidence rules
 
 Ponytail, when explicitly enabled for a task, may advise on:
@@ -59,17 +62,20 @@ Durable outputs should map back to the project's doc-gov layers:
 
 ## Execution Order
 
-Agents routing classifies first. Superpowers executes inside the selected lane.
-Optional Ponytail advice may run after those responsibilities are known. It may
-make the implementation leaner, but it must not remove explicit requirements or
-reduce how correctness is proven. The Compound Gate runs near the end, before
-final reporting, to decide whether verified work produced reusable learning.
+Agents routing classifies first. For non-trivial work, Learning Recall checks
+prior `docs/solutions/**` and `CONCEPTS.md` records before files change.
+Superpowers executes inside the selected lane. Optional Ponytail advice may run
+after those responsibilities are known. It may make the implementation leaner,
+but it must not remove explicit requirements or reduce how correctness is
+proven. The Compound Gate runs near the end, before final reporting, to decide
+whether verified work produced reusable learning.
 
 ```mermaid
 flowchart TD
   A["Task arrives"] --> B["Read project router and current work"]
   B --> C["Classify profile and lane"]
-  C --> D{"Does this lane need a Superpowers workflow?"}
+  C --> R["Run Learning Recall for non-trivial work"]
+  R --> D{"Does this lane need a Superpowers workflow?"}
   D -- "yes" --> E["Use the matching Superpowers skill"]
   D -- "no" --> F["Use the local non-Superpowers lane rules"]
   E --> G{"Would an explicit simplicity review help?"}

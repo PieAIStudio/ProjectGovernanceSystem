@@ -45,3 +45,8 @@ Stop hooks that call `pro-gov host-hook`. Use `pro-gov doctor --strict-hooks`
 after sync to confirm the exit gate is wired. The hook enforces the Compound
 Gate final-report marker; it does not replace verification, tests, or
 `ce-compound` itself.
+
+For non-trivial engineering work, run `pro-gov learn recall --query "<task
+summary>"` before changing files so existing `docs/solutions/**` and
+`CONCEPTS.md` lessons can shape the work without enabling a second default
+workflow.

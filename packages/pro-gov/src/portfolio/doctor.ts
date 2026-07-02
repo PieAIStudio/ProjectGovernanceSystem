@@ -12,6 +12,7 @@ import { inspectHostTooling } from '../host-tooling/inventory';
 import type { HostToolingInventoryResult } from '../host-tooling/inventory';
 import { comparePortfolioAssetState } from './asset-state';
 import type { PortfolioManifest, PortfolioTarget } from './manifest';
+import type { AssetRegistryHost } from '../asset-registry/registry';
 
 export interface PortfolioDoctorIssue {
   type: string;
@@ -132,7 +133,7 @@ function inspectTarget(options: {
       registry: options.registry,
       bundles: options.bundles,
       bundleIds: target.assetBundles ?? [],
-      host: 'codex',
+      host: readTargetAssetHost(target.path) ?? 'codex',
     });
     issues.push(...comparePortfolioAssetState({ targetDir: target.path, expectedPlan }).issues);
   } catch (error) {
@@ -154,6 +155,15 @@ function inspectTarget(options: {
     checks,
     issues: deduplicateIssues(issues),
   };
+}
+
+function readTargetAssetHost(targetDir: string): AssetRegistryHost | undefined {
+  const lockfile = readJson(join(targetDir, '.pro-gov/assets.lock.json')) as { host?: unknown } | undefined;
+  return isAssetRegistryHost(lockfile?.host) ? lockfile.host : undefined;
+}
+
+function isAssetRegistryHost(value: unknown): value is AssetRegistryHost {
+  return value === 'codex' || value === 'claude-code' || value === 'gemini-cli' || value === 'antigravity';
 }
 
 function runTargetChecks(target: PortfolioTarget): Array<{ name: string; status: number | null }> {

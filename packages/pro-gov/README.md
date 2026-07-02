@@ -148,6 +148,11 @@ engineering work. The default PGS pattern is a Compound Gate: run
 skipped. Full CE workflows such as `ce-plan`, `ce-work`, and `lfg` remain
 explicit user choices.
 
+PGS Learning Recall is the pre-work companion to that post-work gate. Before
+non-trivial implementation, debugging, release, architecture, or portfolio-sync
+work, run `pro-gov learn recall --query "<task summary>"` and read relevant
+`docs/solutions/**` or `CONCEPTS.md` hits before changing files.
+
 Engineering-runtime starters include cross-host Stop hooks for Codex,
 Claude Code, and Antigravity. Those hooks call `pro-gov host-hook` and require
 the final report to include either:

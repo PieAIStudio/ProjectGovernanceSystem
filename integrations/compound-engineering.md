@@ -11,6 +11,7 @@ Think of an AI project as a workshop:
 - Superpowers is the default cooking process for engineering work.
 - Compound Engineering's `ce-compound` is the recipe notebook written after a
   non-trivial dish is proven to work.
+- `pro-gov learn recall` is the recipe-card search before the next dish starts.
 - Ponytail is the cost and complexity adviser.
 
 The default path is one main process with one learning tail. Do not make every
@@ -25,11 +26,29 @@ capture loop by default, not as a second default execution engine.
 Use this order:
 
 1. PGS routes the task and selects the project lane.
-2. Superpowers handles the normal engineering workflow when that lane needs one.
-3. Ponytail may run as an explicit complexity review when useful.
-4. The agent must pass the Compound Gate before final reporting.
-5. Doc Gov validates governed documentation and ignores CE-owned external
+2. For non-trivial engineering work, run Learning Recall against the task
+   summary and read relevant prior lessons.
+3. Superpowers handles the normal engineering workflow when that lane needs one.
+4. Ponytail may run as an explicit complexity review when useful.
+5. The agent must pass the Compound Gate before final reporting.
+6. Doc Gov validates governed documentation and ignores CE-owned external
    artifacts.
+
+## Learning Recall
+
+CE writes the reusable lesson. PGS recalls it.
+
+Before non-trivial implementation, debugging, release, architecture, or
+portfolio-sync work, run:
+
+```bash
+pro-gov learn recall --query "<task summary>"
+```
+
+Read the relevant hits before changing files. A no-hit result is acceptable;
+do not scan every `docs/solutions/**` file by hand. The recall command is a
+small search surface over `docs/solutions/**` and `CONCEPTS.md`, not a second
+workflow engine, vector database, or CE replacement.
 
 ## Compound Gate
 

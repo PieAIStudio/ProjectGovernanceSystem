@@ -42,6 +42,11 @@ The post-work decision point where an engineering agent either records reusable
 learning with Compound Engineering or reports why there is nothing durable to
 capture.
 
+### Learning Recall
+The pre-work lookup where PGS searches `docs/solutions/**` and `CONCEPTS.md` for
+relevant prior lessons before non-trivial implementation, debugging, release,
+architecture, or portfolio-sync work begins.
+
 ### Trusted Publishing
 The npm release path where GitHub Actions publishes package versions through
 short-lived identity instead of a long-lived local npm token.

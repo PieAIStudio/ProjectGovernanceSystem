@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -29,6 +29,47 @@ test('built CLI doctor resolves the bundled doc-gov dependency', () => {
 
   assert.equal(result.status, 0);
   assert.match(result.stdout, /doc-gov: available/);
+});
+
+test('built CLI learn recall returns relevant learning records as JSON', () => {
+  const targetDir = mkdtempSync(join(tmpdir(), 'pro-gov-learn-recall-'));
+  mkdirSync(join(targetDir, 'docs/solutions/workflow-issues'), { recursive: true });
+  writeFileSync(
+    join(targetDir, 'docs/solutions/workflow-issues/portfolio-release.md'),
+    [
+      '---',
+      'title: Publish PGS before syncing portfolio targets',
+      'tags: [portfolio-governance, release, trusted-publishing, downstream-sync]',
+      '---',
+      '',
+      '# Publish PGS before syncing portfolio targets',
+      '',
+      'Run GitHub Actions Trusted Publishing before syncing downstream repositories.',
+    ].join('\n'),
+  );
+
+  const result = spawnSync(
+    process.execPath,
+    [
+      join(packageRoot, 'dist/cli.js'),
+      'learn',
+      'recall',
+      '--target',
+      targetDir,
+      '--query',
+      'portfolio release downstream',
+      '--json',
+    ],
+    {
+      cwd: packageRoot,
+      encoding: 'utf8',
+    },
+  );
+
+  assert.equal(result.status, 0, result.stderr || result.stdout);
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.query, 'portfolio release downstream');
+  assert.equal(output.hits[0].relativePath, 'docs/solutions/workflow-issues/portfolio-release.md');
 });
 
 test('built CLI host-hook emits Codex Stop continuation JSON', () => {

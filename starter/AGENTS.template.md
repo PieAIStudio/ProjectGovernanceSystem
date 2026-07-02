@@ -18,6 +18,9 @@
    - `docs/governance/agents-routing/engineering-runtime-v0.9.md`, or
    - `docs/governance/agents-routing/doc-only-v0.9.md`
 7. `docs/reference/execution/current-work.md`
+8. Before non-trivial implementation, debugging, release, architecture, or
+   migration work, run `pro-gov learn recall --query "<task summary>"` and read
+   any relevant `docs/solutions/**` or `CONCEPTS.md` hits before changing files.
 
 ## Governance
 
@@ -39,6 +42,7 @@
 - Point to the chosen agents-routing file from `docs/governance/agents-routing/`.
 - Engineering projects may use Superpowers, Directed Development, GStack, or other external workflows only inside the selected lane; do not copy upstream integration guides into the target project by default.
 - For engineering projects, Superpowers is the default engineering workflow. Compound Engineering is used by default only as the post-work Compound Gate through `ce-compound`; full CE workflows require an explicit user request.
+- For engineering projects, PGS Learning Recall is the pre-work companion to that post-work gate: recall existing lessons first, then do the work, then decide whether a new lesson should be compounded.
 - Engineering projects should have PGS Stop hooks wired for Codex, Claude Code, and Antigravity. Before final reporting after completed engineering work, report `Compound Gate: ran ce-compound -> <path>` or `Compound Gate: skipped -> <reason>`.
 - Doc-only projects should say that Superpowers TDD and Directed Development are not enabled by default.
 - External workflow systems such as Superpowers or GStack run inside the lane selected by this router. They must not replace this project router.

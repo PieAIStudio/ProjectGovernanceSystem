@@ -78,6 +78,15 @@ Superpowers completes verified work
 -> run ce-compound or report a skip reason
 ```
 
+PGS Learning Recall is the matching pre-work step:
+
+```bash
+pro-gov learn recall --query "<task summary>"
+```
+
+It searches `docs/solutions/**` and `CONCEPTS.md` so agents can reuse prior
+lessons without making Compound Engineering the default execution workflow.
+
 Do not make routine tasks choose between Superpowers and Compound Engineering as
 competing default engineering processes. Use CE's full `ce-plan`, `ce-work`, or
 `lfg` flow only when the user explicitly asks for it.
@@ -107,6 +116,7 @@ For an engineering/runtime project:
 ```text
 install PGS packages
 -> keep Superpowers available for engineering workflows
+-> run pro-gov learn recall before non-trivial work
 -> use Compound Engineering's ce-compound as the post-work learning tail
 -> install Ponytail but keep global mode off
 -> activate Ponytail only when a bounded simplicity review would help

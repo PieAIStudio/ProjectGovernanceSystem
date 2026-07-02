@@ -166,15 +166,17 @@ the host or target repositories.
 ## How The Pieces Work Together
 
 1. The AI reads `AGENTS.md`.
-2. PGS routing selects the appropriate profile and lane from
+2. For non-trivial work, PGS Learning Recall checks `docs/solutions/**` and
+   `CONCEPTS.md` for relevant prior lessons.
+3. PGS routing selects the appropriate profile and lane from
    `docs/governance/agents-routing/`.
-3. Superpowers runs inside that lane when engineering discipline is needed.
-4. Ponytail may be called explicitly for a bounded simplicity review.
-5. The Compound Gate decides whether `ce-compound` should capture reusable
+4. Superpowers runs inside that lane when engineering discipline is needed.
+5. Ponytail may be called explicitly for a bounded simplicity review.
+6. The Compound Gate decides whether `ce-compound` should capture reusable
    learning in `docs/solutions/**`.
-6. Durable specifications, plans, decisions, and references go to governed
+7. Durable specifications, plans, decisions, and references go to governed
    locations.
-7. `doc-gov` and `pro-gov doctor` check that the system is actually wired, not
+8. `doc-gov` and `pro-gov doctor` check that the system is actually wired, not
    merely described.
 
 PGS uses **SSOT**, or "single source of truth": one durable fact should have one
@@ -287,6 +289,17 @@ Compound Engineering is recommended for post-work knowledge capture. In
 PGS-governed projects, the default is not to make CE compete with Superpowers;
 the default is to run a Compound Gate after verified work and use
 `ce-compound` only when there is reusable learning to preserve.
+
+PGS Learning Recall is the pre-work half of that loop. Before non-trivial
+implementation, debugging, release, architecture, or portfolio-sync work, run:
+
+```bash
+pro-gov learn recall --query "<task summary>"
+```
+
+Read the relevant hits before changing files. This uses CE's stored
+`docs/solutions/**` records without turning CE into the default execution
+workflow.
 
 Engineering-runtime starters wire Codex, Claude Code, and Antigravity Stop
 hooks to `pro-gov host-hook`. The hook does not write the learning record by

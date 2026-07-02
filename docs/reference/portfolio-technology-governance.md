@@ -150,17 +150,10 @@ because the inspection sheet lists it.
 
 ## Fleet Upgrade Flow
 
-For a managed portfolio, use this order when the reusable PGS system changes:
-
-1. Update PGS first.
-2. Run PGS verification locally.
-3. Publish the npm packages through the trusted release workflow.
-4. Confirm the published registry versions.
-5. Sync target repositories from the portfolio manifest.
-6. Run target-local checks, including `pro-gov doctor --strict-hooks` for
-   engineering-runtime targets.
-7. Commit and push each target as its own clear checkpoint.
-8. Run final `portfolio assets-check` and `portfolio doctor` from the control plane.
+For a managed portfolio, use the release and target-sync order documented in
+`docs/solutions/workflow-issues/portfolio-release-and-target-sync.md`. Keep that
+solution doc as the operational checklist; this reference only states the
+technology-governance boundary.
 
 Do not sync targets against an unpublished local package version unless the task
 is explicitly a local prerelease test. A target should be able to reinstall from

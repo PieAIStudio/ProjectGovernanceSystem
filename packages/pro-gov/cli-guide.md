@@ -20,6 +20,7 @@ pro-gov portfolio check --config /path/to/portfolio.json
 pro-gov portfolio plan --config /path/to/portfolio.json --target web-app --json
 pro-gov portfolio assets-check --config /path/to/portfolio.json --json
 pro-gov portfolio doctor --config /path/to/portfolio.json --json
+pro-gov learn recall --query "release downstream sync" --target .
 pro-gov lens inspect --target .
 pro-gov lens report --target . --out .pro-gov/lens-report.md
 pro-gov lens audit init --target /path/to/project --out audits/project/2026-07-01
@@ -41,6 +42,13 @@ Actions references stay packaged but are not installed by default.
 but checks project-local seeds such as `AGENTS.md`, project policy, and current
 work for presence only. It infers the installed profile when exactly one route
 exists; `--profile` resolves an empty or temporarily ambiguous target.
+
+`learn recall` is the pre-work companion to Compound Engineering's post-work
+`ce-compound` learning records. It searches `docs/solutions/**` and
+`CONCEPTS.md` in the target repository and returns the most relevant prior
+lessons for the current task. Use it before non-trivial implementation,
+debugging, release, architecture, or portfolio-sync work. It is read-only and
+does not require a full local PGS checkout.
 
 Full upstream-checkout commands:
 

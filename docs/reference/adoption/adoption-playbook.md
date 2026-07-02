@@ -211,6 +211,16 @@ Use Compound Engineering by default only as the post-work Compound Gate:
 `ce-compound` captures reusable lessons when they exist; otherwise the agent
 reports a skip reason. Full CE workflows require an explicit user request.
 
+Use PGS Learning Recall before non-trivial work:
+
+```bash
+pro-gov learn recall --query "<task summary>"
+```
+
+This reads the project's existing `docs/solutions/**` and `CONCEPTS.md` records
+so prior lessons can shape the work without making Compound Engineering the
+default execution workflow.
+
 The host-hook gate is deliberately small. It does not make Compound Engineering
 the main workflow. It only blocks a final completion report that looks like
 finished engineering work but does not say whether the Compound Gate ran or was
