@@ -1,6 +1,6 @@
 # docs/governance/MANIFEST.yml — auto-generated, DO NOT EDIT MANUALLY
 # Regenerate: pnpm doc-gov scan
-generated_at: 2026-07-02T03:41:54.432Z
+generated_at: 2026-07-02T04:01:35.161Z
 generator_version: doc-gov@0.3.9
 docs_count: 29
 docs:
@@ -100,14 +100,14 @@ docs:
     type: reference
     status: stable
     canonical: true
-    last_reviewed: 2026-06-15
+    last_reviewed: 2026-07-02
     pinned: false
   - id: REF-DOWNSTREAM-PROJECT-REGISTRY
     path: docs/reference/adoption/downstream-project-registry.md
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-07-01
+    last_reviewed: 2026-07-02
     pinned: false
   - id: REF-MIGRATION-V0-9
     path: docs/reference/adoption/migration-v0.9.md
@@ -156,7 +156,7 @@ docs:
     type: reference
     status: active
     canonical: true
-    last_reviewed: 2026-07-01
+    last_reviewed: 2026-07-02
     pinned: true
   - id: SPEC-PROJECT-AUDIT-PROTOCOL-V0-1
     path: docs/reference/project-lens/project-audit-protocol-v0.1.md

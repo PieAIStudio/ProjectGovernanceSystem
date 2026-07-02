@@ -6,7 +6,7 @@ status: stable
 canonical: true
 owner: human
 created: 2026-05-06
-last_reviewed: 2026-06-15
+last_reviewed: 2026-07-02
 domain: adoption
 tags:
   - adoption
@@ -92,8 +92,16 @@ Current package-based method:
 - copy `starter/lefthook.template.yml` to `lefthook.yml` and
   `starter/.github/workflows/docs-check.yml` to `.github/workflows/docs-check.yml`
   when the target project is ready for standard guardrails
+- for an `engineering-runtime` target, install the three host-hook starter files
+  or merge their Stop/SubagentStop entries into the target's existing host
+  config:
+  - `.codex/hooks.json`
+  - `.claude/settings.json`
+  - `.agents/hooks.json`
 - run `doc-gov doctor` after wiring guardrails to verify they are actually
   connected
+- run `pro-gov doctor --strict-hooks` after wiring host hooks to prove the
+  Compound Gate is reachable from the target
 - treat the npm package as the CLI source and the local `docs/governance/`
   files as the project's checked-in governance contract
 
@@ -198,6 +206,16 @@ Use Compound Engineering by default only as the post-work Compound Gate:
 `ce-compound` captures reusable lessons when they exist; otherwise the agent
 reports a skip reason. Full CE workflows require an explicit user request.
 
+The host-hook gate is deliberately small. It does not make Compound Engineering
+the main workflow. It only blocks a final completion report that looks like
+finished engineering work but does not say whether the Compound Gate ran or was
+skipped:
+
+```text
+Compound Gate: ran ce-compound -> <path>
+Compound Gate: skipped -> <reason>
+```
+
 ### Doc-Only
 
 Add:
@@ -257,6 +275,7 @@ For the v0.9 structural migration, use
 Minimum:
 
 ```bash
+pnpm pro-gov doctor --strict-hooks
 pnpm doc-gov check
 pnpm doc-gov router-check
 pnpm doc-gov scan --check
@@ -265,6 +284,10 @@ pnpm doc-gov audit
 pnpm doc-gov doctor
 git diff --check
 ```
+
+Use `pro-gov doctor --strict-hooks` for engineering-runtime projects. Doc-only
+projects may omit strict host hooks unless they intentionally adopt the
+engineering runtime profile.
 
 Engineering projects should also run their local verification ladder.
 

@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: project
 created: 2026-07-01
-last_reviewed: 2026-07-01
+last_reviewed: 2026-07-02
 domain: portfolio-governance
 tags:
   - portfolio
@@ -137,6 +137,34 @@ PGS audit output should flow back as evidence:
 control plane strategy -> PGS audit -> target repository plan/change
 target repository evidence -> PGS audit package -> control plane status
 ```
+
+`controlPlane` and `executionEngine` entries in a portfolio manifest are
+metadata. They help humans and automation find the coordination repository and
+the PGS runner, but they are not default downstream targets. Bulk upgrade,
+asset planning, and target verification should operate on `targets` unless the
+operator deliberately names another repository.
+
+Beginner version: the control plane is the office, PGS is the inspection tool,
+and `targets` are the buildings being inspected. Do not renovate the office just
+because the inspection sheet lists it.
+
+## Fleet Upgrade Flow
+
+For a managed portfolio, use this order when the reusable PGS system changes:
+
+1. Update PGS first.
+2. Run PGS verification locally.
+3. Publish the npm packages through the trusted release workflow.
+4. Confirm the published registry versions.
+5. Sync target repositories from the portfolio manifest.
+6. Run target-local checks, including `pro-gov doctor --strict-hooks` for
+   engineering-runtime targets.
+7. Commit and push each target as its own clear checkpoint.
+8. Run a final portfolio check from the control plane.
+
+Do not sync targets against an unpublished local package version unless the task
+is explicitly a local prerelease test. A target should be able to reinstall from
+the public registry and recover the same governance behavior.
 
 ## Project Lens Rules
 

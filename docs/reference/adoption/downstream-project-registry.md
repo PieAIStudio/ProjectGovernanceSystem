@@ -6,7 +6,7 @@ status: active
 canonical: true
 owner: human
 created: 2026-06-09
-last_reviewed: 2026-07-01
+last_reviewed: 2026-07-02
 domain: adoption
 tags:
   - downstream
@@ -110,6 +110,12 @@ Do not add `sharedRules` to the manifest yet. Shared rules are real, but this
 manifest does not plan, apply, or check them today; keeping a field for them
 would create a false sense of management.
 
+`controlPlane` and `executionEngine` are not part of the default target set.
+They may also use PGS packages, but portfolio automation should not treat them
+as ordinary downstream repositories unless the operator explicitly chooses to do
+so. This keeps the public PGS engine reusable for organizations that do not
+have a separate headquarters-style repository.
+
 ## Commands
 
 ```bash
@@ -132,6 +138,17 @@ packaged with `@pieai/pro-gov`. That is the normal path for npm users.
 It uses `executionEngine.path/agent-assets` when that private registry exists,
 so a control repository can validate private skill ids and placement without
 bundling those private assets into the public npm package.
+
+For engineering-runtime targets, run this after installing or syncing host hook
+configuration:
+
+```bash
+pro-gov doctor --strict-hooks
+```
+
+That check proves the target has the cross-host Compound Gate wiring expected by
+PGS: Codex, Claude Code, and Antigravity each have a Stop/SubagentStop path into
+`pro-gov host-hook`.
 
 ## Public Boundary
 
