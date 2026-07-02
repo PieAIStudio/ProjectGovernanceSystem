@@ -19,7 +19,7 @@ const assetRoots = [
 ] as const;
 
 export function listAssets(): ProGovAsset[] {
-  const root = existsSync(packagedAssetsRoot) ? packagedAssetsRoot : sourceRoot;
+  const root = existsSync(join(sourceRoot, 'starter')) ? sourceRoot : packagedAssetsRoot;
   return assetRoots
     .flatMap((assetRoot) => {
       const absoluteRoot = join(root, assetRoot);
